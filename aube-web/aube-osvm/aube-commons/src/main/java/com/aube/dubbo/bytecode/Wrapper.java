@@ -21,7 +21,6 @@ import com.aube.serialize.ReflectUtils;
 /**
  * Wrapper.
  * 
- * @author qian.lei
  */
 
 public abstract class Wrapper

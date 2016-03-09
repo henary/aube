@@ -8,7 +8,11 @@ public class JsonUtils {
 	public static <T> String writeObjectToJson(T gsonObj) {
 		return writeGson(gsonObj, false);
 	}
-
+	
+	public static <T> String writeMapToJson(T gsonObj) {
+		return writeGson(gsonObj, false);
+	}
+	
 	public static <T> String writeGson(T gsonObj, boolean pretty) {
 		GsonBuilder builder = new GsonBuilder().enableComplexMapKeySerialization().disableHtmlEscaping()
 				.setDateFormat("yyyy-MM-dd HH:mm:ss");
