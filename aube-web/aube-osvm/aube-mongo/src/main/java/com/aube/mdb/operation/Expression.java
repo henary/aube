@@ -24,7 +24,6 @@ public class Expression implements Util4Script{
 	};
 
 	/**
-	 * @author Administrator
 	 *
 	 */
 	public static enum OpenCloseState {
