@@ -5,10 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.aube.monitor.DataReport;
+import com.aube.monitor.ReportType;
 import com.aube.util.BeanUtil;
 import com.aube.util.DateUtil;
-
-import ReportType.ReportType;
 
 
 public class MongoDataReport implements DataReport {
