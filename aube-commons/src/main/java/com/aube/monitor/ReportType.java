@@ -1,4 +1,4 @@
-package ReportType;
+package com.aube.monitor;
 
 public enum ReportType {
 	reqnum("正在处理的请求数量"),
