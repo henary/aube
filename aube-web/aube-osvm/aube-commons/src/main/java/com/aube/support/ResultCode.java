@@ -13,11 +13,13 @@ public class ResultCode<T> implements Serializable {
 
 	public static final String CODE_SUCCESS = "0000";
 	public static final String CODE_UNKNOWN_ERROR = "9999";
+	public static final String CODE_DATA_ERROR = "4005";
 
 	private String errcode;
 	private String msg;
 	private T retval;
 	private boolean success = false;
+	private Throwable exception;
 
 	protected ResultCode(String code, String msg, T retval) {
 		this.errcode = code;
@@ -69,6 +71,19 @@ public class ResultCode<T> implements Serializable {
 
 	public String getErrcode() {
 		return errcode;
+	}
+
+	public Throwable getException() {
+		return exception;
+	}
+
+	/**
+	 * dubbo接口服务端请不要设置此异常！只作为客户端封装使用
+	 * 
+	 * @param exception
+	 */
+	public void setException(Throwable exception) {
+		this.exception = exception;
 	}
 
 }
