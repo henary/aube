@@ -1,11 +1,11 @@
 package com.aube.mdb;
 
-public class GWMongoAccount {
+public class AubeMongoAccount {
 	private String database = null;
 	private String user = null;
 	private String password = null;
 	
-	public GWMongoAccount(String database,String userName,String pwd){
+	public AubeMongoAccount(String database,String userName,String pwd){
 		this.database=database;
 		this.user=userName;
 		this.password=pwd;
@@ -16,7 +16,7 @@ public class GWMongoAccount {
 	 * 
 	 * @param accountInfo  ���볤��Ϊ3����������Ϣ����Ϊ database,username,password.
 	 */
-	protected GWMongoAccount(String[] accountInfo){
+	protected AubeMongoAccount(String[] accountInfo){
 		assert(accountInfo==null||accountInfo.length!=3);
 		this.database=accountInfo[0];
 		this.user=accountInfo[1];
@@ -28,11 +28,11 @@ public class GWMongoAccount {
 	 * 
 	 * @param accountInfo  ���볤��Ϊ3����������Ϣ����Ϊ database,username,password.
 	 */
-	protected GWMongoAccount(String accountInfo,String separator){
+	protected AubeMongoAccount(String accountInfo,String separator){
 		this(accountInfo.split(separator));
 	}
 	
-	public GWMongoAccount(){}
+	public AubeMongoAccount(){}
 
 	public String getDatabase() {
 		return database;

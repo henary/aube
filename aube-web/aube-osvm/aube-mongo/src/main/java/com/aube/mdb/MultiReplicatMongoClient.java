@@ -7,11 +7,11 @@ import java.util.List;
 /**
  */
 public class MultiReplicatMongoClient {
-	private final List<NameGWMongoClient> replicates=new ArrayList<NameGWMongoClient>();
+	private final List<NameAubeMongoClient> replicates=new ArrayList<NameAubeMongoClient>();
 	
 	/**
 	 */
-	public MultiReplicatMongoClient(List<NameGWMongoClient> multiMongo){
+	public MultiReplicatMongoClient(List<NameAubeMongoClient> multiMongo){
 		replicates.addAll(multiMongo);
 	}
 	
@@ -19,7 +19,7 @@ public class MultiReplicatMongoClient {
 	 * @param replicatName
 	 * @return
 	 */
-	public NameGWMongoClient useReplicat(String replicatName){
+	public NameAubeMongoClient useReplicat(String replicatName){
 		for(int i=0;i<replicates.size();i++){
 			if(replicates.get(i).replicateName().equals(replicatName)){
 				return replicates.get(i);
@@ -28,7 +28,7 @@ public class MultiReplicatMongoClient {
 		return null;
 	}
 	
-	public List<NameGWMongoClient> listReplicate(){
+	public List<NameAubeMongoClient> listReplicate(){
 		return Collections.unmodifiableList(replicates);
 	}
 }
