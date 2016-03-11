@@ -7,12 +7,12 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.configuration.CodecRegistry;
 
 @SuppressWarnings({"rawtypes","unchecked"})
-public class GwCodecRegistry implements CodecRegistry{
+public class AubeCodecRegistry implements CodecRegistry{
 	
 	private CodecRegistry sysCodecRegistry=null;
 	private Map<Class,Codec> gwCodec=new HashMap<>();
 	
-	public GwCodecRegistry(CodecRegistry codecRegistry){
+	public AubeCodecRegistry(CodecRegistry codecRegistry){
 		this.sysCodecRegistry=codecRegistry;
 		registryCodec(new SqlTimestampCodec());
 		registryCodec(new SqlTimeCodec());

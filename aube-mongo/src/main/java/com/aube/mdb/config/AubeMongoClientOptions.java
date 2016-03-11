@@ -17,7 +17,7 @@ import com.mongodb.MongoClientOptions;
 import com.mongodb.ReadPreference;
 import com.mongodb.WriteConcern;
 
-public class GwMongoClientOptions{
+public class AubeMongoClientOptions{
 	
 	private  String description;            
     private  ReadPreference readPreference=ReadPreference.secondaryPreferred();
@@ -55,8 +55,8 @@ public class GwMongoClientOptions{
 //    private  SocketSettings heartbeatSocketSettings;
 //    private  SslSettings sslSettings;
     
-    public static GwMongoClientOptions getDefaultInstance(){
-    	return new GwMongoClientOptions();
+    public static AubeMongoClientOptions getDefaultInstance(){
+    	return new AubeMongoClientOptions();
     }
     
     public MongoClientOptions toMongoClientOptions(){

@@ -10,7 +10,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aube.mdb.config.GwMongoClientOptions;
+import com.aube.mdb.config.AubeMongoClientOptions;
 import com.mongodb.DB;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
@@ -25,7 +25,7 @@ final class MongoReplicateInfo {
 	private  Map<String,MongoDatabase> _mdatabases=new LinkedHashMap<>();
 	private  List<HostInfo> hosts = new ArrayList<>(0);//��Ⱥ��ÿ̨����
 	
-	protected  void initMongoClient(List<String> hosts1, List<GWMongoAccount> accounts, GwMongoClientOptions options,String mechanism){
+	protected  void initMongoClient(List<String> hosts1, List<AubeMongoAccount> accounts, AubeMongoClientOptions options,String mechanism){
 		List<HostInfo> hostList=new ArrayList<HostInfo>(hosts1.size());
 		for (String host : hosts1) {
 			hostList.add(new HostInfo(host));
@@ -34,7 +34,7 @@ final class MongoReplicateInfo {
 	}
 	
 	
-	protected synchronized  void initMongoClient(GwMongoClientOptions options,String mechanism, List<HostInfo> hosts1, List<GWMongoAccount> accounts){
+	protected synchronized  void initMongoClient(AubeMongoClientOptions options,String mechanism, List<HostInfo> hosts1, List<AubeMongoAccount> accounts){
 		if(_mongoClient!=null){
 			logger.warn("MongoClient�Ѿ�����ʼ�����벻Ҫ�ظ���(���γ�ʼ��Ҫ���ѱ�����)");
 			return;
@@ -51,7 +51,7 @@ final class MongoReplicateInfo {
 		
 		_dblist=new ArrayList<String>(accounts.size());
 		List<MongoCredential> mcs = new ArrayList<MongoCredential>(accounts.size());
-		for(GWMongoAccount account:accounts){
+		for(AubeMongoAccount account:accounts){
 			_dblist.add(account.getDatabase());
 			MongoCredential mc=null;
 			switch(mechanism){
@@ -63,7 +63,7 @@ final class MongoReplicateInfo {
 			}
 			mcs.add(mc);
 		}
-		if(options==null) options=new GwMongoClientOptions();
+		if(options==null) options=new AubeMongoClientOptions();
 		MongoClientOptions mcOptions=options.toMongoClientOptions();
 		_mongoClient=new  MongoClient(hostList, mcs, mcOptions);
 		for(String dbName:_dblist){

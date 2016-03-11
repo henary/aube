@@ -16,7 +16,7 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.InitializingBean;
 
-import com.aube.mdb.GWMongoClient;
+import com.aube.mdb.AubeMongoClient;
 import com.aube.mdb.builder.DeleteBuilder;
 import com.aube.mdb.builder.DistinctBuilder;
 import com.aube.mdb.builder.FindBuilder;
@@ -52,11 +52,11 @@ public class MongoService3Impl implements MongoService3, InitializingBean {
 	private MongoDatabase currentDB = null;
 	private static final transient AubeLogger dbLogger = LoggerUtils.getLogger(MongoService3Impl.class);
 	
-	public MongoService3Impl(GWMongoClient mongoClient){
+	public MongoService3Impl(AubeMongoClient mongoClient){
 		this.currentDB = mongoClient.prepareDatabase();
 	}
 	
-	public MongoService3Impl(GWMongoClient mongoClient, String databaseName){
+	public MongoService3Impl(AubeMongoClient mongoClient, String databaseName){
 		this.currentDB = mongoClient.prepareDatabase(databaseName);
 	}
 	
