@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 import com.aube.util.AubeIpConfig;
 
 public class LoggerUtils {
-
+	private static boolean notUseJson = true;
 	private static final String tracePackage = "com.aube";
 
 	private static Map<String/* exception or method */, AtomicInteger> exceptionCount = new ConcurrentHashMap<String, AtomicInteger>();
@@ -42,15 +42,24 @@ public class LoggerUtils {
 	
 	public static <T> AubeLogger getLogger(Class<T> clazz){
 		Logger logger = LoggerFactory.getLogger(clazz);
+		if (notUseJson) {
+			return new SimpleLogger(logger);
+		}
 		return new JsonLogger(logger, AubeIpConfig.getServerip(), null);
 	}
 	public static AubeLogger getLogger(String name, String serverIp, String systemId) {
 		Logger logger = LoggerFactory.getLogger(name);
+		if (notUseJson) {
+			return new SimpleLogger(logger);
+		}
 		return new JsonLogger(logger, serverIp, systemId);
 	}
 
 	public static <T> AubeLogger getLogger(Class<T> clazz, String serverIp, String systemId) {
 		Logger logger = LoggerFactory.getLogger(clazz);
+		if (notUseJson) {
+			return new SimpleLogger(logger);
+		}
 		return new JsonLogger(logger, serverIp, systemId);
 	}
 
