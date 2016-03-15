@@ -8,7 +8,6 @@
 		<artifactId>web-parent</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>com.aube</groupId>
 	<artifactId>aube</artifactId>
 	<packaging>war</packaging>
 	<name>aube Maven Webapp</name>
@@ -17,6 +16,11 @@
 		<dependency>
 			<groupId>com.aube</groupId>
 			<artifactId>web-commons</artifactId>
+			<version>${aube.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aube</groupId>
+			<artifactId>aube-mongo</artifactId>
 			<version>${aube.version}</version>
 		</dependency>
 	</dependencies>
