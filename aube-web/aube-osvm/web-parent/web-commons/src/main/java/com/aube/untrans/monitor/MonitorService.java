@@ -40,5 +40,5 @@ public interface MonitorService {
 	 */
 	void logViolation(String ip, String resource, Map<String, String> params);
 	
-	
+	void addAccessLog(Map<String, String> logEntry);
 }

@@ -4,7 +4,9 @@ import java.io.CharConversionException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.lang.StringUtils;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 
 import com.aube.Config;
+import com.aube.support.AubeExecutorThreadFactory;
 import com.aube.support.VelocityTemplate;
 import com.aube.untrans.monitor.MonitorData;
 import com.aube.untrans.monitor.MonitorService;
@@ -33,6 +36,27 @@ public abstract class AbstractMonitorService implements MonitorService {
 	@Autowired
 	@Qualifier("velocityTemplate")
 	private VelocityTemplate velocityTemplate;
+
+	@Override
+	public Map<String, String> getMonitorStatus() {
+		Map<String, String> result = new LinkedHashMap<String, String>();
+		result.put("count", "" + executor.getCompletedTaskCount());
+		result.put("queued", "" + executor.getTaskCount());
+		return result;
+	}
+
+	@Override
+	public void addAccessLog(Map<String, String> logEntry) {
+		addMonitorEntry(MonitorData.DATATYPE_ACCESSLOG, logEntry);
+	}
+
+	protected void setupConsumerThread(int threadSize) {
+		// FixedPoolSize
+		executor = new ThreadPoolExecutor(threadSize, threadSize, 300, TimeUnit.SECONDS,
+				new LinkedBlockingQueue<Runnable>(), new AubeExecutorThreadFactory(this.getClass().getSimpleName()));
+		executor.allowCoreThreadTimeOut(false);
+		dbLogger.warn("MonitorThread started!");
+	}
 
 	@Override
 	public String logException(EXCEPTION_TAG tag, String location, String title, Throwable ex,
@@ -93,7 +117,7 @@ public abstract class AbstractMonitorService implements MonitorService {
 		}
 		return exctrace;
 	}
-	
+
 	@Override
 	public void logViolation(String ip, String resource, Map<String, String> params) {
 		Map<String, String> row = new LinkedHashMap<String, String>();
@@ -101,15 +125,15 @@ public abstract class AbstractMonitorService implements MonitorService {
 		row.put("resource", resource);
 		row.put("systemId", Config.SYSTEMID);
 		row.put("accessTime", DateUtil.getCurFullTimestampStr());
-		
-		if(params!=null){
+
+		if (params != null) {
 			row.putAll(BeanUtil.toSimpleStringMap(params));
 		}
 		addMonitorEntry(MonitorData.DATATYPE_VIOLATION, row);
 	}
-	
+
 	@Override
 	public void addMonitorEntry(String datatype, Map<String, String> entry) {
-		// TODO 
+		// TODO
 	}
 }
