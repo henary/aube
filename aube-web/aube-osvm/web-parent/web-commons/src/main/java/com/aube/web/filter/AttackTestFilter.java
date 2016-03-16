@@ -16,6 +16,7 @@ public class AttackTestFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain filterChain) throws ServletException, IOException {
 		// TODO 
+		filterChain.doFilter(req, res);
 	}
 
 }
