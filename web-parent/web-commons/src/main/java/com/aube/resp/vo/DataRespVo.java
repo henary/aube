@@ -6,7 +6,7 @@ import com.aube.constant.ErrorCodeConstant;
 import com.aube.vo.GsonObject;
 
 /**
- * 数据统一返回结构</br>
+ * 数据统一返回结构 </br>
  * 
  * @see ErrorCodeConstant <br/>
  *      当errorCodeErrorCodeConstant.CODE_SUSCCESS时返回true，其他为false
