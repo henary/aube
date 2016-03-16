@@ -3,7 +3,7 @@ package com.aube.req.vo;
 import java.io.Serializable;
 
 /**
- * 页面以流形式提交的参数
+ * 页面以流形式提交的参数 
  * 
  *
  */
