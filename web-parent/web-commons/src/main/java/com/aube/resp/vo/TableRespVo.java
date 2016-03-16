@@ -3,7 +3,7 @@ package com.aube.resp.vo;
 import java.util.List;
 
 /**
- * 页面返回表格结果 
+ * 页面返回表格结果
  */
 public class TableRespVo<T> extends DataRespVo<T> {
 
