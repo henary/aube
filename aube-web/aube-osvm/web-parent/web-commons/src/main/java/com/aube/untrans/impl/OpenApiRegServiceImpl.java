@@ -7,6 +7,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import com.aube.Config;
 import com.aube.support.lifecycle.BeforeUpdateService;
@@ -20,6 +21,7 @@ import com.aube.util.log.LoggerUtils;
 
 /**
  */
+@Service("openApiRegService")
 public class OpenApiRegServiceImpl implements OpenApiRegService, BeforeUpdateService {
 	private AubeLogger logger = LoggerUtils.getLogger(getClass(), Config.getServerIp(), Config.SYSTEMID);
 	@Autowired@Qualifier("keeperService")
