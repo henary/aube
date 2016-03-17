@@ -20,7 +20,7 @@ public class AubeIpConfig {
 	
 	static{
 		searchList = new ArrayList<>();
-		searchList.addAll(Arrays.asList(new String[]{"192.168.100."/**青云服务器*/}));
+		searchList.addAll(Arrays.asList(new String[]{"192.168"/**青云服务器*/}));
 		
 		String[] host = AubeIpConfig.getServerAddr();
 		serverIp = host[0];
