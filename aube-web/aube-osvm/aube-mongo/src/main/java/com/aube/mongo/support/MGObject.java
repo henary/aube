@@ -1,8 +1,8 @@
 package com.aube.mongo.support;
 
-import java.io.Serializable;
+import com.aube.vo.GsonObject;
 
-public class MGObject implements Serializable{
+public class MGObject<T> implements GsonObject<T>{
 	private static final long serialVersionUID = 1548619945417324314L;
 	private Object _id;
 
@@ -12,4 +12,6 @@ public class MGObject implements Serializable{
 	public Object realId(){
 		return _id;
 	}
+	
+	
 }

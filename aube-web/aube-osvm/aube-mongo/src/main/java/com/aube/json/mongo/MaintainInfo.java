@@ -11,7 +11,7 @@ import com.aube.mongo.annotation.OID;
 import com.aube.mongo.support.MGObject;
 
 @OID("name")
-public class MaintainInfo extends MGObject {
+public class MaintainInfo extends MGObject<MaintainInfo> {
 	private static final long serialVersionUID = 1021020774560460505L;
 	public final static String FIELD_NAME = "name";
 	public final static String FIELD_CREATETIME = "createtime";
