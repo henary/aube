@@ -15,6 +15,10 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
-		
+		<dependency>
+			<groupId>com.aube</groupId>
+			<artifactId>aube-module</artifactId>
+			<version>${aube.version}</version>
+		</dependency>
 	</dependencies>
 </project>
