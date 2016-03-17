@@ -19,9 +19,8 @@ public class AubeStartupListener extends ContextLoaderListener implements Servle
 		String SPRING_CONFIG_KEY = "contextConfigLocation";
 		String SPRING_CONFIG_VALUE = "classpath:spring/appContext-*.xml";
 		
-		String ip = Config.getServerIp();
-		
-		
+		String serverip = Config.getServerIp();
+		// TODO 
 		context.setInitParameter(SPRING_CONFIG_KEY, SPRING_CONFIG_VALUE);
 		super.contextInitialized(event);
 		
