@@ -15,6 +15,7 @@ import com.aube.dubbo.bytecode.Wrapper;
 import com.aube.support.ResultCode;
 import com.aube.util.log.AubeLogger;
 import com.aube.util.log.LoggerUtils;
+import com.aube.vo.GsonObject;
 
 public class VoCopyUtil {
 	private static final transient AubeLogger dbLogger = LoggerUtils.getLogger(VoCopyUtil.class);
@@ -54,7 +55,7 @@ public class VoCopyUtil {
 		return ResultCode.getSuccessReturn(voItemList);
 	}
 
-	public static <S extends BaseVo, T> ResultCode<S> copyProperties(Class<S> clazz, T item) {
+	public static <S extends GsonObject, T> ResultCode<S> copyProperties(Class<S> clazz, T item) {
 		if (item == null)
 			return ResultCode.getFailure(ResultCode.CODE_DATA_ERROR, "数据不存在！");
 		try {
@@ -104,7 +105,7 @@ public class VoCopyUtil {
 		copyInternal(dst, src, srcWrapper, destWrapper, props);
 		
 	}
-	private static <S extends BaseVo, T> void copy2(S dst, T src) throws Exception {
+	private static <S extends GsonObject, T> void copy2(S dst, T src) throws Exception {
 		Wrapper srcWrapper = Wrapper.getWrapper(src.getClass());
 		Wrapper destWrapper = Wrapper.getWrapper(dst.getClass());
 		List<String> props = getJoinProperties(srcWrapper.getReadPropertyNames(), src.getClass(), dst.getClass());
