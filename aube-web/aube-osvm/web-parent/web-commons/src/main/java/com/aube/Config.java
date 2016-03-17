@@ -29,7 +29,6 @@ public class Config implements InitializingBean {
 			throw new IllegalArgumentException(e);
 		}
 		SYSTEMID = props.getProperty("systemid");
-		// searchList = props.getProperty("searchIpList").split(",");
 		DEPLOYID = SYSTEMID + "-" + AubeIpConfig.getHostname();
 		if (StringUtils.isNotBlank(props.getProperty("sessionCookieName"))) {
 			SESSION_COOKIE_NAME = props.getProperty("sessionCookieName");
@@ -142,7 +141,10 @@ public class Config implements InitializingBean {
 	public String getAbsPath() {
 		return (String) pageMap.get("absPath");
 	}
-
+	public String getStaticPath() {
+		return (String) pageMap.get("staticPath");
+	}
+	
 	public String getCacheVersionKey() {
 		return getString("cacheVersionKey");
 	}

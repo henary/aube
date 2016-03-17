@@ -9,14 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
-/**
- */
-public class AttackTestFilter extends OncePerRequestFilter {
+import com.aube.util.LoginUtils;
 
+public class MemberCommonFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		// TODO
+		LoginUtils.setTraceIfNotExists(request, response);
 		filterChain.doFilter(request, response);
 	}
 
