@@ -28,7 +28,7 @@
 		<dependency.container>provided</dependency.container>
 		<!-- aube.version -->
 		<aube.version>1.0-SNAPSHOT</aube.version>
-		<dubbo.version>2.5.2</dubbo.version>
+		<dubbo.version>2.5.3</dubbo.version>
 
 		<curator.version>2.9.1</curator.version>
 		<!-- Common libs -->
