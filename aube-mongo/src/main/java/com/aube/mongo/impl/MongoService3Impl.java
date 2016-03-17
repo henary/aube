@@ -126,7 +126,7 @@ public class MongoService3Impl implements MongoService3, InitializingBean {
 	
 	private Map getObjectMap(MGObject bean) {
 		Map beanMap = BeanUtil.getBeanMap(bean);
-		if(beanMap.containsKey("_id")){//�����û�ID
+		if(beanMap.containsKey("_id")){
 			Object _id = BeanUtil.get(bean, "_id");
 			if(_id==null){
 				beanMap.remove("_id");
