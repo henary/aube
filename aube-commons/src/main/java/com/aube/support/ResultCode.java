@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
 
+/**
+ * 统一错误返回标识<br>
+ * TODO 错误消息处理
+ * @param <T>
+ */
 public class ResultCode<T> implements Serializable {
 
 	/**
@@ -21,14 +26,13 @@ public class ResultCode<T> implements Serializable {
 	private boolean success = false;
 	private Throwable exception;
 
-	protected ResultCode(String code, String msg, T retval) {
+	protected ResultCode(String code, T retval) {
 		this.errcode = code;
-		this.msg = msg;
 		this.retval = retval;
 		this.success = StringUtils.equals(code, CODE_SUCCESS);
 	}
 
-	public static ResultCode<String> SUCCESS = new ResultCode<String>(CODE_SUCCESS, "操作成功！", null);
+	public static ResultCode<String> SUCCESS = new ResultCode<String>(CODE_SUCCESS, null);
 
 	@Override
 	public boolean equals(Object another) {
@@ -41,24 +45,16 @@ public class ResultCode<T> implements Serializable {
 		return success;
 	}
 
-	public static <T> ResultCode<T> getFailure(String msg) {
-		return new ResultCode<T>(CODE_UNKNOWN_ERROR, msg, null);
-	}
-
-	public static <T> ResultCode<T> getFailure(String code, String msg) {
-		return new ResultCode<T>(code, msg, null);
-	}
-
-	public static <T> ResultCode<T> getSuccess(String msg) {
-		return new ResultCode<T>(CODE_SUCCESS, msg, null);
+	public static <T> ResultCode<T> getFailure(String code) {
+		return new ResultCode<T>(code, null);
 	}
 
 	public static <T> ResultCode<T> getSuccessReturn(T retval) {
-		return new ResultCode<T>(CODE_SUCCESS, null, retval);
+		return new ResultCode<T>(CODE_SUCCESS, retval);
 	}
 
-	public static <T> ResultCode<T> getFailureReturn(T retval) {
-		return new ResultCode<T>(CODE_UNKNOWN_ERROR, null, retval);
+	public static <T> ResultCode<T> getFailureReturn(String code, T retval) {
+		return new ResultCode<T>(CODE_UNKNOWN_ERROR, retval);
 	}
 
 	public T getRetval() {
