@@ -24,6 +24,22 @@
 	</properties>
 	<dependencies>
 		<dependency>
+			<groupId>com.aube</groupId>
+			<artifactId>aube-api</artifactId>
+			<version>${aube.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aube</groupId>
+			<artifactId>aube-api</artifactId>
+			<version>${aube.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aube</groupId>
+			<artifactId>aube-mongo</artifactId>
+			<version>${aube.version}</version>
+		</dependency>
+
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 		</dependency>
@@ -32,6 +48,15 @@
 			<artifactId>commons-fileupload</artifactId>
 		</dependency>
 
+		<!-- zk -->
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.netflix.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+		</dependency>
 		<!-- spring start -->
 		<dependency>
 			<groupId>org.springframework</groupId>
