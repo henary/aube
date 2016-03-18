@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 /**
  * 统一错误返回标识<br>
  * TODO 错误消息处理
+ * 
  * @param <T>
  */
 public class ResultCode<T> implements Serializable {
@@ -32,6 +33,13 @@ public class ResultCode<T> implements Serializable {
 		this.success = StringUtils.equals(code, CODE_SUCCESS);
 	}
 
+	protected ResultCode(String code, String msg, T retval) {
+		this.errcode = code;
+		this.msg = msg;
+		this.retval = retval;
+		this.success = StringUtils.equals(code, CODE_SUCCESS);
+	}
+
 	public static ResultCode<String> SUCCESS = new ResultCode<String>(CODE_SUCCESS, null);
 
 	@Override
@@ -49,11 +57,24 @@ public class ResultCode<T> implements Serializable {
 		return new ResultCode<T>(code, null);
 	}
 
+	public static <T> ResultCode<T> getFailure(String code, String msg) {
+		return new ResultCode<T>(code, msg, null);
+	}
+
 	public static <T> ResultCode<T> getSuccessReturn(T retval) {
 		return new ResultCode<T>(CODE_SUCCESS, retval);
 	}
 
+	
+	public static <T> ResultCode<T> getFailureReturn(T retval) {
+		return new ResultCode<T>(CODE_UNKNOWN_ERROR, retval);
+	}
+	
 	public static <T> ResultCode<T> getFailureReturn(String code, T retval) {
+		return new ResultCode<T>(CODE_UNKNOWN_ERROR, retval);
+	}
+
+	public static <T> ResultCode<T> getFailureReturn(String code, String msg, T retval) {
 		return new ResultCode<T>(CODE_UNKNOWN_ERROR, retval);
 	}
 

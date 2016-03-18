@@ -57,7 +57,7 @@ public class VoCopyUtil {
 
 	public static <S extends GsonObject, T> ResultCode<S> copyProperties(Class<S> clazz, T item) {
 		if (item == null)
-			return ResultCode.getFailure(ResultCode.CODE_DATA_ERROR, "数据不存在！");
+			return ResultCode.getFailure(ResultCode.CODE_DATA_ERROR);
 		try {
 			Wrapper srcWrapper = Wrapper.getWrapper(item.getClass());
 			Wrapper destWrapper = Wrapper.getWrapper(clazz);
@@ -68,7 +68,7 @@ public class VoCopyUtil {
 			return ResultCode.getSuccessReturn(itemVo);
 		} catch (Exception e) {
 			dbLogger.warn(e, 10);
-			return ResultCode.getFailure(ResultCode.CODE_UNKNOWN_ERROR, "未知错误！");
+			return ResultCode.getFailure(ResultCode.CODE_UNKNOWN_ERROR);
 		}
 	}
 	private static List<String> getJoinProperties(String[] srcProps, Class src, Class dest){
