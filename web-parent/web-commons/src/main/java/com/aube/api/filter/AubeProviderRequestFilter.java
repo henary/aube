@@ -19,7 +19,7 @@ public class AubeProviderRequestFilter extends GenericFilter{
 	public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
 		RpcContext context = RpcContext.getContext();
 		Map<String,String> params = context.getAttachments();
-		
+		// TODO Ip判断
 		String systemid = params.get(AutherFilterConstant.SYSTEMID);
 		if(StringUtils.isBlank(systemid)) {
 			//FIXME:后期放开

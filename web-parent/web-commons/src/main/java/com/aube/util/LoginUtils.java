@@ -25,7 +25,7 @@ public class LoginUtils {
 		String traceUkey = BaseWebUtils.getCookieValue(request, LoginUtils.COOKIE_NAME_TRACE);
 		return traceUkey;
 	}
-
+	
 	private static String setLogonTrace(HttpServletResponse response) {
 		String traceUkey = LoginUtils.getTraceUkey();
 		Cookie cookie = new Cookie(LoginUtils.COOKIE_NAME_TRACE, traceUkey);
@@ -42,4 +42,5 @@ public class LoginUtils {
 		String v = StringUtil.md5WithKey(t, 4);
 		return t + r + "_" + v;
 	}
+	
 }
