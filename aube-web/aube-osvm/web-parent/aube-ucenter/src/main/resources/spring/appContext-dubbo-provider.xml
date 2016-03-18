@@ -10,7 +10,7 @@
 	<dubbo:application name="${systemid}" />
 	
 	<!-- filter="aubeProviderRequestFilter" -->
-	<dubbo:provider timeout="30000" cluster="failfast" threads="600" delay="-1" />
+	<dubbo:provider timeout="30000" cluster="failfast" filter="aubeProviderRequestFilter" threads="600" delay="-1" />
 	
 	<dubbo:service interface="com.aube.api.member.untrans.MemberInfoVoService" ref="memberInfoVoService" timeout="120000"  protocol="dubbo" version="2.0"/>
 	
