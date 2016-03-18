@@ -1,0 +1,2 @@
+aubeProviderRequestFilter=com.aube.api.filter.AubeProviderRequestFilter
+resultCodeTransformFilter=com.aube.api.filter.ResultCodeTransformFilter
