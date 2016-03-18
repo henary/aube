@@ -17,7 +17,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>com.aube</groupId>
-			<artifactId>aube-module</artifactId>
+			<artifactId>aube-commons</artifactId>
 			<version>${aube.version}</version>
 		</dependency>
 	</dependencies>
