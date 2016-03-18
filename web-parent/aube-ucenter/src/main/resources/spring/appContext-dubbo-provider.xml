@@ -5,10 +5,15 @@
 		http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://code.alibabatech.com/schema/dubbo
 		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
-	<dubbo:registry protocol="zookeeper" address="${zookeeper.quorum}"
-		client="curator" file="${dubbo.registry.file}" />
+	<dubbo:registry protocol="zookeeper" address="${zookeeper.quorum}" client="curator" file="${dubbo.registry.file}" />
 	<dubbo:protocol name="dubbo" port="26080" />
+	<dubbo:application name="${systemid}" />
+	
 	<!-- filter="aubeProviderRequestFilter" -->
 	<dubbo:provider timeout="30000" cluster="failfast" threads="600" delay="-1" />
+	
+	<dubbo:service interface="com.aube.api.member.untrans.MemberInfoVoService" ref="memberInfoVoService" timeout="120000"  protocol="dubbo" version="2.0"/>
+	
+	<bean id="memberInfoVoService" class="com.aube.api.member.untrans.impl.MemberInfoVoServiceImpl" />
 </beans>
 

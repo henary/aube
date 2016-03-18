@@ -8,6 +8,7 @@
 	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
 			<list>
+				<value>classpath:aube-global.properties</value>
 				<value>classpath:config/*.properties</value>
 			</list>
 		</property>
