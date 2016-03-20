@@ -16,6 +16,7 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.InitializingBean;
 
+import com.aube.constant.ErrorCodeConstant;
 import com.aube.mdb.AubeMongoClient;
 import com.aube.mdb.builder.DeleteBuilder;
 import com.aube.mdb.builder.DistinctBuilder;
@@ -555,7 +556,7 @@ public class MongoService3Impl implements MongoService3, InitializingBean {
 				} catch (Exception e) {
 					dbLogger.warn(LoggerUtils.getExceptionTrace(e, 20));
 					if (exitOnError) {
-						return ResultCode.<Integer>getFailureReturn(count);
+						return ResultCode.<Integer>getFailureReturn(ErrorCodeConstant.CODE_UNKNOWN_ERROR, count);
 					}
 				}
 			}
