@@ -19,7 +19,7 @@ public class MemberInfoVoServiceImpl implements MemberInfoVoService {
 	public ResultCode<MemberInfoVo> getMemberInfoByOpensource(OpensourceEnum opensources, String token) {
 		ResultCode<MemberInfo> memberInfoCode = memberService.getMemberInfoByOpensource(opensources, token);
 		if (!memberInfoCode.isSuccess()) {
-			return ResultCode.<MemberInfoVo>getFailure(memberInfoCode.getErrcode(), memberInfoCode.getMsg());
+			return ResultCode.<MemberInfoVo>getFailure(memberInfoCode.getErrcode());
 		}
 		return VoCopyUtil.copyProperties(MemberInfoVo.class, memberInfoCode.getRetval());
 	}
