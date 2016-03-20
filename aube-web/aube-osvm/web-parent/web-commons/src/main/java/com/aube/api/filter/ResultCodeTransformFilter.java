@@ -26,7 +26,6 @@ public class ResultCodeTransformFilter extends GenericFilter {
 	@Override
 	public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
 		try{
-			//add systemid
 			RpcContext context = RpcContext.getContext();
 			context.setAttachment(AutherFilterConstant.SYSTEMID, Config.SYSTEMID);
 			
