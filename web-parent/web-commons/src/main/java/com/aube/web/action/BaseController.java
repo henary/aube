@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.aube.Config;
+import com.aube.constant.ErrorCodeConstant;
 import com.aube.resp.vo.DataRespVo;
 import com.aube.support.ResultCode;
 import com.aube.util.JsonUtils;
@@ -76,7 +77,7 @@ public class BaseController {
 			return ResultCode.<T> getSuccessReturn(t);
 		} catch (IOException e) {
 			logger.error(e, 20);
-			return ResultCode.<T> getFailure(e.getMessage());
+			return ResultCode.<T> getFailure(ErrorCodeConstant.CODE_UNKNOWN_ERROR, e.getMessage());
 		}
 	}
 }

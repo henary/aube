@@ -11,6 +11,7 @@ import com.alibaba.dubbo.rpc.RpcResult;
 import com.alibaba.dubbo.rpc.filter.GenericFilter;
 import com.aube.Config;
 import com.aube.constant.AutherFilterConstant;
+import com.aube.constant.ErrorCodeConstant;
 import com.aube.support.ResultCode;
 import com.aube.util.log.AubeLogger;
 import com.aube.util.log.LoggerUtils;
@@ -32,7 +33,7 @@ public class ResultCodeTransformFilter extends GenericFilter {
 			Result result = super.invoke(invoker, invocation);
 			if(result.hasException()){
 				dbLogger.error(result.getException(), 10);
-				ResultCode<?> ret = ResultCode.getFailure(ResultCode.CODE_UNKNOWN_ERROR);
+				ResultCode<?> ret = ResultCode.getFailure(ErrorCodeConstant.CODE_UNKNOWN_ERROR);
 				ret.setException(result.getException());
 				String service = StringUtils.substringAfterLast(invoker.getUrl().getPath(), ".");
 				//错误统计
@@ -42,7 +43,7 @@ public class ResultCodeTransformFilter extends GenericFilter {
 			return result;
 		}catch(Throwable e){
 			dbLogger.error(e, 10);
-			ResultCode<?> ret = ResultCode.getFailure(ResultCode.CODE_UNKNOWN_ERROR);
+			ResultCode<?> ret = ResultCode.getFailure(ErrorCodeConstant.CODE_UNKNOWN_ERROR);
 			ret.setException(e);
 			return new RpcResult(ret);
 		}

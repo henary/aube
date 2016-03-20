@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.tools.generic.MathTool;
 import org.springframework.beans.factory.InitializingBean;
 
+import com.aube.constant.ErrorCodeConstant;
 import com.aube.support.ResultCode;
 import com.aube.util.AubeIpConfig;
 import com.aube.util.DateUtil;
@@ -122,9 +123,9 @@ public class Config implements InitializingBean {
 	public ResultCode<String> replacePageTool(String property, Object value) {
 		Object old = pageTools.get(property);
 		if (value == null || old == null)
-			return ResultCode.getFailure("参数错误:old 或 new 为空");
+			return ResultCode.getFailure(ErrorCodeConstant.CODE_DATA_ERROR, "new,old");
 		if (!value.getClass().equals(old.getClass()))
-			return ResultCode.getFailure("参数类型不兼容");
+			return ResultCode.getFailure(ErrorCodeConstant.CODE_DATA_TYPE_ERROR);
 		Map tmp = new HashMap(pageTools);
 		tmp.put(property, value);
 		pageTools = UnmodifiableMap.decorate(tmp);
