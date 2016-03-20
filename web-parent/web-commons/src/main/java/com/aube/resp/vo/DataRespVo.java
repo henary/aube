@@ -3,6 +3,7 @@ package com.aube.resp.vo;
 import org.apache.commons.lang.StringUtils;
 
 import com.aube.constant.ErrorCodeConstant;
+import com.aube.support.ResultCode;
 import com.aube.vo.GsonObject;
 
 /**
@@ -34,7 +35,6 @@ public class DataRespVo<T> implements GsonObject<T> {
 	 */
 	public DataRespVo() {
 		this.errCode = ErrorCodeConstant.CODE_SUCCESS;
-		this.errMsg = "OK";
 	}
 
 	/**
@@ -45,8 +45,18 @@ public class DataRespVo<T> implements GsonObject<T> {
 	 */
 	public DataRespVo(T result) {
 		this.errCode = ErrorCodeConstant.CODE_SUCCESS;
-		this.errMsg = "OK";
 		this.result = result;
+	}
+	
+	/**
+	 * 根据ResultCode的返回值内容返回
+	 * @see com.aube.support.ResultCode
+	 * @param resultcode
+	 */
+	public DataRespVo(ResultCode<T> resultcode) {
+		this.errMsg = resultcode.getErrmsg();
+		this.errCode = resultcode.getErrcode();
+		this.result = resultcode.getRetval();
 	}
 
 	/**
