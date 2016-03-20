@@ -33,7 +33,7 @@ public class DataRespVo<T> implements GsonObject<T> {
 	 * 默认返回success为true
 	 */
 	public DataRespVo() {
-		this.errCode = ErrorCodeConstant.CODE_SUSCCESS;
+		this.errCode = ErrorCodeConstant.CODE_SUCCESS;
 		this.errMsg = "OK";
 	}
 
@@ -44,7 +44,7 @@ public class DataRespVo<T> implements GsonObject<T> {
 	 *            成功返回的值
 	 */
 	public DataRespVo(T result) {
-		this.errCode = ErrorCodeConstant.CODE_SUSCCESS;
+		this.errCode = ErrorCodeConstant.CODE_SUCCESS;
 		this.errMsg = "OK";
 		this.result = result;
 	}
@@ -90,6 +90,6 @@ public class DataRespVo<T> implements GsonObject<T> {
 	 * @return
 	 */
 	public boolean isSuccess() {
-		return StringUtils.equals(ErrorCodeConstant.CODE_SUSCCESS, this.errCode);
+		return StringUtils.equals(ErrorCodeConstant.CODE_SUCCESS, this.errCode);
 	}
 }
