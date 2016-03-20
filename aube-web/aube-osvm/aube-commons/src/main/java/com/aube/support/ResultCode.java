@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.aube.constant.ErrorCodeConstant;
+
 /**
  * 统一错误返回标识<br>
  * TODO 错误消息处理
@@ -16,31 +18,32 @@ public class ResultCode<T> implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 3371328988577070101L;
-
-	public static final String CODE_SUCCESS = "0000";
-	public static final String CODE_UNKNOWN_ERROR = "9999";
-	public static final String CODE_DATA_ERROR = "4005";
-
+	// 错误编码
 	private String errcode;
+	// 错误信息
 	private String msg;
+	// 错误信息填充参数
+	private String[] errParams;
+	// 返回值
 	private T retval;
-	private boolean success = false;
 	private Throwable exception;
 
-	protected ResultCode(String code, T retval) {
+	protected ResultCode(String code) {
 		this.errcode = code;
-		this.retval = retval;
-		this.success = StringUtils.equals(code, CODE_SUCCESS);
+	}
+	
+	protected ResultCode(String code, String...errParams) {
+		this.errcode = code;
+		this.errParams = errParams;
 	}
 
-	protected ResultCode(String code, String msg, T retval) {
+	protected ResultCode(String code, T retval, String...errParams) {
 		this.errcode = code;
-		this.msg = msg;
+		this.errParams = errParams;
 		this.retval = retval;
-		this.success = StringUtils.equals(code, CODE_SUCCESS);
 	}
 
-	public static ResultCode<String> SUCCESS = new ResultCode<String>(CODE_SUCCESS, null);
+	public static ResultCode<String> SUCCESS = new ResultCode<String>(ErrorCodeConstant.CODE_SUCCESS);
 
 	@Override
 	public boolean equals(Object another) {
@@ -50,32 +53,27 @@ public class ResultCode<T> implements Serializable {
 	}
 
 	public boolean isSuccess() {
-		return success;
+		return StringUtils.equals(errcode, ErrorCodeConstant.CODE_SUCCESS);
 	}
 
-	public static <T> ResultCode<T> getFailure(String code) {
-		return new ResultCode<T>(code, null);
-	}
-
-	public static <T> ResultCode<T> getFailure(String code, String msg) {
-		return new ResultCode<T>(code, msg, null);
+	public static <T> ResultCode<T> getFailure(String code, String...errParams) {
+		return new ResultCode<T>(code, errParams);
 	}
 
 	public static <T> ResultCode<T> getSuccessReturn(T retval) {
-		return new ResultCode<T>(CODE_SUCCESS, retval);
+		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval);
 	}
-
 	
 	public static <T> ResultCode<T> getFailureReturn(T retval) {
-		return new ResultCode<T>(CODE_UNKNOWN_ERROR, retval);
+		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval);
 	}
 	
 	public static <T> ResultCode<T> getFailureReturn(String code, T retval) {
-		return new ResultCode<T>(CODE_UNKNOWN_ERROR, retval);
+		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval);
 	}
 
-	public static <T> ResultCode<T> getFailureReturn(String code, String msg, T retval) {
-		return new ResultCode<T>(CODE_UNKNOWN_ERROR, retval);
+	public static <T> ResultCode<T> getFailureReturn(String code, T retval, String ...errParams) {
+		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval, errParams);
 	}
 
 	public T getRetval() {
@@ -101,6 +99,14 @@ public class ResultCode<T> implements Serializable {
 	 */
 	public void setException(Throwable exception) {
 		this.exception = exception;
+	}
+
+	public String[] getErrParams() {
+		return errParams;
+	}
+
+	public void setErrParams(String[] errParams) {
+		this.errParams = errParams;
 	}
 
 }

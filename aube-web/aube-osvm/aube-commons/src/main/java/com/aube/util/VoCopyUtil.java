@@ -11,6 +11,7 @@ import org.apache.commons.collections.FastHashMap;
 
 import com.aube.api.vo.BaseVo;
 import com.aube.api.vo.VoMap;
+import com.aube.constant.ErrorCodeConstant;
 import com.aube.dubbo.bytecode.Wrapper;
 import com.aube.support.ResultCode;
 import com.aube.util.log.AubeLogger;
@@ -57,7 +58,7 @@ public class VoCopyUtil {
 
 	public static <S extends GsonObject, T> ResultCode<S> copyProperties(Class<S> clazz, T item) {
 		if (item == null)
-			return ResultCode.getFailure(ResultCode.CODE_DATA_ERROR);
+			return ResultCode.getFailure(ErrorCodeConstant.CODE_DATA_ERROR);
 		try {
 			Wrapper srcWrapper = Wrapper.getWrapper(item.getClass());
 			Wrapper destWrapper = Wrapper.getWrapper(clazz);
@@ -68,7 +69,7 @@ public class VoCopyUtil {
 			return ResultCode.getSuccessReturn(itemVo);
 		} catch (Exception e) {
 			dbLogger.warn(e, 10);
-			return ResultCode.getFailure(ResultCode.CODE_UNKNOWN_ERROR);
+			return ResultCode.getFailure(ErrorCodeConstant.CODE_UNKNOWN_ERROR, e.getMessage());
 		}
 	}
 	private static List<String> getJoinProperties(String[] srcProps, Class src, Class dest){
