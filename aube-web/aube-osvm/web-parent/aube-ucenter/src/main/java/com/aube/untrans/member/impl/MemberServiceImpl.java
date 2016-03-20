@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.aube.constans.MongoData;
-import com.aube.constants.error.ErrorCode;
+import com.aube.constant.ErrorCodeConstant;
 import com.aube.constants.ucenter.OpensourceEnum;
 import com.aube.json.ucenter.member.MemberInfo;
 import com.aube.service.BaseService;
@@ -39,11 +39,11 @@ public class MemberServiceImpl extends BaseService implements MemberService {
 	public ResultCode<MemberInfo> getMemberInfoByMobile(String mobile, String password) {
 		MemberInfo memberInfo = mongoService.getObjectById(MemberInfo.class, "mobile", mobile);
 		if (memberInfo == null) {
-			return ResultCode.<MemberInfo> getFailure(ErrorCode.CODE_ACCOUNT_NOT_EXIST);
+			return ResultCode.<MemberInfo> getFailure(ErrorCodeConstant.CODE_ACCOUNT_NOT_EXIST);
 		}
 		String signPass = afterSignPass(password);
 		if (!StringUtils.equals(signPass, memberInfo.getMemberpass())) {
-			return ResultCode.<MemberInfo> getFailure(ErrorCode.CODE_ACCOUNT_ERROR);
+			return ResultCode.<MemberInfo> getFailure(ErrorCodeConstant.CODE_ACCOUNT_PASS_ERROR);
 		}
 		return ResultCode.<MemberInfo> getSuccessReturn(memberInfo);
 	}
