@@ -9,6 +9,7 @@ import java.util.TreeSet;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.aube.constant.ErrorCodeConstant;
 import com.aube.support.ResultCode;
 
 public class ValidateUtil implements Util4Script {
@@ -52,16 +53,16 @@ public class ValidateUtil implements Util4Script {
 	}
 	public static ResultCode<String> validatePassword(String pass1, String pass2){
 		if(StringUtils.isBlank(pass1) || StringUtils.isBlank(pass2)){
-			return  ResultCode.getFailure("密码必须!");
+			return  ResultCode.getFailure(ErrorCodeConstant.CODE_ACCOUNT_PASS_MUST);
 		}
 		if(!StringUtils.equals(pass1, pass2)){
-			return  ResultCode.getFailure("两次输入的密码不一致!");
+			return  ResultCode.getFailure(ErrorCodeConstant.CODE_ACCOUNT_PASS_UNMATCHED);
 		}
 		if(!ValidateUtil.isPassword(pass1)){
-			return  ResultCode.getFailure("密码格式不正确,只能是字母，数字，英文标点，长度6—14位！");
+			return  ResultCode.getFailure(ErrorCodeConstant.CODE_ACCOUNT_PASS_PATTERN_ERROR);
 		}
 		if(ValidateUtil.isSimplePass(pass1)){
-			return ResultCode.getFailure("密码过于简单，请重新输入！");
+			return ResultCode.getFailure(ErrorCodeConstant.CODE_ACCOUNT_PASS_2SIMPLE);
 		}
 		return ResultCode.SUCCESS;
 
