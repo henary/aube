@@ -1,6 +1,8 @@
 package com.aube.support;
 
 import java.io.Serializable;
+import java.text.MessageFormat;
+import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -8,22 +10,25 @@ import com.aube.constant.ErrorCodeConstant;
 
 /**
  * 统一错误返回标识<br>
- * TODO 错误消息处理
  * 
  * @param <T>
  */
 public class ResultCode<T> implements Serializable {
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3371328988577070101L;
+
+	private static final String CORE_BUNDLE_NAME = "core_messages";
+	private static final String SYSTEM_BUNDLE_NAME = "sys_messages";
+	private static final ResourceBundle CORE_RESOURCE_BUNDLE = ResourceBundle.getBundle(CORE_BUNDLE_NAME);
+	private static final ResourceBundle SYSTEM_RESOURCE_BUNDLE = ResourceBundle.getBundle(SYSTEM_BUNDLE_NAME);
+
 	// 错误编码
 	private String errcode;
-	// 错误信息
-	private String msg;
 	// 错误信息填充参数
-	private String[] errParams;
+	private Object[] errParams;
+	private String errmsg;
 	// 返回值
 	private T retval;
 	private Throwable exception;
@@ -31,13 +36,13 @@ public class ResultCode<T> implements Serializable {
 	protected ResultCode(String code) {
 		this.errcode = code;
 	}
-	
-	protected ResultCode(String code, String...errParams) {
+
+	protected ResultCode(String code, String... errParams) {
 		this.errcode = code;
 		this.errParams = errParams;
 	}
 
-	protected ResultCode(String code, T retval, String...errParams) {
+	protected ResultCode(String code, T retval, String... errParams) {
 		this.errcode = code;
 		this.errParams = errParams;
 		this.retval = retval;
@@ -56,23 +61,23 @@ public class ResultCode<T> implements Serializable {
 		return StringUtils.equals(errcode, ErrorCodeConstant.CODE_SUCCESS);
 	}
 
-	public static <T> ResultCode<T> getFailure(String code, String...errParams) {
+	public static <T> ResultCode<T> getFailure(String code, String... errParams) {
 		return new ResultCode<T>(code, errParams);
 	}
 
 	public static <T> ResultCode<T> getSuccessReturn(T retval) {
 		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval);
 	}
-	
+
 	public static <T> ResultCode<T> getFailureReturn(T retval) {
 		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval);
 	}
-	
+
 	public static <T> ResultCode<T> getFailureReturn(String code, T retval) {
 		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval);
 	}
 
-	public static <T> ResultCode<T> getFailureReturn(String code, T retval, String ...errParams) {
+	public static <T> ResultCode<T> getFailureReturn(String code, T retval, String... errParams) {
 		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval, errParams);
 	}
 
@@ -80,12 +85,34 @@ public class ResultCode<T> implements Serializable {
 		return retval;
 	}
 
-	public String getMsg() {
-		return msg;
-	}
-
 	public String getErrcode() {
 		return errcode;
+	}
+
+	public void setErrParams(Object... errParams) {
+		this.errParams = errParams;
+	}
+
+	public void setErrParams(String[] errParams) {
+		this.errParams = errParams;
+	}
+
+	/**
+	 * 错误信息返回
+	 * 
+	 * @return
+	 */
+	public String getErrmsg() {
+		String message = SYSTEM_RESOURCE_BUNDLE.getString(errcode);
+		if (StringUtils.isBlank(message)) {
+			message = CORE_RESOURCE_BUNDLE.getString(errcode);
+		}
+		// 如果没有找到则直接返回errcode
+		if (StringUtils.isBlank(message)) {
+			message = errcode;
+		}
+		errmsg = MessageFormat.format(message, errParams);
+		return errmsg;
 	}
 
 	public Throwable getException() {
@@ -93,20 +120,11 @@ public class ResultCode<T> implements Serializable {
 	}
 
 	/**
-	 * dubbo接口服务端请不要设置此异常！只作为客户端封装使用
-	 * 
+	 * 业务不能使用，近限于dubbo服务拦截器使用
 	 * @param exception
 	 */
 	public void setException(Throwable exception) {
 		this.exception = exception;
-	}
-
-	public String[] getErrParams() {
-		return errParams;
-	}
-
-	public void setErrParams(String[] errParams) {
-		this.errParams = errParams;
 	}
 
 }
