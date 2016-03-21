@@ -27,11 +27,15 @@ public class ResultCode<T> implements Serializable {
 	// 错误编码
 	private String errcode;
 	// 错误信息填充参数
-	private Object[] errParams;
+	private transient Object[] errParams;
 	private String errmsg;
 	// 返回值
 	private T retval;
-	private Throwable exception;
+	private transient Throwable exception;
+	
+	protected ResultCode() {
+		this.errcode = ErrorCodeConstant.CODE_SUCCESS;
+	}
 
 	protected ResultCode(String code) {
 		this.errcode = code;
