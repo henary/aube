@@ -23,6 +23,16 @@
 			<artifactId>aube-mongo</artifactId>
 			<version>${aube.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.aube</groupId>
+			<artifactId>aube-jms</artifactId>
+			<version>${aube.version}</version>
+		</dependency>	
+		<dependency>
+			<groupId>com.aube</groupId>
+			<artifactId>aube-ssdb</artifactId>
+			<version>${aube.version}</version>
+		</dependency>		
 	</dependencies>
 	<build>
 		<finalName>aube</finalName>
