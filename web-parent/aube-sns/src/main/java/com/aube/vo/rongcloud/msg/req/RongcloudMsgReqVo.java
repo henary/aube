@@ -20,8 +20,6 @@ public class RongcloudMsgReqVo implements Serializable {
 	// 消息类型
 	private String objectName;
 	// 发送消息内容
-	private Long timestamp;
-	// 服务端收到客户端发送消息时的服务器时间（1970年到现在的毫秒数）。
 	private String content;
 	// 会话类型
 	private String channelType;
@@ -52,14 +50,6 @@ public class RongcloudMsgReqVo implements Serializable {
 
 	public void setObjectName(String objectName) {
 		this.objectName = objectName;
-	}
-
-	public Long getTimestamp() {
-		return timestamp;
-	}
-
-	public void setTimestamp(Long timestamp) {
-		this.timestamp = timestamp;
 	}
 
 	public String getContent() {
