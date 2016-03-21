@@ -12,8 +12,12 @@
 	<!-- filter="aubeProviderRequestFilter" -->
 	<dubbo:provider timeout="30000" cluster="failfast" threads="600" delay="-1" />
 	
-	
+	<!-- 消息 -->
 	<dubbo:service interface="com.aube.api.sns.msg.untrans.MsgPraiseVoService" ref="msgPraiseVoService" timeout="120000"  protocol="dubbo" version="1.0"/>
 	<bean id="msgPraiseVoService" class="com.aube.api.sns.msg.untrans.impl.MsgPraiseVoServiceImpl" />
+	
+	<!-- 聊天室 -->
+	<dubbo:service interface="com.aube.api.sns.chat.untrans.ChatGroupVoService" ref="chatGroupVoService" timeout="120000"  protocol="dubbo" version="1.0"/>
+	<bean id="chatGroupVoService" class="com.aube.api.sns.chat.untrans.impl.ChatGroupVoServiceImpl" />
 </beans>
 
