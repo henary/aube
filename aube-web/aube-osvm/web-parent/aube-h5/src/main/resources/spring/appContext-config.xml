@@ -9,6 +9,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:config/*.properties</value>
+				<value>classpath:aube-global.properties</value>
 			</list>
 		</property>
 	</bean>
