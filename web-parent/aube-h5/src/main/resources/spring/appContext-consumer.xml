@@ -13,7 +13,10 @@
 	<dubbo:registry protocol="zookeeper" address="${zookeeper.quorum}" client="curator" file="${dubbo.registry.file}" />
 	<!-- aubesns -->
 	<dubbo:reference id="msgPraiseVoService" interface="com.aube.api.sns.msg.untrans.MsgPraiseVoService" protocol="dubbo" version="1.0" filter="resultCodeTransformFilter" />
+	<dubbo:reference id="chatGroupVoService" interface="com.aube.api.sns.chat.untrans.ChatGroupVoService" protocol="dubbo" version="1.0" filter="resultCodeTransformFilter" />
 	
 	<!-- ucenter -->
 	<dubbo:reference id="memberInfoVoService" interface="com.aube.api.member.untrans.MemberInfoVoService" protocol="dubbo" version="1.0" filter="resultCodeTransformFilter" />
+	
+	
 </beans>
