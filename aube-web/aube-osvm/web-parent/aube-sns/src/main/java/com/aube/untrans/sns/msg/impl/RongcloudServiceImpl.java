@@ -17,7 +17,6 @@ import com.aube.mdb.operation.Expression;
 import com.aube.service.BaseService;
 import com.aube.support.ResultCode;
 import com.aube.untrans.sns.msg.RongcloudService;
-import com.aube.util.BeanUtil;
 import com.aube.util.DateUtil;
 import com.aube.util.JsonUtils;
 import com.aube.vo.msg.req.MsgContentDetail;
@@ -55,7 +54,6 @@ public class RongcloudServiceImpl extends BaseService implements RongcloudServic
 			MsgContentDetail detail = JsonUtils.parseObj(reqVo.getContent(), MsgContentDetail.class);
 			if (StringUtils.equals(detail.getExtra().getMsgType(), SnsMessageConstants.MESSAGE_TYPE_NORMAL)) {
 				MessageByVideoid message = new MessageByVideoid();
-				BeanUtil.copyProperties(message, reqVo);
 				String videoid = reqVo.getToUserId();
 				String[] temp = StringUtils.split(reqVo.getToUserId(), "_");
 				if (temp != null && temp.length == 2) {
@@ -69,7 +67,10 @@ public class RongcloudServiceImpl extends BaseService implements RongcloudServic
 				message.set_id(reqVo.getMsgUID());
 				message.setVideoTime(detail.getExtra().getVideoTime());
 				message.setHeadImg(detail.getExtra().getHeadImg());
-				message.setTimestampStr(DateUtil.formatTimestamp(message.getTimestamp()));
+				message.setTimestamp(reqVo.getMsgTimestamp());
+				message.setTimestampStr(DateUtil.formatTimestamp(reqVo.getMsgTimestamp()));
+				message.setFromUserId(reqVo.getFromUserId());
+				message.setToUserId(reqVo.getToUserId());
 				// mongoService.addObject(message,
 				// MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM);
 				mongoService.saveOrUpdateObject(message, MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM);
