@@ -16,7 +16,8 @@ public class MsgPraiseRespVo extends BaseVo {
 		
 	}
 	public MsgPraiseRespVo(String msgid, Integer praiseCount) {
-		
+		this.msgid = msgid;
+		this.praiseCount = praiseCount;
 	}
 	public String getMsgid() {
 		return msgid;
