@@ -36,6 +36,7 @@ public class ResultCode<T> implements Serializable {
 	
 	protected ResultCode() {
 		this.errcode = ErrorCodeConstant.CODE_SUCCESS;
+		this.setErrmsg();
 	}
 
 	protected ResultCode(String code) {
