@@ -111,7 +111,7 @@ public class ResultCode<T> implements Serializable {
 		try {
 			message = AUBE_RESOURCE_BUNDLE.getString(errcode);
 		} catch (Exception e) {
-			logger.error(e, 5);
+			logger.error(e.getMessage());
 		}
 		// 如果没有找到则直接返回errcode
 		if (StringUtils.isBlank(message)) {
