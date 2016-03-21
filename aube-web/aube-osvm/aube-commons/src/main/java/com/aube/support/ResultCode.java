@@ -7,6 +7,8 @@ import java.util.ResourceBundle;
 import org.apache.commons.lang.StringUtils;
 
 import com.aube.constant.ErrorCodeConstant;
+import com.aube.util.log.AubeLogger;
+import com.aube.util.log.LoggerUtils;
 
 /**
  * 统一错误返回标识<br>
@@ -18,11 +20,10 @@ public class ResultCode<T> implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 3371328988577070101L;
+	private transient static final AubeLogger logger = LoggerUtils.getLogger(ResultCode.class);
 
-	private static final String CORE_BUNDLE_NAME = "core_messages";
-	private static final String SYSTEM_BUNDLE_NAME = "system_messages";
-	private static final ResourceBundle CORE_RESOURCE_BUNDLE = ResourceBundle.getBundle(CORE_BUNDLE_NAME);
-	private static final ResourceBundle SYSTEM_RESOURCE_BUNDLE = ResourceBundle.getBundle(SYSTEM_BUNDLE_NAME);
+	private static final String AUBE_BUNDLE_NAME = "aube_messages";
+	private static final ResourceBundle AUBE_RESOURCE_BUNDLE = ResourceBundle.getBundle(AUBE_BUNDLE_NAME);
 
 	// 错误编码
 	private String errcode;
@@ -105,9 +106,11 @@ public class ResultCode<T> implements Serializable {
 	}
 
 	private void setErrmsg() {
-		String message = SYSTEM_RESOURCE_BUNDLE.getString(errcode);
-		if (StringUtils.isBlank(message)) {
-			message = CORE_RESOURCE_BUNDLE.getString(errcode);
+		String message = "";
+		try {
+			message = AUBE_RESOURCE_BUNDLE.getString(errcode);
+		} catch (Exception e) {
+			logger.error(e, 5);
 		}
 		// 如果没有找到则直接返回errcode
 		if (StringUtils.isBlank(message)) {
