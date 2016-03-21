@@ -21,11 +21,15 @@ public class MsgPraiseVoServiceImpl extends BaseService implements MsgPraiseVoSe
 	@Override
 	public void praisemsg(String videoid, String msgid) {
 		Map<String, Integer> map = MSG_PRAISE_COUNT_MAP.get(videoid);
-		if (MapUtils.isEmpty(MSG_PRAISE_COUNT_MAP.get(videoid))) {
+		if (MapUtils.isEmpty(map)) {
+			map = new HashMap<String, Integer>(); 
+			map.put(msgid, 0);
+		}
+		if (map.get(msgid) == null) {
 			map.put(msgid, 0);
 		}
 		map.put(msgid, map.get(msgid) + 1);
-		MSG_PRAISE_COUNT_MAP.put(msgid, map);
+		MSG_PRAISE_COUNT_MAP.put(videoid, map);
 	}
 
 	@Override
@@ -42,5 +46,4 @@ public class MsgPraiseVoServiceImpl extends BaseService implements MsgPraiseVoSe
 		Collections.sort(praiseList, new PropertyComparator<MsgPraiseRespVo>("praiseCount", true, false));
 		return ResultCode.getSuccessReturn(praiseList);
 	}
-
 }
