@@ -7,7 +7,7 @@ public interface ErrorCodeConstant {
 	String CODE_SYSTEM_ERROR = "9999";
 	// 系统级别错误java exception的message
 	String CODE_UNKNOWN_ERROR = "10000";
-	
+
 	/**
 	 * 100~200 API参数业务错误
 	 */
@@ -34,4 +34,11 @@ public interface ErrorCodeConstant {
 	// 第三方用户没有登陆
 	String CODE_OPENMEMBER_NOT_EXITS = "1010";
 
+	/**
+	 * 2000～2100 聊天相关
+	 */
+	// 聊天应用没有配置
+	String CODE_CHAT_CFG_DEFAULT_NOT_EXITS = "2000";
+	String CODE_CHAT_APP_NOT_EXITS = "2001";
+	String CODE_CHAT_APP_NOT_SUPPORT = "2002";
 }
