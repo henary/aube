@@ -20,7 +20,7 @@ public class ResultCode<T> implements Serializable {
 	private static final long serialVersionUID = 3371328988577070101L;
 
 	private static final String CORE_BUNDLE_NAME = "core_messages";
-	private static final String SYSTEM_BUNDLE_NAME = "sys_messages";
+	private static final String SYSTEM_BUNDLE_NAME = "system_messages";
 	private static final ResourceBundle CORE_RESOURCE_BUNDLE = ResourceBundle.getBundle(CORE_BUNDLE_NAME);
 	private static final ResourceBundle SYSTEM_RESOURCE_BUNDLE = ResourceBundle.getBundle(SYSTEM_BUNDLE_NAME);
 
