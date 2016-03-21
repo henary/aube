@@ -18,6 +18,7 @@
 		<module>aube-itemdatacount</module>
 		<module>aube-ucenter</module>
 		<module>aube-h5</module>
+		<module>aube-sns</module>
 	</modules>
 	<properties>
 		<env>dev</env>
