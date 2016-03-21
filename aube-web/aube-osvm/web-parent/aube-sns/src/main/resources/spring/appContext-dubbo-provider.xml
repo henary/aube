@@ -6,12 +6,14 @@
 		http://code.alibabatech.com/schema/dubbo
 		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 	<dubbo:registry protocol="zookeeper" address="${zookeeper.quorum}" client="curator" file="${dubbo.registry.file}" />
-	<dubbo:protocol name="dubbo" port="26080" />
+	<dubbo:protocol name="dubbo" port="26803" />
 	<dubbo:application name="${systemid}" />
 	
 	<!-- filter="aubeProviderRequestFilter" -->
 	<dubbo:provider timeout="30000" cluster="failfast" threads="600" delay="-1" />
 	
 	
+	<dubbo:service interface="com.aube.api.sns.msg.untrans.MsgPraiseVoService" ref="msgPraiseVoService" timeout="120000"  protocol="dubbo" version="1.0"/>
+	<bean id="msgPraiseVoService" class="com.aube.api.sns.msg.untrans.impl.MsgPraiseVoServiceImpl" />
 </beans>
 
