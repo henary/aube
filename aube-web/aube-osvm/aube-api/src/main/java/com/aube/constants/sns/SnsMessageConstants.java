@@ -14,18 +14,16 @@ public class SnsMessageConstants {
 	// 喜欢的消息类型
 	public static final String MESSAGE_TYPE_LIKE = "like";
 	
-	public static ConcurrentMap<String, String> RONGCLOUD_CHANNEL_TYPE_2APP_MAP = null;
+	public static ConcurrentMap<String, String> RONGCLOUD_CHANNEL_TYPE_2APP_MAP = new ConcurrentHashMap<String, String>();
 	
 	static {
-		ConcurrentMap<String, String> channelType2AppMap = new ConcurrentHashMap<String, String>();
-		channelType2AppMap.put("PERSON", "1");
-		channelType2AppMap.put("PERSONS", "2");
-		channelType2AppMap.put("GROUP", "3");
-		channelType2AppMap.put("TEMPGROUP", "4");
-		channelType2AppMap.put("CUSTOMERSERVICE", "5");
-		channelType2AppMap.put("NOTIFY", "6");
-		channelType2AppMap.put("MC", "7");
-		channelType2AppMap.put("MP", "8");
-		RONGCLOUD_CHANNEL_TYPE_2APP_MAP = channelType2AppMap;
+		RONGCLOUD_CHANNEL_TYPE_2APP_MAP.put("PERSON", "1");
+		RONGCLOUD_CHANNEL_TYPE_2APP_MAP.put("PERSONS", "2");
+		RONGCLOUD_CHANNEL_TYPE_2APP_MAP.put("GROUP", "3");
+		RONGCLOUD_CHANNEL_TYPE_2APP_MAP.put("TEMPGROUP", "4");
+		RONGCLOUD_CHANNEL_TYPE_2APP_MAP.put("CUSTOMERSERVICE", "5");
+		RONGCLOUD_CHANNEL_TYPE_2APP_MAP.put("NOTIFY", "6");
+		RONGCLOUD_CHANNEL_TYPE_2APP_MAP.put("MC", "7");
+		RONGCLOUD_CHANNEL_TYPE_2APP_MAP.put("MP", "8");
 	}
 }
