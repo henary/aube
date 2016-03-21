@@ -35,17 +35,20 @@ public class ResultCode<T> implements Serializable {
 
 	protected ResultCode(String code) {
 		this.errcode = code;
+		this.setErrmsg();
 	}
 
 	protected ResultCode(String code, String... errParams) {
 		this.errcode = code;
 		this.errParams = errParams;
+		this.setErrmsg();
 	}
 
 	protected ResultCode(String code, T retval, String... errParams) {
 		this.errcode = code;
 		this.errParams = errParams;
 		this.retval = retval;
+		this.setErrmsg();
 	}
 
 	public static ResultCode<String> SUCCESS = new ResultCode<String>(ErrorCodeConstant.CODE_SUCCESS);
@@ -97,12 +100,7 @@ public class ResultCode<T> implements Serializable {
 		this.errParams = errParams;
 	}
 
-	/**
-	 * 错误信息返回
-	 * 
-	 * @return
-	 */
-	public String getErrmsg() {
+	private void setErrmsg() {
 		String message = SYSTEM_RESOURCE_BUNDLE.getString(errcode);
 		if (StringUtils.isBlank(message)) {
 			message = CORE_RESOURCE_BUNDLE.getString(errcode);
@@ -111,7 +109,15 @@ public class ResultCode<T> implements Serializable {
 		if (StringUtils.isBlank(message)) {
 			message = errcode;
 		}
-		errmsg = MessageFormat.format(message, errParams);
+		this.errmsg = MessageFormat.format(message, errParams);
+	}
+	
+	/**
+	 * 错误信息返回
+	 * 
+	 * @return
+	 */
+	public String getErrmsg() {
 		return errmsg;
 	}
 
