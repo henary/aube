@@ -16,7 +16,7 @@ import com.aube.web.action.AubeH5BaseController;
 
 
 @Controller
-public class MsgPariseController extends AubeH5BaseController {
+public class MsgPraiseController extends AubeH5BaseController {
 	@Autowired@Qualifier("msgPraiseVoService")
 	private MsgPraiseVoService msgPraiseVoService;
 	@RequestMapping("/msgparise.xhtml")
