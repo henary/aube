@@ -22,9 +22,9 @@
 		<!-- mongo的集群地址 -->
 		<constructor-arg name="hosts">
 			<list>
-				<value>${mongo.server1}:${mongo.port}</value>
-				<value>${mongo.server2}:${mongo.port}</value>
-				<value>${mongo.server2}:${mongo.port}</value>
+				<value>${mongo.server1}</value>
+				<value>${mongo.server2}</value>
+				<value>${mongo.server2}</value>
 			</list>
 		</constructor-arg>
 		<!-- 账号列表， 库名:用户名:密码 ，支持多个数据库,第一个默认为当前库。 -->
