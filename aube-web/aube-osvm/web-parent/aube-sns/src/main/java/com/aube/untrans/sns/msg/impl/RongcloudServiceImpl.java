@@ -22,6 +22,10 @@ import com.aube.util.JsonUtils;
 import com.aube.vo.msg.req.MsgContentDetail;
 import com.aube.vo.rongcloud.msg.req.RongcloudMsgReqVo;
 
+/**
+ * TODO 消息分表
+ *
+ */
 @Service("rongcloudService")
 public class RongcloudServiceImpl extends BaseService implements RongcloudService, InitializingBean {
 
@@ -59,24 +63,23 @@ public class RongcloudServiceImpl extends BaseService implements RongcloudServic
 				if (temp != null && temp.length == 2) {
 					videoid = temp[0];
 				}
+				message.set_id(reqVo.getMsgUID());
+				message.setMsgId(reqVo.getMsgUID());
 				message.setVideoid(videoid);
 				message.setContnet(detail.getContent());
 				message.setMsgType(reqVo.getObjectName());
 				message.setChannelType(SnsMessageConstants.RONGCLOUD_CHANNEL_TYPE_2APP_MAP.get(reqVo.getChannelType()));
 				message.setSources(SnsMessageConstants.MESSAGE_SOURCE_RONGCLOUD);
-				message.set_id(reqVo.getMsgUID());
 				message.setVideoTime(detail.getExtra().getVideoTime());
 				message.setHeadImg(detail.getExtra().getHeadImg());
 				message.setTimestamp(reqVo.getMsgTimestamp());
 				message.setTimestampStr(DateUtil.formatTimestamp(reqVo.getMsgTimestamp()));
 				message.setFromUserId(reqVo.getFromUserId());
 				message.setToUserId(reqVo.getToUserId());
-				// mongoService.addObject(message,
-				// MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM);
 				mongoService.saveOrUpdateObject(message, MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM);
 			} else if (StringUtils.equals(detail.getExtra().getMsgType(), SnsMessageConstants.MESSAGE_TYPE_LIKE)) {
 				// addData2Inc
-				
+
 				mongoService.execUpdate(BuilderUtils.prepareUpdate(MessageByVideoid.class)
 						.setCondition(new Expression().eq(MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM, detail.getContent())).setUpdateFirst(true)
 						.setInsert4NotFind(true).addData2Inc("praiseCount", 1));

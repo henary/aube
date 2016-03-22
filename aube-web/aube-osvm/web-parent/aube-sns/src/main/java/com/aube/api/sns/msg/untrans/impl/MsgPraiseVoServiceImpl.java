@@ -10,9 +10,13 @@ import org.apache.commons.collections.MapUtils;
 import org.springframework.beans.support.PropertyComparator;
 
 import com.aube.api.sns.msg.untrans.MsgPraiseVoService;
+import com.aube.api.vo.sns.message.MessageVo;
 import com.aube.api.vo.sns.msgpraise.MsgPraiseRespVo;
+import com.aube.json.msg.MessageByVideoid;
+import com.aube.mdb.operation.Expression;
 import com.aube.service.BaseService;
 import com.aube.support.ResultCode;
+import com.aube.util.VoCopyUtil;
 
 public class MsgPraiseVoServiceImpl extends BaseService implements MsgPraiseVoService {
 	// TODO 以后放入redis缓存中
@@ -45,5 +49,11 @@ public class MsgPraiseVoServiceImpl extends BaseService implements MsgPraiseVoSe
 		}
 		Collections.sort(praiseList, new PropertyComparator<MsgPraiseRespVo>("praiseCount", true, false));
 		return ResultCode.getSuccessReturn(praiseList);
+	}
+	
+	public ResultCode<List<MessageVo>> getMssageList(String groupId, Integer from, Integer maxnum) {
+		Expression params = new Expression();
+		List<MessageByVideoid> messageList = mongoService.getObjectList(MessageByVideoid.class, params, "timestamp", false, from, maxnum);
+		return VoCopyUtil.copyListProperties(MessageVo.class, messageList);
 	}
 }
