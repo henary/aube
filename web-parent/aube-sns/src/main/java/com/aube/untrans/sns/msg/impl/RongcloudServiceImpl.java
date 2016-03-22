@@ -62,7 +62,7 @@ public class RongcloudServiceImpl extends BaseService implements RongcloudServic
 				message.setVideoid(videoid);
 				message.setContnet(detail.getContent());
 				message.setMsgType(reqVo.getObjectName());
-				message.setChannelType(SnsMessageConstants.RONGCLOUD_CHANNEL_TYPE_2APP_MAP.get(message.getChannelType()));
+				message.setChannelType(SnsMessageConstants.RONGCLOUD_CHANNEL_TYPE_2APP_MAP.get(reqVo.getChannelType()));
 				message.setSources(SnsMessageConstants.MESSAGE_SOURCE_RONGCLOUD);
 				message.set_id(reqVo.getMsgUID());
 				message.setVideoTime(detail.getExtra().getVideoTime());
@@ -76,9 +76,10 @@ public class RongcloudServiceImpl extends BaseService implements RongcloudServic
 				mongoService.saveOrUpdateObject(message, MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM);
 			} else if (StringUtils.equals(detail.getExtra().getMsgType(), SnsMessageConstants.MESSAGE_TYPE_LIKE)) {
 				// addData2Inc
+				
 				mongoService.execUpdate(BuilderUtils.prepareUpdate(MessageByVideoid.class)
-						.setCondition(new Expression().eq(MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM, reqVo.getMsgUID())).setUpdateFirst(true)
-						.setInsert4NotFind(false).addData2Inc("praiseCount", 1));
+						.setCondition(new Expression().eq(MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM, detail.getContent())).setUpdateFirst(true)
+						.setInsert4NotFind(true).addData2Inc("praiseCount", 1));
 			}
 
 		}
