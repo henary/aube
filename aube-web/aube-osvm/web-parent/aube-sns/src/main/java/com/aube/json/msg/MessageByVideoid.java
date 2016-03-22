@@ -2,10 +2,13 @@ package com.aube.json.msg;
 
 import com.aube.mongo.support.MGObject;
 
-// 普通消息
-//{msg:"Hello",extra:{msgID:"UID3434343034",headImg:"",videoTime:"",msgType:"normal"}}
-// 点赞消息
-//{msg:"UID3434343034",extra:{msgType:"like"}}
+/**
+ * TODO 分表<br>
+ * 普通消息<br>
+ * {msg:"Hello",extra:{msgID:"UID3434343034",headImg:"",videoTime:"",msgType:
+ * "normal"}} 点赞消息<br>
+ * {msg:"UID3434343034",extra:{msgType:"like"}}
+ */
 public class MessageByVideoid extends MGObject<MessageByVideoid> {
 
 	/**
