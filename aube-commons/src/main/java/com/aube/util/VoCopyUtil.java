@@ -34,7 +34,7 @@ public class VoCopyUtil {
 		return result;
 	}
 
-	public static <S extends BaseVo, T> ResultCode<List<S>> copyListProperties(Class<S> clazz, List<T> itemList) {
+	public static <S extends GsonObject<S>, T> ResultCode<List<S>> copyListProperties(Class<S> clazz, List<T> itemList) {
 		List<S> voItemList = new ArrayList<S>();
 		if (CollectionUtils.isEmpty(itemList)){
 			return ResultCode.<List<S>>getSuccessReturn(voItemList);
