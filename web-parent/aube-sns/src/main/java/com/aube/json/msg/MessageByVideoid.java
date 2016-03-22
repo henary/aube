@@ -2,8 +2,9 @@ package com.aube.json.msg;
 
 import com.aube.mongo.support.MGObject;
 
+// 普通消息
 //{msg:"Hello",extra:{msgID:"UID3434343034",headImg:"",videoTime:"",msgType:"normal"}}
-//{"contnet":"","sendTime":"","objectName":"","videoTime":"","headImg":""}
+// 点赞消息
 //{msg:"UID3434343034",extra:{msgType:"like"}}
 public class MessageByVideoid extends MGObject<MessageByVideoid> {
 
@@ -11,6 +12,8 @@ public class MessageByVideoid extends MGObject<MessageByVideoid> {
 	 * 
 	 */
 	private static final long serialVersionUID = 5846637608930744391L;
+	// 消息ID
+	private String msgId;
 	// 发送者
 	private String fromUserId;
 	// 接收者
@@ -142,6 +145,14 @@ public class MessageByVideoid extends MGObject<MessageByVideoid> {
 
 	public void setNickname(String nickname) {
 		this.nickname = nickname;
+	}
+
+	public String getMsgId() {
+		return msgId;
+	}
+
+	public void setMsgId(String msgId) {
+		this.msgId = msgId;
 	}
 
 }
