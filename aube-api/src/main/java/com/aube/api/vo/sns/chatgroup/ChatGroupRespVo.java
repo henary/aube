@@ -13,6 +13,7 @@ public class ChatGroupRespVo implements GsonObject<ChatGroupRespVo> {
 	private String appKey;
 	private String appSources;
 	private String videoId;
+	private String status;
 
 	public String getUserId() {
 		return userId;
@@ -60,6 +61,14 @@ public class ChatGroupRespVo implements GsonObject<ChatGroupRespVo> {
 
 	public void setVideoId(String videoId) {
 		this.videoId = videoId;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }
