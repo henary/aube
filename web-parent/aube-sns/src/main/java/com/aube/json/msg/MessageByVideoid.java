@@ -26,13 +26,17 @@ public class MessageByVideoid extends MGObject<MessageByVideoid> {
 	private String contnet;
 	// 发送者头像
 	private String headImg;
+	// 用户昵称
+	private String nickname;
 	// 相对视频的时间，单位（秒）
 	private Integer videoTime;
 	private String channelType;
 	private Integer praiseCount;
+
 	public MessageByVideoid() {
 		this.praiseCount = 0;
 	}
+
 	public Integer getPraiseCount() {
 		return praiseCount;
 	}
@@ -123,11 +127,21 @@ public class MessageByVideoid extends MGObject<MessageByVideoid> {
 	public void setTimestampStr(String timestampStr) {
 		this.timestampStr = timestampStr;
 	}
+
 	public String getVideoid() {
 		return videoid;
 	}
+
 	public void setVideoid(String videoid) {
 		this.videoid = videoid;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 }

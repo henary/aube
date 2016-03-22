@@ -10,6 +10,7 @@ public class MsgContentExtra implements Serializable {
 	private String headImg;
 	private Integer videoTime;
 	private String msgType;
+	private String nickname;
 
 	public String getHeadImg() {
 		return headImg;
@@ -33,5 +34,13 @@ public class MsgContentExtra implements Serializable {
 
 	public void setMsgType(String msgType) {
 		this.msgType = msgType;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 }
