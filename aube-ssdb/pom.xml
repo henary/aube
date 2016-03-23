@@ -7,7 +7,6 @@
     <artifactId>aube-osvm</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>com.aube</groupId>
   <artifactId>aube-ssdb</artifactId>
   <version>1.0-SNAPSHOT</version>
   <name>aube-ssdb</name>
@@ -25,6 +24,10 @@
 			<groupId>org.nutz</groupId>
 			<artifactId>nutz</artifactId>
 			<version>1.b.50</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
 		</dependency>
   </dependencies>
 </project>
