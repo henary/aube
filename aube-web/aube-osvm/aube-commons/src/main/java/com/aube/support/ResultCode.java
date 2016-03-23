@@ -33,6 +33,7 @@ public class ResultCode<T> implements Serializable {
 	// 返回值
 	private T retval;
 	private transient Throwable exception;
+	public boolean success;
 	
 	protected ResultCode() {
 		this.errcode = ErrorCodeConstant.CODE_SUCCESS;
@@ -67,7 +68,7 @@ public class ResultCode<T> implements Serializable {
 	}
 
 	public boolean isSuccess() {
-		return StringUtils.equals(errcode, ErrorCodeConstant.CODE_SUCCESS);
+		return success;
 	}
 
 	public static <T> ResultCode<T> getFailure(String code, String... errParams) {
@@ -107,6 +108,7 @@ public class ResultCode<T> implements Serializable {
 	}
 
 	private void setErrmsg() {
+		success = StringUtils.equals(errcode, ErrorCodeConstant.CODE_SUCCESS);
 		String message = "";
 		try {
 			message = AUBE_RESOURCE_BUNDLE.getString(errcode);
