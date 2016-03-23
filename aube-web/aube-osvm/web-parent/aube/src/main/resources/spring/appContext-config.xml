@@ -22,7 +22,7 @@
 				<entry key="staticPath" value="${staticPath}"></entry>
 				<entry key="absPath" value="${absPath}"></entry>
 				<entry key="houtaiPath" value="${houtaiPath}"></entry>
-				<entry key="picPath" value="${picPath}"></entry>
+				<entry key="tempPicPath" value="${tempPicPath}"></entry>
 			</map>
 		</property>
 		<property name="configMap">

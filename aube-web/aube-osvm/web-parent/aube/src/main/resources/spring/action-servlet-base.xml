@@ -31,7 +31,7 @@
 		<property name="defaultStatusCode" value="404" />
 		<property name="defaultErrorView" value="404.vm" />
 	</bean>
-	<bean id="nickMultipartResolver" class="com.aube.web.support.AubeMultipartResolver">
+	<bean id="aubeMultipartResolver" class="com.aube.web.support.AubeMultipartResolver">
 		<property name="maxUploadSize" value="20917152000" /><!-- 2000M -->
 		<property name="defaultEncoding" value="GBK" />
 		<property name="maxInMemorySize" value="40960" />
