@@ -10,6 +10,6 @@ public class MongoData {
 	}
 
 	public static String buildId(int num) {
-		return StringUtil.getRandomString(num) + System.currentTimeMillis();
+		return StringUtil.getRandomString(num) + "_" + System.currentTimeMillis();
 	}
 }
