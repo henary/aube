@@ -10,7 +10,8 @@ import org.nutz.ssdb4j.spi.Response;
 import org.nutz.ssdb4j.spi.SSDB;
 import org.nutz.ssdb4j.spi.SSDBException;
 import org.nutz.ssdb4j.spi.SSDBStream;
-
+import org.springframework.stereotype.Service;
+@Service("ssdbService")
 public class SimpleClient implements SSDB {
 
 	protected SSDBStream stream;
