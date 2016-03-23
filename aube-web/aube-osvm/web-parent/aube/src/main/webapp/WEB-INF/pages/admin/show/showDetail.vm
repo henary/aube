@@ -1,0 +1,106 @@
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	<h4 class="modal-title" id="myModalLabel">添加修改节目信息</h4>
+</div>
+<div class="modal-body" id="modalbody">
+	<input type="hidden" name="showid" id="showid" value="$!showid">
+	<div class="input-group input-group-sm">
+		<span class="input-group-addon input-group-span">节目名称</span>
+		<input type="text" class="form-control require" id="showName" name="showName" value="$!info.showName" placeholder="节目名称"/>
+		<span class="input-group-addon requireTip">*</span>
+	</div>
+	<div class="input-group input-group-sm">
+		<span class="input-group-addon input-group-span">节目描述</span>
+		<input type="text" class="form-control require" id="showDesc" name="showDesc" value="$!info.showDesc" placeholder="节目描述"/>
+		<span class="input-group-addon requireTip">*</span>
+	</div>
+	<div class="input-group input-group-sm">
+		<span class="input-group-addon input-group-span">节目颜色</span>
+		<input type="text" class="form-control require" id="showColor" name="showColor" value="$!info.showColor" placeholder="节目颜色">
+		<span class="input-group-addon requireTip">*</span>
+	</div>
+	<div  class="input-group input-group-sm">
+	  	<span class="input-group-addon input-group-span">节目排序</span>
+	  	<span class="input-group-span">
+			<input type="text" class="form-control require number" id="sortNum" name="sortNum" value="$!info.sortNum" placeholder="节目排序">
+		</span>
+		<span class="input-group-addon requireTip">*</span>
+	</div>
+	<div class="input-group input-group-sm">
+		<span class="input-group-addon input-group-span">海报图片</span>
+		<span class="btn btn-success fileinput-button">
+			<i class="glyphicon glyphicon-plus"></i>
+			<span>浏览图片...</span><input type="file" name="picInfo">
+		</span>
+		<span class="input-group-addon requireTip">*</span>
+	</div>
+	<div id="progress" class="progress">
+		<div class="progress-bar progress-bar-success"></div>
+	</div>
+	<div id="files" class="files"></div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	<button type="button" class="btn btn-success">确定</button>
+</div>
+<script type="text/javascript">
+$(function () {
+	$('.videoModal').on('hide.bs.modal', function () {
+		$('#videoModal').removeData('bs.modal');
+	});
+	$('.modal-footer .btn-success').click(function(){
+		alert("ha");
+	});
+	
+	$('#fileupload').fileupload({
+		url: '${basePath}common/uploadSignPicture.xhtml',
+        dataType: 'json',
+        done: function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                $('<p/>').text(file.name).appendTo('#files');
+            });
+        },
+        progressall: function (e, data) {
+            var progress = parseInt(data.loaded / data.total * 100, 10);
+            $('#progress .progress-bar').css(
+                'width',
+                progress + '%'
+            );
+        }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	#*
+	$('#fileupload').fileupload({
+	    url: '${basePath}common/uploadSignPicture.xhtml',
+	    paramName:"imgFile",
+	    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+	    maxFileSize: 512000, 
+	    formData:{"showid":"$!showid","picTag":"show"},
+	    dataType: 'json',
+	    done: function (e, data) {
+	        $.each(data.result.files, function (index, file) {
+	            $('<p/>').text(file.name).appendTo('#files');
+	        });
+	    },
+	    progressall: function (e, data) {
+	        var progress = parseInt(data.loaded / data.total * 100, 10);
+	        $('#progress .progress-bar').css(
+	            'width',
+	            progress + '%'
+	        );
+	    },
+	    messages: {
+            acceptFileTypes: '图片类型不合法 ',
+            maxFileSize: '图片大小超过限制'
+        }
+	}).on('fileuploadprocessalways', function (e, data) {
+        var index = data.index,
+        file = data.files[index];
+        if (file.error) {
+			alert(file.error);
+		}
+	}).prop('disabled', !$.support.fileInput)
+	    .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	*#
+});
+</script>
