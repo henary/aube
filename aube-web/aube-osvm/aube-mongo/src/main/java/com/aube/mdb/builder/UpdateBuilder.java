@@ -105,7 +105,7 @@ public class UpdateBuilder<T> {
 	}
 
 	/**
-	 * Ĭ���Ǹ��¶�����¼������Ϊtrue�󣬽�ֻ����һ����¼
+	 * 默认是更新多条记录。设置为true后，将只更新一条记录
 	 * 
 	 * @param updateMany
 	 * @return
@@ -116,13 +116,13 @@ public class UpdateBuilder<T> {
 	}
 
 	/**
-	 * ��û�з��������ļ�¼ʱ����Ӹü�¼��
+	 * 当没有符合条件的记录时，添加该记录。
 	 * 
 	 * @param insert
 	 * @return
 	 */
 	public UpdateBuilder<T> setInsert4NotFind(boolean insert) {
-		updateOptions.upsert(true);
+		updateOptions.upsert(insert);
 		return this;
 	}
 
