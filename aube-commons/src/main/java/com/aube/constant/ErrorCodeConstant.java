@@ -25,6 +25,8 @@ public interface ErrorCodeConstant {
 	String CODE_UPLOAD_NOT_SUPPORTS_TAG = "1002";
 	// 文件上传的列表为空
 	String CODE_UPLOAD_EMPTY = "1003";
+	// 上传参数错误
+	String CODE_UPLOAD_PARAM_ERROR = "1004";
 
 	/**
 	 * 1100～1200用户相关
