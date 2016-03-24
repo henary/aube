@@ -3,6 +3,8 @@ package com.aube.untrans.common.impl;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
@@ -28,7 +30,7 @@ public class AubePicServiceImpl implements AubePicService, InitializingBean {
 	@Autowired
 	@Qualifier("config")
 	private Config config;
-	private String tempPath; // 临时文件
+	private ConcurrentMap<String, String> PIC_TEMP_PATH = new ConcurrentHashMap<String, String>();
 
 	private static final List<String> PIC_TAG_LIST = Arrays.asList(new String[] { "show", "video" });
 
@@ -42,11 +44,12 @@ public class AubePicServiceImpl implements AubePicService, InitializingBean {
 			if (StringUtils.equals("jpeg", extname))
 				extname = "jpg";
 			String fileName = StringUtil.getUID() + "." + extname;
-			File upfile = new File(tempPath + picTag, fileName);
+			File upfile = new File(PIC_TEMP_PATH.get(picTag), fileName);
 			file.transferTo(upfile);
-			PicInfoRespVo respVo = PictureUtils.getPicDim(tempPath + picTag + "/" + fileName);
-			respVo.setPicurl(PictureUtils.getCommonPicpath() + fileName);
+			PicInfoRespVo respVo = PictureUtils.getPicDim(PIC_TEMP_PATH.get(picTag) + fileName);
+			respVo.setPicurl(PictureUtils.getCommonPicpath(picTag) + fileName);
 			respVo.setPicRelatedId(relatedId);
+			respVo.setPicTag(picTag);
 			return ResultCode.<PicInfoRespVo> getSuccessReturn(respVo);
 		} catch (Exception e) {
 			logger.error(e, 20);
@@ -57,10 +60,12 @@ public class AubePicServiceImpl implements AubePicService, InitializingBean {
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		String picPath = config.getString("tempPicPath");
-		File tmpFile = new File(picPath, PictureUtils.getCommonPicpath());
-		if (!tmpFile.exists()) {
-			tmpFile.mkdirs();
+		for (String str : PIC_TAG_LIST) {
+			File tmpFile = new File(picPath, PictureUtils.getCommonPicpath(str));
+			if (!tmpFile.exists()) {
+				tmpFile.mkdirs();
+			}
+			PIC_TEMP_PATH.put(str, tmpFile.getAbsolutePath());
 		}
-		tempPath = tmpFile.getAbsolutePath();
 	}
 }
