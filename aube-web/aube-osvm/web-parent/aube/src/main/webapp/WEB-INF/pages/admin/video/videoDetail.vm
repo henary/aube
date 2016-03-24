@@ -1,32 +1,37 @@
+<link rel="stylesheet" href="${staticPath}style/bootstrap/plugin/datetimepicker/bootstrap-datetimepicker.min.css?v=$!VmUilts.jsVersion">
 <div class="modal-header">
 	<h2 class="modal-title" id="myModalLabel">添加修改节目信息</h2>
 </div>
 <div class="modal-body" id="modalbody">
-	<form id="showForm" method="post" class="form-horizontal" action="">
+	<form id="videoForm" method="post" class="form-horizontal" action="">
+	<input type="hidden" name="videoid" id="videoid" value="$!videoid">
 	<input type="hidden" name="showid" id="showid" value="$!showid">
-	#set($map={"showName":"节目名称","showDesc":"节目描述","showColor":"节目颜色","sortNum":"节目排序"})
-	#foreach($entry in $map.entrySet())
+	#set($titleDesc="期数")
 	<div class="form-group">
-		<label class="col-sm-4 control-label" for="$entry.value">$entry.value</label>
+		<label class="col-sm-4 control-label" for="$!titleDesc">$!titleDesc</label>
 		<div class="col-sm-5">
-			<input type="text" class="form-control" id="$entry.key" name="$entry.key" value="$!info.get($entry.key)" placeholder="$!entry.value" />
+			<input type="text" class="form-control" id="title" name="title" value="$!info.title" placeholder="$!titleDesc" />
 		</div>
 	</div>
-	#end
-	#set($picInfoDsc="海报图片")
+	#set($playTimeDesc="播放时间")
+	<div class="form-group">
+		<label class="col-sm-4 control-label" for="$!playTimeDesc">$!playTimeDesc</label>
+		<div class="col-sm-5">
+			<input type="datetime" class="form-control" id="playTimestamp" name="playTimestamp" value="$!info.playTimestamp" placeholder="$!playTimeDesc" />（可修改）
+		</div>
+	</div>
+	#set($picInfoDsc="背景图片")
 	<div class="form-group">
 		<label class="col-sm-4 control-label" for="$picInfoDsc">$picInfoDsc</label>
 		<div class="col-sm-5">
-			<span class="btn btn-success fileinput-button">
+			<input type="hidden" class="form-control" id="picInfo" name="picInfo" value="$!info.picInfo">
+			<p class="btn btn-success fileinput-button">
 				<i class="glyphicon glyphicon-plus"></i>
 				<span>浏览图片...</span><input type="file" name="fileupload" id="fileupload">
-			</span>
+			</p>
 		</div>
 	</div>
 	<div id="progress" class="progress collapse">
-		<div class="col-sm-5">
-			<input type="hidden" class="form-control" id="picInfo" name="picInfo" value="$!info.picInfo">
-		</div>
 		<div class="progress-bar progress-bar-success progress-bar-striped"></div>
 	</div>
 	<div id="files" class="files">
@@ -42,6 +47,8 @@
 	</div>
 </form>
 </div>
+<script src="${staticPath}scripts/bootstrap/plugin/datetimepicker/bootstrap-datetimepicker.min.js?v=$!VmUilts.jsVersion"></script>
+<script src="${staticPath}scripts/bootstrap/plugin/datetimepicker/bootstrap-datetimepicker.zh-CN.js?v=$!VmUilts.jsVersion"></script>
 <script type="text/javascript">
 $.validator.setDefaults( {
 	submitHandler: function () {
@@ -53,7 +60,7 @@ $.validator.setDefaults( {
 		$('.modal-body input').each(function(i, n){
 			params[$(this).attr('name')]=$(this).val();
 		});
-		$.post('${houtaiPath}admin/show/saveShow.xhtml',params,function(result){
+		$.post('${houtaiPath}admin/video/saveVideo.xhtml',params,function(result){
 			eval(result);
 			if(data.success) {
 				location.reload();
@@ -65,22 +72,26 @@ $.validator.setDefaults( {
 	}
 });
 $(document).ready(function () {
-	$('#showModal').on('hide.bs.modal', function () {
-		$('#showModal').removeData('bs.modal');
+	$('#svideoModal').on('hide.bs.modal', function () {
+		$('#svideoModal').removeData('bs.modal');
 	});
-		
-	$("#showForm").validate({
+	$('#playTimestamp').datetimepicker({
+		language:"zh-CN",
+		format: "yyyy-mm-dd hh:ii:ss",
+        autoclose: true,
+        todayBtn: true,
+        pickerPosition: "bottom-left",
+		startDate: "$!DateUtil.getCurDateStr()"});
+	$("#videoForm").validate({
 		rules: {
-			showName: "required",
-			showColor: "required",
-			sortNum: "required",
+			##playTimestamp: "required",
+			title: "required",
 			picInfo: "required"
 		},
 		messages: {
-			showName: "节目名称不能为空",
-			showColor: "节目主题颜色不能为空",
-			sortNum: "节目排序不能为空",
-			picInfo: "节目背景图不能为空"
+			##playTimestamp: "$!{playTimeDesc}不能为空",
+			title: "$!{titleDesc}不能为空",
+			picInfo: "$!{picInfoDsc}不能为空"
 		},
 		errorElement: "em",
 		errorPlacement: function ( error, element ) {
@@ -115,7 +126,7 @@ $(document).ready(function () {
 	$('#fileupload').fileupload({
 		url: '${basePath}common/uploadSignPicture.xhtml',
         dataType: 'json',
-       formData: {"relatedId":"$!showid","picTag":"show"},
+       formData: {"relatedId":"$!videoid","picTag":"video"},
         done: function (e, data) {
         	if (data.result.success) {
         		$("#picInfo").val(data.result.retval.picurl)
@@ -134,43 +145,5 @@ $(document).ready(function () {
 	    }
     }).prop('disabled', !$.support.fileInput)
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
-	
-	$("#showColor").spectrum({
-	    color: #if($VmUtils.isNotBlank("$!info.showColor"))"$!info.showColor"#{else}"#000"#end,
-	    showInput: true,
-	    className: "full-spectrum",
-	    showInitial: true,
-	    showPalette: true,
-	    showSelectionPalette: true,
-	    maxSelectionSize: 10,
-	    preferredFormat: "hex",
-	    localStorageKey: "节目背景颜色",
-	    move: function (color) {
-	    },
-	    show: function () {
-	    },
-	    beforeShow: function () {
-	    },
-	    hide: function () {
-	    },
-	    change: function() {
-	    },
-	    palette: [
-	        ["rgb(0, 0, 0)", "rgb(67, 67, 67)", "rgb(102, 102, 102)",
-	        "rgb(204, 204, 204)", "rgb(217, 217, 217)","rgb(255, 255, 255)"],
-	        ["rgb(152, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 153, 0)", "rgb(255, 255, 0)", "rgb(0, 255, 0)",
-	        "rgb(0, 255, 255)", "rgb(74, 134, 232)", "rgb(0, 0, 255)", "rgb(153, 0, 255)", "rgb(255, 0, 255)"], 
-	        ["rgb(230, 184, 175)", "rgb(244, 204, 204)", "rgb(252, 229, 205)", "rgb(255, 242, 204)", "rgb(217, 234, 211)", 
-	        "rgb(208, 224, 227)", "rgb(201, 218, 248)", "rgb(207, 226, 243)", "rgb(217, 210, 233)", "rgb(234, 209, 220)", 
-	        "rgb(221, 126, 107)", "rgb(234, 153, 153)", "rgb(249, 203, 156)", "rgb(255, 229, 153)", "rgb(182, 215, 168)", 
-	        "rgb(162, 196, 201)", "rgb(164, 194, 244)", "rgb(159, 197, 232)", "rgb(180, 167, 214)", "rgb(213, 166, 189)", 
-	        "rgb(204, 65, 37)", "rgb(224, 102, 102)", "rgb(246, 178, 107)", "rgb(255, 217, 102)", "rgb(147, 196, 125)", 
-	        "rgb(118, 165, 175)", "rgb(109, 158, 235)", "rgb(111, 168, 220)", "rgb(142, 124, 195)", "rgb(194, 123, 160)",
-	        "rgb(166, 28, 0)", "rgb(204, 0, 0)", "rgb(230, 145, 56)", "rgb(241, 194, 50)", "rgb(106, 168, 79)",
-	        "rgb(69, 129, 142)", "rgb(60, 120, 216)", "rgb(61, 133, 198)", "rgb(103, 78, 167)", "rgb(166, 77, 121)",
-	        "rgb(91, 15, 0)", "rgb(102, 0, 0)", "rgb(120, 63, 4)", "rgb(127, 96, 0)", "rgb(39, 78, 19)", 
-	        "rgb(12, 52, 61)", "rgb(28, 69, 135)", "rgb(7, 55, 99)", "rgb(32, 18, 77)", "rgb(76, 17, 48)"]
-	    ]
-	});
 });
 </script>

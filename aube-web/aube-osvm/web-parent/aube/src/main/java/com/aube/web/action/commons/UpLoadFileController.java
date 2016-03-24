@@ -4,6 +4,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -60,6 +61,9 @@ public class UpLoadFileController extends BaseController {
 		model.putAll(reqMap);
 		String picTag = reqMap.get("picTag");
 		String relatedId = reqMap.get("relatedId");
+		if (StringUtils.isBlank(picTag) || StringUtils.isBlank(relatedId)) {
+			return ResultCode.<PicInfoRespVo> getFailure(ErrorCodeConstant.CODE_UPLOAD_PARAM_ERROR);
+		}
 		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 		for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
 			return aubePicService.saveToTempPic(entry.getValue(), picTag, relatedId);

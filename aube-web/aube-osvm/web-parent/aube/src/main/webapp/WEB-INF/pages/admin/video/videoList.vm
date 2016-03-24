@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+#parse("include/include_head.vm")
+<title>Aube后台管理 $VmUtils.jsVersion</title>
+</head>
+<body>
+#parse("include/include_header.vm")
+<div class="section-preview">
+	<div class="container">
+		<div class="panel panel-danger">
+			<div class="panel-heading">
+				<h3 class="panel-title">已发布</h3>
+			</div>
+			<div class="panel-body">
+		    	<div class="row">
+		    		#foreach($video in $videoList)
+		    		<div class="col-sm-6 col-md-4">
+						<div class="thumbnail">
+							<div class="show-list">
+								<a href="${houtaiPath}admin/video/timelineList.xhtml?videoid=$!video.videoid">
+									<img src="$!{staticPath}$!video.picInfo" alt="$video.title">
+								</a>
+							</div>
+							<div class="caption">
+								<h3>$!video.title</h3>
+								<p>$!video.playTimestamp 播</p>
+								<p><a data-toggle='modal' data-target='#videoModal' href="${houtaiPath}admin/video/getVideoDetail.xhtml?showid=$!showid&videoid=$video.realId()" class="btn btn-danger" role="button">修改</a></p>
+							</div>
+						</div>
+					</div>
+		    		#end
+		    		<div class="col-sm-6 col-md-4">
+						<div class="thumbnail">
+							<img src="${staticPath}images/video/default_video.png?v=$VmUtils.jsVersion" alt="新建">
+							<div class="caption">
+								<h3>新增视频节目</h3>
+								<p></p>
+								<p><a class="btn btn-success" data-toggle='modal' data-target='#videoModal' href="${houtaiPath}admin/video/getVideoDetail.xhtml?showid=$!showid" role="button">新增</a></p>
+							</div>
+						</div>
+					</div>
+		    	</div>
+	    	</div>
+    	</div>
+	</div> 
+</div>
+<!-- Modal -->
+<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel"  aria-hidden="false" >
+	<div class="modal-dialog" role="document">
+		<div class="modal-content"></div>
+	</div>
+</div>
+#parse("include/include_bottom.vm")
+<script type="text/javascript">
+$(document).ready(function () {
+});
+</script>
+</body>
+</html>
