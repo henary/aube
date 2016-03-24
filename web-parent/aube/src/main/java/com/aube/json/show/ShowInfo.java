@@ -1,4 +1,4 @@
-package com.aube.json.video;
+package com.aube.json.show;
 
 import com.aube.mongo.support.MGObject;
 
@@ -25,6 +25,8 @@ public class ShowInfo extends MGObject<ShowInfo> {
 	private String picInfo;
 	// 节目的appkey
 	private String appKey;
+	// groupId
+	private String groupId;
 	// 添加时间
 	private String addTime;
 	// 修改时间
@@ -100,6 +102,14 @@ public class ShowInfo extends MGObject<ShowInfo> {
 
 	public void setShowid(String showid) {
 		this.showid = showid;
+	}
+
+	public String getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
 	}
 
 }
