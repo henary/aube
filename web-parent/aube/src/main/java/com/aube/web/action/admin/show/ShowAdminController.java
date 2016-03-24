@@ -18,7 +18,6 @@ import com.aube.mdb.operation.Expression;
 import com.aube.support.ResultCode;
 import com.aube.util.BeanUtil;
 import com.aube.util.DateUtil;
-import com.aube.util.JsonUtils;
 import com.aube.util.WebUtils;
 import com.aube.web.action.admin.BaseAdminController;
 
@@ -57,12 +56,12 @@ public class ShowAdminController extends BaseAdminController {
 	@ResponseBody
 	public String removeShow(String showid, HttpServletRequest request) {
 		ResultCode<ShowInfo> showCode = getShowInfoById(showid, request);
-		return JsonUtils.writeObjectToJson(showCode);
+		return result2Json(showCode);
 	}
 
 	@RequestMapping("/admin/show/saveShow.xhtml")
 	@ResponseBody
-	public String saveAlbum(String showid, HttpServletRequest request) {
+	public String saveShow(String showid, HttpServletRequest request) {
 		Map<String, String> reqMap = WebUtils.getRequestMap(request);
 		ShowInfo info = null;
 		if (StringUtils.isNotBlank(showid)) {
@@ -76,8 +75,7 @@ public class ShowAdminController extends BaseAdminController {
 		BeanUtil.copyProperties(info, reqMap);
 		info.setUpdTime(DateUtil.getCurFullTimestampStr());
 		mongoService.saveOrUpdateObject(info, ShowInfo.SHOW_ID);
-		ResultCode<String> result = ResultCode.SUCCESS;
-		return result2Json(result);
+		return result2Json(ResultCode.SUCCESS);
 	}
 
 	private ResultCode<ShowInfo> getShowInfoById(String showid, HttpServletRequest request) {
