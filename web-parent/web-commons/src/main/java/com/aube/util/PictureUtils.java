@@ -62,12 +62,12 @@ public class PictureUtils {
 			respVo.setWidth(srcWidth);
 			return respVo;
 		} catch (Exception e) {
-			logger.error(e, 10);
+			logger.error(e, 2);
 			return respVo;
 		}
 	}
 
-	public static String getCommonPicpath() {
-		return "images/" + DateUtil.format(DateUtil.getCurDate(), "yyyyMM") + "/common/";
+	public static String getCommonPicpath(String picTag) {
+		return "images/" + DateUtil.format(DateUtil.getCurDate(), "yyyyMM") + "/common/" + picTag + "/";
 	}
 }
