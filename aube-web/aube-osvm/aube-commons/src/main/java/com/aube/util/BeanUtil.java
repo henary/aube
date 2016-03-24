@@ -21,6 +21,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.Bag;
 import org.apache.commons.collections.bag.HashBag;
@@ -41,7 +42,8 @@ public class BeanUtil implements Util4Script{
 	private static Map<Class, List<String>> writeListPropertyMap = new ConcurrentHashMap<Class, List<String>>();
 	public static void copyProperties(Object dest, Object orig) {
 		try {
-			PropertyUtils.copyProperties(dest, orig);
+			BeanUtils.copyProperties(dest, orig);
+		//	PropertyUtils.copyProperties(dest, orig);
 		} catch (Exception e) {
 			// ignore
 		}
