@@ -1,56 +1,112 @@
 <div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	<h4 class="modal-title" id="myModalLabel">添加修改节目信息</h4>
+	<h2 class="modal-title" id="myModalLabel">添加修改节目信息</h2>
 </div>
 <div class="modal-body" id="modalbody">
+	<form id="showForm" method="post" class="form-horizontal" action="">
 	<input type="hidden" name="showid" id="showid" value="$!showid">
-	<div class="input-group input-group-sm">
-		<span class="input-group-addon input-group-span">节目名称</span>
-		<input type="text" class="form-control require" id="showName" name="showName" value="$!info.showName" placeholder="节目名称"/>
-		<span class="input-group-addon requireTip">*</span>
+	#set($map={"showName":"节目名称","showDesc":"节目描述","showColor":"节目颜色","sortNum":"节目排序"})
+	#foreach($entry in $map.entrySet())
+	<div class="form-group">
+		<label class="col-sm-4 control-label" for="$entry.value">$entry.value</label>
+		<div class="col-sm-5">
+			<input type="text" class="form-control" id="$entry.key" name="$entry.key" value="$!info.get($entry.key)" placeholder="$!entry.value" />
+		</div>
 	</div>
-	<div class="input-group input-group-sm">
-		<span class="input-group-addon input-group-span">节目描述</span>
-		<input type="text" class="form-control require" id="showDesc" name="showDesc" value="$!info.showDesc" placeholder="节目描述"/>
-		<span class="input-group-addon requireTip">*</span>
+	#end
+	#set($picInfoDsc="海报图片")
+	<div class="form-group">
+		<label class="col-sm-4 control-label" for="$picInfoDsc">$picInfoDsc</label>
+		<div class="col-sm-5">
+			<span class="btn btn-success fileinput-button">
+				<i class="glyphicon glyphicon-plus"></i>
+				<span>浏览图片...</span><input type="file" name="fileupload" id="fileupload">
+			</span>
+		</div>
 	</div>
-	<div class="input-group input-group-sm">
-		<span class="input-group-addon input-group-span">节目颜色</span>
-		<input type="text" class="form-control require" id="showColor" name="showColor" value="$!info.showColor" placeholder="节目颜色">
-		<span class="input-group-addon requireTip">*</span>
-	</div>
-	<div  class="input-group input-group-sm">
-	  	<span class="input-group-addon input-group-span">节目排序</span>
-	  	<span class="input-group-span">
-			<input type="text" class="form-control require number" id="sortNum" name="sortNum" value="$!info.sortNum" placeholder="节目排序">
-		</span>
-		<span class="input-group-addon requireTip">*</span>
-	</div>
-	<div class="input-group input-group-sm">
-		<span class="input-group-addon input-group-span">海报图片</span>
-		<span class="btn btn-success fileinput-button">
-			<i class="glyphicon glyphicon-plus"></i>
-			<span>浏览图片...</span><input type="file" name="picInfo" id="fileupload">
-		</span>
-		<span class="input-group-addon requireTip">*</span>
-	</div>
-	<div id="progress" class="progress">
+	<div id="progress" class="progress collapse">
+		<div class="col-sm-5">
+			<input type="hidden" class="form-control" id="picInfo" name="picInfo" value="$!info.picInfo">
+		</div>
 		<div class="progress-bar progress-bar-success progress-bar-striped"></div>
 	</div>
-	<div id="files" class="files"></div>
-</div>
-<div class="modal-footer">
-	<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	<button type="button" class="btn btn-success">确定</button>
+	<div id="files" class="files">
+		#if($VmUtils.isNotBlank($info.picInfo))
+		<img alt="" src="${staticPath}$info.picInfo" width="40%" height="40%">
+		#end
+	</div>
+	<div class="modal-footer ">
+		<div class="col-sm-9 col-sm-offset-4 alert-dismissible">
+			<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			<button type="submit" class="btn btn-success">确定</button>
+		</div>
+	</div>
+</form>
 </div>
 <script type="text/javascript">
+$.validator.setDefaults( {
+	submitHandler: function () {
+		var params = {};
+		$('.modal-body input').each(function(i, n){
+			params[$(this).attr('name')]=$(this).val();
+		});
+		$.post('${houtaiPath}admin/show/saveShow.xhtml',params,function(result){
+			eval(result);
+			if(data.success) {
+				location.reload();
+			} else {
+				alert(data.errmsg);
+				return false;
+			}
+		});
+	}
+});
 $(document).ready(function () {
 	$('#showModal').on('hide.bs.modal', function () {
 		$('#showModal').removeData('bs.modal');
 	});
-	$('.modal-footer .btn-success').click(function(){
-		alert("ha");
+		
+	$("#showForm").validate({
+		rules: {
+			showName: "required",
+			showColor: "required",
+			sortNum: "required",
+			picInfo: "required"
+		},
+		messages: {
+			showName: "节目名称不能为空",
+			showColor: "节目主题颜色不能为空",
+			sortNum: "节目排序不能为空",
+			picInfo: "节目背景图不能为空"
+		},
+		errorElement: "em",
+		errorPlacement: function ( error, element ) {
+			error.addClass( "help-block" );
+			element.parents( ".col-sm-5" ).addClass( "has-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+			if ( !element.next( "span" )[ 0 ] ) {
+				$( "<span class='glyphicon glyphicon-remove form-control-feedback'></span>" ).insertAfter( element );
+			}
+		},
+		success: function ( label, element ) {
+			if ( !$( element ).next( "span" )[ 0 ] ) {
+				$( "<span class='glyphicon glyphicon-ok form-control-feedback'></span>" ).insertAfter( $( element ) );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).parents( ".col-sm-5" ).addClass( "has-error" ).removeClass( "has-success" );
+			$( element ).next( "span" ).addClass( "glyphicon-remove" ).removeClass( "glyphicon-ok" );
+		},
+		unhighlight: function ( element, errorClass, validClass ) {
+			$( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-error" );
+			$( element ).next( "span" ).addClass( "glyphicon-ok" ).removeClass( "glyphicon-remove" );
+		}
 	});
+	
 	
 	$('#fileupload').fileupload({
 		url: '${basePath}common/uploadSignPicture.xhtml',
@@ -58,16 +114,14 @@ $(document).ready(function () {
        formData: {"relatedId":"$!showid","picTag":"show"},
         done: function (e, data) {
         	if (data.result.success) {
-        		
-            #*$.each(data.result.files, function (index, file) {
-                $('<p/>').text(file.name).appendTo('#files');
-            });
-            *#
+        		$("#picInfo").val(data.result.retval.picurl)
+        		 $("#files").html($('<img>').attr("src", "${staticPath}" + data.result.retval.picurl).attr("width","160").attr("hight","90"));
         	} else {
         		alert(data.result.errmsg);
         	}
         },
         progressall: function (e, data) {
+        	$("#progress").show();
         	var progress = parseInt(data.loaded / data.total * 100, 10);
 	        $('#progress .progress-bar').css(
 	            'width',
@@ -76,38 +130,43 @@ $(document).ready(function () {
 	    }
     }).prop('disabled', !$.support.fileInput)
         .parent().addClass($.support.fileInput ? undefined : 'disabled');
-	#*
-	$('#fileupload').fileupload({
-	    url: '${basePath}common/uploadSignPicture.xhtml',
-	    paramName:"imgFile",
-	    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-	    maxFileSize: 512000, 
-	    formData:{"showid":"$!showid","picTag":"show"},
-	    dataType: 'json',
-	    done: function (e, data) {
-	        $.each(data.result.files, function (index, file) {
-	            $('<p/>').text(file.name).appendTo('#files');
-	        });
+	
+	$("#showColor").spectrum({
+	    color: #if($VmUtils.isNotBlank("$!info.showColor"))"$!info.showColor"#{else}"#000"#end,
+	    showInput: true,
+	    className: "full-spectrum",
+	    showInitial: true,
+	    showPalette: true,
+	    showSelectionPalette: true,
+	    maxSelectionSize: 10,
+	    preferredFormat: "hex",
+	    localStorageKey: "节目背景颜色",
+	    move: function (color) {
 	    },
-	    progressall: function (e, data) {
-	        var progress = parseInt(data.loaded / data.total * 100, 10);
-	        $('#progress .progress-bar').css(
-	            'width',
-	            progress + '%'
-	        );
+	    show: function () {
 	    },
-	    messages: {
-            acceptFileTypes: '图片类型不合法 ',
-            maxFileSize: '图片大小超过限制'
-        }
-	}).on('fileuploadprocessalways', function (e, data) {
-        var index = data.index,
-        file = data.files[index];
-        if (file.error) {
-			alert(file.error);
-		}
-	}).prop('disabled', !$.support.fileInput)
-	    .parent().addClass($.support.fileInput ? undefined : 'disabled');
-	*#
+	    beforeShow: function () {
+	    },
+	    hide: function () {
+	    },
+	    change: function() {
+	    },
+	    palette: [
+	        ["rgb(0, 0, 0)", "rgb(67, 67, 67)", "rgb(102, 102, 102)",
+	        "rgb(204, 204, 204)", "rgb(217, 217, 217)","rgb(255, 255, 255)"],
+	        ["rgb(152, 0, 0)", "rgb(255, 0, 0)", "rgb(255, 153, 0)", "rgb(255, 255, 0)", "rgb(0, 255, 0)",
+	        "rgb(0, 255, 255)", "rgb(74, 134, 232)", "rgb(0, 0, 255)", "rgb(153, 0, 255)", "rgb(255, 0, 255)"], 
+	        ["rgb(230, 184, 175)", "rgb(244, 204, 204)", "rgb(252, 229, 205)", "rgb(255, 242, 204)", "rgb(217, 234, 211)", 
+	        "rgb(208, 224, 227)", "rgb(201, 218, 248)", "rgb(207, 226, 243)", "rgb(217, 210, 233)", "rgb(234, 209, 220)", 
+	        "rgb(221, 126, 107)", "rgb(234, 153, 153)", "rgb(249, 203, 156)", "rgb(255, 229, 153)", "rgb(182, 215, 168)", 
+	        "rgb(162, 196, 201)", "rgb(164, 194, 244)", "rgb(159, 197, 232)", "rgb(180, 167, 214)", "rgb(213, 166, 189)", 
+	        "rgb(204, 65, 37)", "rgb(224, 102, 102)", "rgb(246, 178, 107)", "rgb(255, 217, 102)", "rgb(147, 196, 125)", 
+	        "rgb(118, 165, 175)", "rgb(109, 158, 235)", "rgb(111, 168, 220)", "rgb(142, 124, 195)", "rgb(194, 123, 160)",
+	        "rgb(166, 28, 0)", "rgb(204, 0, 0)", "rgb(230, 145, 56)", "rgb(241, 194, 50)", "rgb(106, 168, 79)",
+	        "rgb(69, 129, 142)", "rgb(60, 120, 216)", "rgb(61, 133, 198)", "rgb(103, 78, 167)", "rgb(166, 77, 121)",
+	        "rgb(91, 15, 0)", "rgb(102, 0, 0)", "rgb(120, 63, 4)", "rgb(127, 96, 0)", "rgb(39, 78, 19)", 
+	        "rgb(12, 52, 61)", "rgb(28, 69, 135)", "rgb(7, 55, 99)", "rgb(32, 18, 77)", "rgb(76, 17, 48)"]
+	    ]
+	});
 });
 </script>

@@ -14,12 +14,13 @@
     		#foreach($show in $showList)
     		<div class="col-sm-6 col-md-4">
 				<div class="thumbnail">
-					##<img src="$show.picInfo" alt="$show.showName">
-					<img src="http://pro.aube-tv.com/images/201511/common/s_44e14403_1514c3371b2__7fff.png" alt="$show.showName">
+					<div class="show-list">
+					<img src="$!{staticPath}$!show.picInfo" alt="$show.showName">
+					</div>
 					<div class="caption">
 						<h3>$show.showName</h3>
 						<p>$show.showDesc</p>
-						<p><a href="${houtaiPath}aube/admin/video/list.xhtml?showid=$show.show.readlId()" class="btn btn-danger" role="button">修改</a></p>
+						<p><a data-toggle='modal' data-target='#showModal' href="${houtaiPath}admin/show/getShowDetail.xhtml?showid=$show.realId()" class="btn btn-danger" role="button">修改</a></p>
 					</div>
 				</div>
 			</div>

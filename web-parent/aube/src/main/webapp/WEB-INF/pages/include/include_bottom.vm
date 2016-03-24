@@ -1,5 +1,4 @@
-#*
-<div class="navbar navbar-default navbar-fixed-bottom">
+#*<div class="navbar navbar-default navbar-fixed-bottom">
 	<span class="text-center">Copyright © $DateUtil.currentYear, Aube</span>
 </div>
 *#
@@ -10,3 +9,7 @@
 <script src="${staticPath}scripts/jqueryplugin/fileupoad/jquery.fileupload.js"></script>
 <script src="${staticPath}scripts/jqueryplugin/fileupoad/jquery.fileupload-process.js"></script>
 <script src="${staticPath}scripts/jqueryplugin/fileupoad/jquery.fileupload-validate.js"></script>
+<script src="${staticPath}scripts/jqueryplugin/spectrum/spectrum.js"></script>
+<script src="${staticPath}scripts/jqueryplugin/spectrum/jquery.spectrum-zh-cn.js"></script>
+<script src="${staticPath}scripts/jqueryplugin/validation/jquery.validate.min.js"></script>
+##<script src="${staticPath}scripts/jqueryplugin/validation/messages_zh.min.js"></script>
