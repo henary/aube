@@ -45,7 +45,8 @@
 </div>
 #parse("include/include_bottom.vm")
 <script type="text/javascript">
-	
+$(document).ready(function () {
+});
 </script>
 </body>
 </html>
