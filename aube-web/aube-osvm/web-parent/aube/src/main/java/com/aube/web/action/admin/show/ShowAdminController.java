@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aube.constans.MongoData;
 import com.aube.constant.ShowErrorCodeConstants;
-import com.aube.json.video.ShowInfo;
+import com.aube.json.show.ShowInfo;
 import com.aube.mdb.operation.Expression;
-import com.aube.resp.vo.DataRespVo;
 import com.aube.support.ResultCode;
 import com.aube.util.BeanUtil;
 import com.aube.util.DateUtil;
@@ -47,6 +46,8 @@ public class ShowAdminController extends BaseAdminController {
 			if (!showCode.isSuccess()) {
 				model.put("errorMsg", showCode.getErrmsg());
 			}
+			ShowInfo show = showCode.getRetval();
+			model.put("info", BeanUtil.getBeanMap(show));
 		}
 		model.put("showid", showid);
 		return "admin/show/showDetail.vm";
@@ -75,9 +76,8 @@ public class ShowAdminController extends BaseAdminController {
 		BeanUtil.copyProperties(info, reqMap);
 		info.setUpdTime(DateUtil.getCurFullTimestampStr());
 		mongoService.saveOrUpdateObject(info, ShowInfo.SHOW_ID);
-		DataRespVo<String> respVo = new DataRespVo<String>();
-		respVo.setResult(info.realId().toString());
-		return JsonUtils.writeObjectToJson(respVo);
+		ResultCode<String> result = ResultCode.SUCCESS;
+		return result2Json(result);
 	}
 
 	private ResultCode<ShowInfo> getShowInfoById(String showid, HttpServletRequest request) {
