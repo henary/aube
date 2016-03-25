@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.aube.constans.MongoData;
 import com.aube.constant.ShowErrorCodeConstants;
 import com.aube.constants.AubeConstants;
+import com.aube.json.show.ShowInfo;
 import com.aube.json.video.VideoInfo;
 import com.aube.mdb.helper.BuilderUtils;
 import com.aube.mdb.operation.Expression;
@@ -34,6 +35,8 @@ import com.aube.web.action.admin.BaseAdminController;
 public class VideoAdminContontroller extends BaseAdminController {
 	@RequestMapping("/admin/video/list.xhtml")
 	public String showlist(String showid, ModelMap model) {
+		ShowInfo show = mongoService.getObjectById(ShowInfo.class, ShowInfo.SHOW_ID, showid);
+		model.put("show", show);
 		Expression params = new Expression();
 		params.eq(VideoInfo.SHOW_ID, showid);
 		List<VideoInfo> videoList = mongoService.getObjectList(VideoInfo.class, params);
