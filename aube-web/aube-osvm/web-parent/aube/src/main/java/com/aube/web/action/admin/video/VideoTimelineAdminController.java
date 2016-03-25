@@ -17,6 +17,6 @@ public class VideoTimelineAdminController extends BaseAdminController {
 	@RequestMapping("/admin/video/timelineList.xhtml")
 	public String timeList(String videoid, HttpServletRequest request, ModelMap model) {
 		model.put("videoid", videoid);
-		return "";
+		return "admin/video/timeline.vm";
 	}
 }

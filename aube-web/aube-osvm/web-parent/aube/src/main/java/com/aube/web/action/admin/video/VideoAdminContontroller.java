@@ -1,11 +1,13 @@
 package com.aube.web.action.admin.video;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.support.PropertyComparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aube.constans.MongoData;
 import com.aube.constant.ShowErrorCodeConstants;
+import com.aube.constants.AubeConstants;
 import com.aube.json.video.VideoInfo;
+import com.aube.mdb.helper.BuilderUtils;
 import com.aube.mdb.operation.Expression;
 import com.aube.support.ResultCode;
 import com.aube.util.BeanUtil;
@@ -33,8 +37,10 @@ public class VideoAdminContontroller extends BaseAdminController {
 		Expression params = new Expression();
 		params.eq(VideoInfo.SHOW_ID, showid);
 		List<VideoInfo> videoList = mongoService.getObjectList(VideoInfo.class, params);
+		Collections.sort(videoList, new PropertyComparator<VideoInfo>(VideoInfo.VIDEO_SORTNUM, false, false));
 		model.put("videoList", videoList);
 		model.put("showid", showid);
+		model.put("videoStatusMap", AubeConstants.VIDEO_STATUS_MAP);
 		return "admin/video/videoList.vm";
 	}
 
@@ -73,6 +79,7 @@ public class VideoAdminContontroller extends BaseAdminController {
 		if (info == null) {
 			info = new VideoInfo();
 			info.set_id(videoid);
+			info.setVideoStatus(AubeConstants.VIDEO_STATUS_DRAFT);
 			info.setAddTime(DateUtil.getCurFullTimestampStr());
 		}
 		BeanUtil.copyProperties(info, reqMap);
@@ -88,5 +95,19 @@ public class VideoAdminContontroller extends BaseAdminController {
 		}
 		// TODO 判断是否属于登录帐号的appkey ShowErrorCodeConstants.CODE_SHOW_NO_OPERA_AUTH
 		return ResultCode.<VideoInfo> getSuccessReturn(video);
+	}
+	
+	@RequestMapping("/admin/video/modifyStatus.xhtml")
+	@ResponseBody
+	public String modifyStatus(String videoid, String status, HttpServletRequest request) {
+		VideoInfo info = mongoService.getObjectById(VideoInfo.class, VideoInfo.VIDEO_ID, videoid);
+		if (info == null) {
+			return result2Json(ResultCode.getFailure(ShowErrorCodeConstants.CODE_VIDEO_NOT_EXITS));
+		}
+		// TODO 所属用户判断
+		mongoService.execUpdate(BuilderUtils.prepareUpdate(VideoInfo.class)
+				.setCondition(new Expression().eq(MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM, videoid)).setUpdateFirst(true)
+				.setInsert4NotFind(false).addData(VideoInfo.VIDEO_STATUS, status));
+		return result2Json(ResultCode.SUCCESS);
 	}
 }

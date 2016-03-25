@@ -1,5 +1,6 @@
 package com.aube.web.action.commons;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.aube.constans.MongoData;
 import com.aube.constant.ErrorCodeConstant;
 import com.aube.json.common.PicInfo;
+import com.aube.json.video.VideoInfo;
+import com.aube.mdb.helper.BuilderUtils;
+import com.aube.mdb.operation.Expression;
 import com.aube.mongo.MongoService3;
 import com.aube.resp.vo.pic.PicInfoRespVo;
 import com.aube.support.ResultCode;
@@ -50,8 +54,34 @@ public class UpLoadFileController extends BaseController {
 			PicInfoRespVo respVo = resultCode.getRetval();
 			PicInfo picInfo = new PicInfo();
 			BeanUtil.copyProperties(picInfo, respVo);
-			picInfo.set_id(StringUtil.md5(picInfo.getPicurl()));
+			picInfo.set_id(StringUtil.md5(picInfo.getFileurl()));
 			mongoService.saveOrUpdateObject(picInfo, MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM);
+		}
+		return JsonUtils.writeObjectToJson(resultCode);
+	}
+
+	@RequestMapping("/admin/upload/video/uploadSignVideo.xhtml")
+	@ResponseBody
+	public String uploadSignVideo(HttpServletRequest request, ModelMap model) {
+		MultipartHttpServletRequest multipartRequest = aubeMultipartResolver.resolveMultipart(request);
+		ResultCode<PicInfoRespVo> resultCode = uploadSignleFile(multipartRequest, model);
+		if (resultCode.isSuccess()) {
+			PicInfoRespVo respVo = resultCode.getRetval();
+			PicInfo picInfo = new PicInfo();
+			BeanUtil.copyProperties(picInfo, respVo);
+			picInfo.set_id(StringUtil.md5(picInfo.getFileurl()));
+			mongoService.saveOrUpdateObject(picInfo, MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM);
+
+			/**
+			 * 更新视频信息
+			 * TODO 所属用户判断
+			 */
+			Map<String, Object> updMap = new HashMap<String, Object>();
+			updMap.put("duration", picInfo.getDuration());
+			updMap.put("filePath", picInfo.getFileurl());
+			mongoService.execUpdate(BuilderUtils.prepareUpdate(VideoInfo.class)
+					.setCondition(new Expression().eq(MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM, picInfo.getRelatedId())).setUpdateFirst(true)
+					.setInsert4NotFind(false).addData(updMap));
 		}
 		return JsonUtils.writeObjectToJson(resultCode);
 	}
@@ -59,14 +89,19 @@ public class UpLoadFileController extends BaseController {
 	private ResultCode<PicInfoRespVo> uploadSignleFile(MultipartHttpServletRequest multipartRequest, ModelMap model) {
 		Map<String, String> reqMap = WebUtils.getRequestMap(multipartRequest);
 		model.putAll(reqMap);
-		String picTag = reqMap.get("picTag");
+		String fileTag = reqMap.get("fileTag");
 		String relatedId = reqMap.get("relatedId");
-		if (StringUtils.isBlank(picTag) || StringUtils.isBlank(relatedId)) {
+		String fileType = reqMap.get("fileType");
+		if (StringUtils.isBlank(fileTag) || StringUtils.isBlank(relatedId)) {
 			return ResultCode.<PicInfoRespVo> getFailure(ErrorCodeConstant.CODE_UPLOAD_PARAM_ERROR);
 		}
 		Map<String, MultipartFile> fileMap = multipartRequest.getFileMap();
 		for (Map.Entry<String, MultipartFile> entry : fileMap.entrySet()) {
-			return aubePicService.saveToTempPic(entry.getValue(), picTag, relatedId);
+			if (StringUtils.equals(fileType, "video")) {
+				return aubePicService.saveToTempVideo(entry.getValue(), fileTag, relatedId);
+			} else {
+				return aubePicService.saveToTempPic(entry.getValue(), fileTag, relatedId);
+			}
 		}
 		return ResultCode.<PicInfoRespVo> getFailure(ErrorCodeConstant.CODE_UPLOAD_EMPTY);
 	}

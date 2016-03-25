@@ -14,12 +14,16 @@ public class VideoInfo extends AdminBaseMgObject<VideoInfo> {
 	private static final long serialVersionUID = -1504279394618631416L;
 	public static final String SHOW_ID = "showid";
 	public static final String VIDEO_ID = "videoid";
+	public static final String VIDEO_SORTNUM = "sortNum";
+	public static final String VIDEO_STATUS = "videoStatus";
 	// 视频ID
 	private String videoid;
 	// 节目ID
 	private String showid;
-	// 第几期
+	// 标题
 	private String title;
+	// 第几期
+	private Integer sortNum;
 	// 播放时间戳yyyy-MM-dd HH:mm:ss
 	private String playTimestamp;
 	// 文件路径
@@ -103,6 +107,14 @@ public class VideoInfo extends AdminBaseMgObject<VideoInfo> {
 
 	public void setVideoStatus(String videoStatus) {
 		this.videoStatus = videoStatus;
+	}
+
+	public Integer getSortNum() {
+		return sortNum;
+	}
+
+	public void setSortNum(Integer sortNum) {
+		this.sortNum = sortNum;
 	}
 
 }
