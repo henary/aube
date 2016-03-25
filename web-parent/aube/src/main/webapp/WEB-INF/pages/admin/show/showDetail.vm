@@ -65,10 +65,6 @@ $.validator.setDefaults( {
 	}
 });
 $(document).ready(function () {
-	$('#showModal').on('hide.bs.modal', function () {
-		$('#showModal').removeData('bs.modal');
-	});
-		
 	$("#showForm").validate({
 		rules: {
 			showName: "required",
@@ -115,11 +111,11 @@ $(document).ready(function () {
 	$('#fileupload').fileupload({
 		url: '${basePath}common/uploadSignPicture.xhtml',
         dataType: 'json',
-       formData: {"relatedId":"$!showid","picTag":"show"},
+       formData: {"relatedId":"$!showid","fileTag":"show"},
         done: function (e, data) {
         	if (data.result.success) {
-        		$("#picInfo").val(data.result.retval.picurl)
-        		 $("#files").html($('<img>').attr("src", "${staticPath}" + data.result.retval.picurl).attr("width","160").attr("hight","90"));
+        		$("#picInfo").val(data.result.retval.fileurl)
+        		 $("#files").html($('<img>').attr("src", "${staticPath}" + data.result.retval.fileurl).attr("width","160").attr("hight","90"));
         	} else {
         		alert(data.result.errmsg);
         	}
@@ -127,6 +123,7 @@ $(document).ready(function () {
         progressall: function (e, data) {
         	$("#progress").show();
         	var progress = parseInt(data.loaded / data.total * 100, 10);
+        	$('#progress .progress-bar').html(progress + "%");
 	        $('#progress .progress-bar').css(
 	            'width',
 	            progress + '%'

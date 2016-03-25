@@ -6,11 +6,18 @@
 	<form id="videoForm" method="post" class="form-horizontal" action="">
 	<input type="hidden" name="videoid" id="videoid" value="$!videoid">
 	<input type="hidden" name="showid" id="showid" value="$!showid">
-	#set($titleDesc="期数")
+	#set($titleDesc="标题")
 	<div class="form-group">
 		<label class="col-sm-4 control-label" for="$!titleDesc">$!titleDesc</label>
 		<div class="col-sm-5">
 			<input type="text" class="form-control" id="title" name="title" value="$!info.title" placeholder="$!titleDesc" />
+		</div>
+	</div>
+	#set($sortNumDesc="期数")
+	<div class="form-group">
+		<label class="col-sm-4 control-label" for="$!sortNumDesc">$!sortNumDesc</label>
+		<div class="col-sm-5">
+			<input type="number" class="form-control" id="sortNum" name="sortNum" value="$!info.sortNum" placeholder="$!sortNumDesc" />
 		</div>
 	</div>
 	#set($playTimeDesc="播放时间")
@@ -72,9 +79,6 @@ $.validator.setDefaults( {
 	}
 });
 $(document).ready(function () {
-	$('#svideoModal').on('hide.bs.modal', function () {
-		$('#svideoModal').removeData('bs.modal');
-	});
 	$('#playTimestamp').datetimepicker({
 		language:"zh-CN",
 		format: "yyyy-mm-dd hh:ii:ss",
@@ -86,11 +90,13 @@ $(document).ready(function () {
 		rules: {
 			##playTimestamp: "required",
 			title: "required",
+			sortNum: "required",
 			picInfo: "required"
 		},
 		messages: {
 			##playTimestamp: "$!{playTimeDesc}不能为空",
 			title: "$!{titleDesc}不能为空",
+			sortNum: "$!{sortNumDesc}不能为空",
 			picInfo: "$!{picInfoDsc}不能为空"
 		},
 		errorElement: "em",
@@ -126,11 +132,11 @@ $(document).ready(function () {
 	$('#fileupload').fileupload({
 		url: '${basePath}common/uploadSignPicture.xhtml',
         dataType: 'json',
-       formData: {"relatedId":"$!videoid","picTag":"video"},
+        formData: {"relatedId":"$!videoid","fileTag":"video"},
         done: function (e, data) {
         	if (data.result.success) {
-        		$("#picInfo").val(data.result.retval.picurl)
-        		 $("#files").html($('<img>').attr("src", "${staticPath}" + data.result.retval.picurl).attr("width","160").attr("hight","90"));
+        		$("#picInfo").val(data.result.retval.fileurl)
+        		 $("#files").html($('<img>').attr("src", "${staticPath}" + data.result.retval.fileurl).attr("width","160").attr("hight","90"));
         	} else {
         		alert(data.result.errmsg);
         	}
@@ -138,6 +144,7 @@ $(document).ready(function () {
         progressall: function (e, data) {
         	$("#progress").show();
         	var progress = parseInt(data.loaded / data.total * 100, 10);
+        	$('#progress .progress-bar').html(progress + "%");
 	        $('#progress .progress-bar').css(
 	            'width',
 	            progress + '%'
