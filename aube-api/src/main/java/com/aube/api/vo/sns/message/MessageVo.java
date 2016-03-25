@@ -25,7 +25,7 @@ public class MessageVo implements GsonObject<MessageVo> {
 	private Long timestamp;
 	private String timestampStr;
 	// 消息内容
-	private String contnet;
+	private String content;
 	// 发送者头像
 	private String headImg;
 	// 用户昵称
@@ -85,14 +85,6 @@ public class MessageVo implements GsonObject<MessageVo> {
 		this.timestampStr = timestampStr;
 	}
 
-	public String getContnet() {
-		return contnet;
-	}
-
-	public void setContnet(String contnet) {
-		this.contnet = contnet;
-	}
-
 	public String getHeadImg() {
 		return headImg;
 	}
@@ -140,7 +132,16 @@ public class MessageVo implements GsonObject<MessageVo> {
 	public void setMsgId(String msgId) {
 		this.msgId = msgId;
 	}
+
 	public String toString() {
-		return JsonUtils.writeObjectToJson(this, true);
+		return JsonUtils.writeObjectToJsonWithNulls(this, true);
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 }
