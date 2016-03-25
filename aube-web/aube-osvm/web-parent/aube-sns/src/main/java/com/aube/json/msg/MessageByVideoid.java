@@ -29,7 +29,7 @@ public class MessageByVideoid extends MGObject<MessageByVideoid> {
 	private Long timestamp;
 	private String timestampStr;
 	// 消息内容
-	private String contnet;
+	private String content;
 	// 发送者头像
 	private String headImg;
 	// 用户昵称
@@ -94,14 +94,6 @@ public class MessageByVideoid extends MGObject<MessageByVideoid> {
 		this.msgType = msgType;
 	}
 
-	public String getContnet() {
-		return contnet;
-	}
-
-	public void setContnet(String contnet) {
-		this.contnet = contnet;
-	}
-
 	public String getHeadImg() {
 		return headImg;
 	}
@@ -156,6 +148,14 @@ public class MessageByVideoid extends MGObject<MessageByVideoid> {
 
 	public void setMsgId(String msgId) {
 		this.msgId = msgId;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 }

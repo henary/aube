@@ -66,7 +66,7 @@ public class RongcloudServiceImpl extends BaseService implements RongcloudServic
 				message.set_id(reqVo.getMsgUID());
 				message.setMsgId(reqVo.getMsgUID());
 				message.setVideoid(videoid);
-				message.setContnet(detail.getContent());
+				message.setContent(detail.getContent());
 				message.setMsgType(reqVo.getObjectName());
 				message.setChannelType(SnsMessageConstants.RONGCLOUD_CHANNEL_TYPE_2APP_MAP.get(reqVo.getChannelType()));
 				message.setSources(SnsMessageConstants.MESSAGE_SOURCE_RONGCLOUD);
