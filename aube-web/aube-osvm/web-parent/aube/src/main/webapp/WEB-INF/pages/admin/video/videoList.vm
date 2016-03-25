@@ -2,47 +2,67 @@
 <html lang="zh-CN">
 <head>
 #parse("include/include_head.vm")
-<title>Aube后台管理 $VmUtils.jsVersion</title>
+<title>Aube后台视频管理</title>
 </head>
 <body>
 #parse("include/include_header.vm")
 <div class="section-preview">
 	<div class="container">
-		<div class="panel panel-danger">
+		<div class="row">
+		<div class="col-sm-6 col-md-4">
+			<div class="thumbnail">
+				<img src="${staticPath}images/video/default_video.png?v=$VmUtils.jsVersion" alt="新建">
+				<div class="caption">
+					<h3>新增视频节目</h3>
+					<p></p>
+					<p><a class="btn btn-success" data-toggle='modal' data-target='#videoModal' href="${houtaiPath}admin/video/getVideoDetail.xhtml?showid=$!showid" role="button">新增</a></p>
+				</div>
+			</div>
+		</div>
+		</div>
+		#set($statusPublish={"draft":"publish","publish":"draft"})
+		#set($statusBtnDesc={"draft":"对外发布","publish":"回到草稿"})
+		#set($statusClass={"publish":"warning","draft":"success"})
+		#foreach($statusEntry in $videoStatusMap.entrySet())
+		<div class="panel panel-$!{statusClass.get($statusEntry.key)}">
 			<div class="panel-heading">
-				<h3 class="panel-title">已发布</h3>
+				<h3 class="panel-title">$!statusEntry.value</h3>
 			</div>
 			<div class="panel-body">
 		    	<div class="row">
 		    		#foreach($video in $videoList)
+		    		#if($VmUtils.equals($video.videoStatus, $statusEntry.key))
 		    		<div class="col-sm-6 col-md-4">
 						<div class="thumbnail">
 							<div class="show-list">
-								<a href="${houtaiPath}admin/video/timelineList.xhtml?videoid=$!video.videoid">
+								<a href="${houtaiPath}admin/video/timelineList.xhtml?videoid=$!video.videoid" target="_blank">
 									<img src="$!{staticPath}$!video.picInfo" alt="$video.title">
 								</a>
 							</div>
 							<div class="caption">
-								<h3>$!video.title</h3>
-								<p>$!video.playTimestamp 播</p>
-								<p><a data-toggle='modal' data-target='#videoModal' href="${houtaiPath}admin/video/getVideoDetail.xhtml?showid=$!showid&videoid=$video.realId()" class="btn btn-danger" role="button">修改</a></p>
+								<h3>$!video.title <sup class="bg-danger">#if($VmUtils.isNotBlank($video.filePath))视频已上传#end</sup></h3>
+								<p>#if($VmUtils.isNotBlank($video.playTimestamp))$!video.playTimestamp <sub>播</sub>#{else}暂无首播时间#end</p>
+								<p>
+									<a data-toggle='modal' data-target='#videoModal' href="${houtaiPath}admin/video/getVideoDetail.xhtml?showid=$!showid&videoid=$video.realId()" class="btn btn-danger" role="button">修改</a>
+									<a href="javascript:modifyVideoStatus('$!video.videoid','$statusPublish.get($video.videoStatus)')" class="btn btn-success" role="button">$!{statusBtnDesc.get($statusEntry.key)}</a>
+									
+									<span class="btn btn-warning fileinput-button">
+										<i class="glyphicon glyphicon-plus"></i>
+										<span>上传视频...</span><input type="file" name="fileupload" data-videoid="$!video.videoid">
+									</span>
+								</p>
+								<div id="$!{video.videoid}_progress" class="progress collapse">
+									<div class="progress-bar progress-bar-success progress-bar-striped"></div>
+								</div>
 							</div>
 						</div>
 					</div>
+					#end
 		    		#end
-		    		<div class="col-sm-6 col-md-4">
-						<div class="thumbnail">
-							<img src="${staticPath}images/video/default_video.png?v=$VmUtils.jsVersion" alt="新建">
-							<div class="caption">
-								<h3>新增视频节目</h3>
-								<p></p>
-								<p><a class="btn btn-success" data-toggle='modal' data-target='#videoModal' href="${houtaiPath}admin/video/getVideoDetail.xhtml?showid=$!showid" role="button">新增</a></p>
-							</div>
-						</div>
-					</div>
 		    	</div>
 	    	</div>
     	</div>
+    	#end
 	</div> 
 </div>
 <!-- Modal -->
@@ -54,7 +74,50 @@
 #parse("include/include_bottom.vm")
 <script type="text/javascript">
 $(document).ready(function () {
+	$('#videoModal').on('hide.bs.modal', function () {
+		$('#videoModal').removeData('bs.modal');
+	});
+	
+	$("input[name=fileupload]").each(function(i, item){
+		$(item).fileupload({
+			url: '${basePath}admin/upload/video/uploadSignVideo.xhtml',
+	        dataType: 'json',
+	        formData: {"relatedId":$(item).attr("data-videoid"),"fileTag":"video","fileType":"video"},
+	        done: function (e, data) {
+	        	if (data.result.success) {
+	        		$("#picInfo").val(data.result.retval.fileurl)
+	        	} else {
+	        		alert(data.result.errmsg);
+	        	}
+	        },
+	        progressall: function (e, data) {
+	        	$("#" + $(item).attr("data-videoid")  + "_progress").show();
+	        	var progress = parseInt(data.loaded / data.total * 100, 10);
+	        	$("#" + $(item).attr("data-videoid")  + "_progress .progress-bar").html(progress + "%");
+		        $("#" + $(item).attr("data-videoid")  + "_progress .progress-bar").css(
+		            'width',
+		            progress + '%'
+		        );
+		    }
+	    }).prop('disabled', !$.support.fileInput)
+	        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	});
 });
+
+function modifyVideoStatus(videoid, status) {
+	var params = {};
+	params['videoid'] = videoid;
+	params['status'] = status;
+	$.post('${houtaiPath}admin/video/modifyStatus.xhtml',params,function(result){
+		eval(result);
+		if(data.success) {
+			location.reload();
+		} else {
+			alert(data.errmsg);
+			return false;
+		}
+	});
+}
 </script>
 </body>
 </html>

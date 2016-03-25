@@ -2,13 +2,25 @@
 <html lang="zh-CN">
 <head>
 #parse("include/include_head.vm")
-<title>Aube后台管理</title>
+<title>Aube后台节目管理</title>
 </head>
 <body>
 #parse("include/include_header.vm")
 <div class="section-preview">
 	<div class="container">
 		<div class="row" >
+			<div class="col-sm-6 col-md-4">
+				<div class="thumbnail">
+					<a class="btn" data-toggle='modal' data-target='#showModal' href="${houtaiPath}admin/show/getShowDetail.xhtml" role="button">
+						<img src="${staticPath}images/video/default_show.png?v=$!VmUtils.jsVersion" alt="新建">
+					</a>
+					<div class="caption">
+						<h3>新增节目单</h3>
+						<p></p>
+						<p><a class="btn btn-success" data-toggle='modal' data-target='#showModal' href="${houtaiPath}admin/show/getShowDetail.xhtml" role="button">新增</a></p>
+					</div>
+				</div>
+			</div>
     	</div>
     	<div class="row">
     		#foreach($show in $showList)
@@ -27,18 +39,6 @@
 				</div>
 			</div>
     		#end
-    		<div class="col-sm-6 col-md-4">
-				<div class="thumbnail">
-					<a class="btn" data-toggle='modal' data-target='#showModal' href="${houtaiPath}admin/show/getShowDetail.xhtml" role="button">
-						<img src="${staticPath}images/video/default_show.png?v=$!VmUtils.jsVersion" alt="新建">
-					</a>
-					<div class="caption">
-						<h3>新增节目单</h3>
-						<p></p>
-						<p><a class="btn btn-success" data-toggle='modal' data-target='#showModal' href="${houtaiPath}admin/show/getShowDetail.xhtml" role="button">新增</a></p>
-					</div>
-				</div>
-			</div>
     	</div>
 	</div> 
 </div>
@@ -51,6 +51,9 @@
 #parse("include/include_bottom.vm")
 <script type="text/javascript">
 $(document).ready(function () {
+	$('#showModal').on('hide.bs.modal', function () {
+		$('#showModal').removeData('bs.modal');
+	});
 });
 </script>
 </body>
