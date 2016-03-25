@@ -24,5 +24,5 @@ public interface MsgPraiseVoService {
 	 * @param maxnum
 	 * @return
 	 */
-	ResultCode<List<MessageVo>> getMssageList(String groupId, Integer from, Integer maxnum);
+	ResultCode<List<MessageVo>> getMssageListByGroupId(String groupId, Integer from, Integer maxnum);
 }
