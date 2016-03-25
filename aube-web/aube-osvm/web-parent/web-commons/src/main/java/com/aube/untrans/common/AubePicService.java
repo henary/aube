@@ -21,4 +21,13 @@ public interface AubePicService {
 	 */
 	ResultCode<PicInfoRespVo> saveToTempPic(MultipartFile file, String picTag, String relaredId);
 
+	/**
+	 * 上传视频文件到服务器
+	 * @param file
+	 * @param videoTag
+	 * @param relatedId
+	 * @return
+	 */
+	ResultCode<PicInfoRespVo> saveToTempVideo(MultipartFile file, String videoTag, String relatedId);
+
 }
