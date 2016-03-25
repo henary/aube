@@ -41,7 +41,7 @@ public class AdminChatAppInfoController extends AubeSnsBaseController {
 		}
 		ChatAppInfo appInfo = mongoService.getObjectById(ChatAppInfo.class, MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM, snsConfig.getContent());
 		configCenter.refresh(Config.SYSTEMID, ConfigKey.KEY_LOCAL_SNSCONFIG);
-		return JsonUtils.writeGson(appInfo, true);
+		return JsonUtils.writeGsonWithPretty(appInfo, true);
 	}
 	@RequestMapping("/admin/chat/setAppinfo.xhtml")
 	@ResponseBody
@@ -49,13 +49,13 @@ public class AdminChatAppInfoController extends AubeSnsBaseController {
 		ChatAppInfo appInfo = new ChatAppInfo(appSource, appKey, appSecret);
 		appInfo.setMaxRunners(maxRunners == null ? ChatConstants.DEFAULT_GROUP_MAX_RUNNERS : maxRunners);
 		mongoService.saveOrUpdateObject(appInfo, MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM);
-		return JsonUtils.writeGson(appInfo, true);
+		return JsonUtils.writeGsonWithPretty(appInfo, true);
 	}
 
 	@RequestMapping("/admin/chat/appinfoList.xhtml")
 	@ResponseBody
 	public String chatAppInfoList() {
 		List<ChatAppInfo> appInfoList = mongoService.getObjectList(ChatAppInfo.class);
-		return JsonUtils.writeGson(appInfoList, true);
+		return JsonUtils.writeGsonWithPretty(appInfoList, true);
 	}
 }
