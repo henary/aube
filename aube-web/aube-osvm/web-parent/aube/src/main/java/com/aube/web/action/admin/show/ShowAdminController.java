@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aube.constans.MongoData;
-import com.aube.constant.ShowErrorCodeConstants;
 import com.aube.json.show.ShowInfo;
 import com.aube.mdb.operation.Expression;
 import com.aube.support.ResultCode;
@@ -76,14 +75,5 @@ public class ShowAdminController extends BaseAdminController {
 		info.setUpdTime(DateUtil.getCurFullTimestampStr());
 		mongoService.saveOrUpdateObject(info, ShowInfo.SHOW_ID);
 		return result2Json(ResultCode.SUCCESS);
-	}
-
-	private ResultCode<ShowInfo> getShowInfoById(String showid, HttpServletRequest request) {
-		ShowInfo show = mongoService.getObjectById(ShowInfo.class, ShowInfo.SHOW_ID, showid);
-		if (show == null) {
-			return ResultCode.<ShowInfo> getFailure(ShowErrorCodeConstants.CODE_SHOW_NOT_EXITS);
-		}
-		// TODO 判断是否属于登录帐号的appkey ShowErrorCodeConstants.CODE_SHOW_NO_OPERA_AUTH
-		return ResultCode.<ShowInfo> getSuccessReturn(show);
 	}
 }

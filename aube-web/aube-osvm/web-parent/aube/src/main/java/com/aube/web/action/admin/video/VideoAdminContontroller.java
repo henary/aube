@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aube.constans.MongoData;
-import com.aube.constant.ShowErrorCodeConstants;
 import com.aube.constants.AubeConstants;
 import com.aube.json.show.ShowInfo;
 import com.aube.json.video.VideoInfo;
@@ -34,9 +33,12 @@ import com.aube.web.action.admin.BaseAdminController;
 @Controller
 public class VideoAdminContontroller extends BaseAdminController {
 	@RequestMapping("/admin/video/list.xhtml")
-	public String showlist(String showid, ModelMap model) {
-		ShowInfo show = mongoService.getObjectById(ShowInfo.class, ShowInfo.SHOW_ID, showid);
-		model.put("show", show);
+	public String showlist(String showid, HttpServletRequest request, ModelMap model) {
+		ResultCode<ShowInfo> showCode = getShowInfoById(showid, request);
+		if (!showCode.isSuccess()) {
+			// TODO 
+		}
+		model.put("show", showCode.getRetval());
 		Expression params = new Expression();
 		params.eq(VideoInfo.SHOW_ID, showid);
 		List<VideoInfo> videoList = mongoService.getObjectList(VideoInfo.class, params);
@@ -91,21 +93,14 @@ public class VideoAdminContontroller extends BaseAdminController {
 		return result2Json(ResultCode.SUCCESS);
 	}
 
-	private ResultCode<VideoInfo> getVideoInfoById(String videoid, HttpServletRequest request) {
-		VideoInfo video = mongoService.getObjectById(VideoInfo.class, VideoInfo.VIDEO_ID, videoid);
-		if (video == null) {
-			return ResultCode.<VideoInfo> getFailure(ShowErrorCodeConstants.CODE_SHOW_NOT_EXITS);
-		}
-		// TODO 判断是否属于登录帐号的appkey ShowErrorCodeConstants.CODE_SHOW_NO_OPERA_AUTH
-		return ResultCode.<VideoInfo> getSuccessReturn(video);
-	}
+	
 	
 	@RequestMapping("/admin/video/modifyStatus.xhtml")
 	@ResponseBody
 	public String modifyStatus(String videoid, String status, HttpServletRequest request) {
-		VideoInfo info = mongoService.getObjectById(VideoInfo.class, VideoInfo.VIDEO_ID, videoid);
-		if (info == null) {
-			return result2Json(ResultCode.getFailure(ShowErrorCodeConstants.CODE_VIDEO_NOT_EXITS));
+		ResultCode<VideoInfo> videoCode = getVideoInfoById(videoid, request);
+		if (!videoCode.isSuccess()) {
+			return result2Json(videoCode);
 		}
 		// TODO 所属用户判断
 		mongoService.execUpdate(BuilderUtils.prepareUpdate(VideoInfo.class)
