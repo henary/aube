@@ -16,6 +16,7 @@ import com.aube.json.msg.MessageByVideoid;
 import com.aube.mdb.operation.Expression;
 import com.aube.service.BaseService;
 import com.aube.support.ResultCode;
+import com.aube.util.BeanUtil;
 import com.aube.util.VoCopyUtil;
 
 public class MsgPraiseVoServiceImpl extends BaseService implements MsgPraiseVoService {
@@ -55,6 +56,16 @@ public class MsgPraiseVoServiceImpl extends BaseService implements MsgPraiseVoSe
 	public ResultCode<List<MessageVo>> getMssageList(String groupId, Integer from, Integer maxnum) {
 		Expression params = new Expression();
 		List<MessageByVideoid> messageList = mongoService.getObjectList(MessageByVideoid.class, params, "timestamp", false, from, maxnum);
-		return VoCopyUtil.copyListProperties(MessageVo.class, messageList);
+		List<MessageVo> msgVoList = new ArrayList<MessageVo>(messageList.size());
+		for (MessageByVideoid msg : messageList) {
+			MessageVo vo = new MessageVo();
+			BeanUtil.copyProperties(vo, msg);
+			vo.setMsgId(msg.realId()+"");
+			msgVoList.add(vo);
+		}
+		// TODO 后期数据升级改用该方法
+		/*return  VoCopyUtil.copyListProperties(MessageVo.class, messageList);
+		 */
+		return ResultCode.<List<MessageVo>>getSuccessReturn(msgVoList);
 	}
 }
