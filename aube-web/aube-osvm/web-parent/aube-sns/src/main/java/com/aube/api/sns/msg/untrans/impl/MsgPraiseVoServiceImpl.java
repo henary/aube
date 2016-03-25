@@ -63,9 +63,6 @@ public class MsgPraiseVoServiceImpl extends BaseService implements MsgPraiseVoSe
 			vo.setMsgId(msg.realId()+"");
 			msgVoList.add(vo);
 		}
-		// TODO 后期数据升级改用该方法
-		/*return  VoCopyUtil.copyListProperties(MessageVo.class, messageList);
-		 */
-		return ResultCode.<List<MessageVo>>getSuccessReturn(msgVoList);
+		return  VoCopyUtil.copyListProperties(MessageVo.class, messageList);
 	}
 }
