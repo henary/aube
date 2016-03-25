@@ -2,6 +2,7 @@ package com.aube.api.sns.msg.untrans;
 
 import java.util.List;
 
+import com.aube.api.vo.sns.message.MessageVo;
 import com.aube.api.vo.sns.msgpraise.MsgPraiseRespVo;
 import com.aube.support.ResultCode;
 
@@ -15,4 +16,13 @@ public interface MsgPraiseVoService {
 	 * @return
 	 */	
 	ResultCode<List<MsgPraiseRespVo>> getMsgPraiseList(String videoid, Integer from, Integer maxnum);
+
+	/**
+	 * 获取消息列表
+	 * @param groupId
+	 * @param from
+	 * @param maxnum
+	 * @return
+	 */
+	ResultCode<List<MessageVo>> getMssageList(String groupId, Integer from, Integer maxnum);
 }
