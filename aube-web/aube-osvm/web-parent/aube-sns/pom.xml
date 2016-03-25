@@ -19,6 +19,6 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>aube-sns</finalName>
+    <finalName>aubesns</finalName>
   </build>
 </project>
