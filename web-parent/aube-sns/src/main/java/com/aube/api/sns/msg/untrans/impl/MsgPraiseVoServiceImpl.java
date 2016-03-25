@@ -53,7 +53,7 @@ public class MsgPraiseVoServiceImpl extends BaseService implements MsgPraiseVoSe
 	}
 	
 	@Override
-	public ResultCode<List<MessageVo>> getMssageList(String groupId, Integer from, Integer maxnum) {
+	public ResultCode<List<MessageVo>> getMssageListByGroupId(String groupId, Integer from, Integer maxnum) {
 		Expression params = new Expression();
 		List<MessageByVideoid> messageList = mongoService.getObjectList(MessageByVideoid.class, params, "timestamp", false, from, maxnum);
 		List<MessageVo> msgVoList = new ArrayList<MessageVo>(messageList.size());
