@@ -31,4 +31,5 @@ public class MsgListController extends AubeSnsBaseController {
 		List<MessageByVideoid> messageList = mongoService.getObjectList(MessageByVideoid.class, params, "timestamp", true, from, maxnum);
 		return JsonUtils.writeGsonWithPretty(messageList, true);
 	}
+	
 }
