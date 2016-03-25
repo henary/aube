@@ -31,6 +31,7 @@ public class AubePicServiceImpl implements AubePicService, InitializingBean {
 	@Qualifier("config")
 	private Config config;
 	private ConcurrentMap<String, String> PIC_TEMP_PATH = new ConcurrentHashMap<String, String>();
+	private String videoPath;
 
 	private static final List<String> PIC_TAG_LIST = Arrays.asList(new String[] { "show", "video" });
 
@@ -47,9 +48,33 @@ public class AubePicServiceImpl implements AubePicService, InitializingBean {
 			File upfile = new File(PIC_TEMP_PATH.get(picTag), fileName);
 			file.transferTo(upfile);
 			PicInfoRespVo respVo = PictureUtils.getPicDim(PIC_TEMP_PATH.get(picTag) + fileName);
-			respVo.setPicurl(PictureUtils.getCommonPicpath(picTag) + fileName);
-			respVo.setPicRelatedId(relatedId);
-			respVo.setPicTag(picTag);
+			respVo.setFileurl(PictureUtils.getCommonPicpath(picTag) + fileName);
+			respVo.setRelatedId(relatedId);
+			respVo.setFileTag(picTag);
+			respVo.setFileType("pic");
+			respVo.setExtname(extname);
+			return ResultCode.<PicInfoRespVo> getSuccessReturn(respVo);
+		} catch (Exception e) {
+			logger.error(e, 20);
+			return ResultCode.<PicInfoRespVo> getFailure(ErrorCodeConstant.CODE_UNKNOWN_ERROR, e.getMessage());
+		}
+	}
+	
+	
+	@Override
+	public ResultCode<PicInfoRespVo> saveToTempVideo(MultipartFile file, String videoTag, String relatedId) {
+		try {
+			String extname = StringUtil.getFilenameExtension(file.getOriginalFilename());
+			String fileName = relatedId + "." + extname;
+			File upfile = new File(videoPath, fileName);
+			file.transferTo(upfile);
+			PicInfoRespVo respVo = new PicInfoRespVo();
+			respVo.setFileurl(PictureUtils.getVideopath() + fileName);
+			respVo.setRelatedId(relatedId);
+			respVo.setFileTag(videoTag);
+			respVo.setFileType("video");
+			respVo.setExtname(extname);
+			// TODO 时长&&切割视频&上传到cc视频
 			return ResultCode.<PicInfoRespVo> getSuccessReturn(respVo);
 		} catch (Exception e) {
 			logger.error(e, 20);
@@ -67,5 +92,10 @@ public class AubePicServiceImpl implements AubePicService, InitializingBean {
 			}
 			PIC_TEMP_PATH.put(str, tmpFile.getAbsolutePath());
 		}
+		File videoTempFile = new File(picPath, PictureUtils.getVideopath());
+		if (!videoTempFile.exists()) {
+			videoTempFile.mkdirs();
+		}
+		videoPath = videoTempFile.getAbsolutePath();
 	}
 }

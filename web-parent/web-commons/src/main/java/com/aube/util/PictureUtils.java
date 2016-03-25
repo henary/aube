@@ -68,6 +68,10 @@ public class PictureUtils {
 	}
 
 	public static String getCommonPicpath(String picTag) {
-		return "images/" + DateUtil.format(DateUtil.getCurDate(), "yyyyMM") + "/common/" + picTag + "/";
+		return "images/" + DateUtil.format(DateUtil.getCurDate(), "yyyyMM") + "/" + picTag + "/";
+	}
+	
+	public static String getVideopath() {
+		return "videos/" + DateUtil.format(DateUtil.getCurDate(), "yyyyMM") + "/video/";
 	}
 }

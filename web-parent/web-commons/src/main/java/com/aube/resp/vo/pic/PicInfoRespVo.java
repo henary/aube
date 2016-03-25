@@ -12,10 +12,17 @@ public class PicInfoRespVo implements GsonObject<PicInfoRespVo> {
 	// 图片宽度
 	private Integer width;
 	// 图片的频道（show、video）
-	private String picTag;
+	private String fileTag;
 	// 关联的ID
-	private String picRelatedId;
-	private String picurl;
+	private String relatedId;
+	// 文件路径
+	private String fileurl;
+	// 文件扩展名
+	private String extname;
+	// 文件类型
+	private String fileType;
+	// 音频&视频文件时长(秒)
+	private Integer duration;
 
 	public Integer getHeight() {
 		return height;
@@ -33,28 +40,52 @@ public class PicInfoRespVo implements GsonObject<PicInfoRespVo> {
 		this.width = width;
 	}
 
-	public String getPicTag() {
-		return picTag;
+	public String getFileTag() {
+		return fileTag;
 	}
 
-	public void setPicTag(String picTag) {
-		this.picTag = picTag;
+	public void setFileTag(String fileTag) {
+		this.fileTag = fileTag;
 	}
 
-	public String getPicRelatedId() {
-		return picRelatedId;
+	public String getRelatedId() {
+		return relatedId;
 	}
 
-	public void setPicRelatedId(String picRelatedId) {
-		this.picRelatedId = picRelatedId;
+	public void setRelatedId(String relatedId) {
+		this.relatedId = relatedId;
 	}
 
-	public String getPicurl() {
-		return picurl;
+	public String getExtname() {
+		return extname;
 	}
 
-	public void setPicurl(String picurl) {
-		this.picurl = picurl;
+	public void setExtname(String extname) {
+		this.extname = extname;
+	}
+
+	public String getFileType() {
+		return fileType;
+	}
+
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
+	}
+
+	public String getFileurl() {
+		return fileurl;
+	}
+
+	public void setFileurl(String fileurl) {
+		this.fileurl = fileurl;
+	}
+
+	public Integer getDuration() {
+		return duration;
+	}
+
+	public void setDuration(Integer duration) {
+		this.duration = duration;
 	}
 
 }
