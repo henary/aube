@@ -46,7 +46,7 @@ public class MsgPraiseController extends AubeH5BaseController {
 	@RequestMapping("/msgbygroupid.xhtml")
 	@ResponseBody
 	public String msgbygroupid(String groupid) {
-		ResultCode<List<MessageVo>>  msgListCode = msgPraiseVoService.getMssageList(groupid, 0, 1);
+		ResultCode<List<MessageVo>>  msgListCode = msgPraiseVoService.getMssageListByGroupId(groupid, 0, 1);
 		return JsonUtils.writeGsonWithPretty(msgListCode, true);
 	}
 }
