@@ -1,5 +1,6 @@
 package com.aube.api.vo.sns.message;
 
+import com.aube.util.JsonUtils;
 import com.aube.vo.GsonObject;
 
 /***
@@ -139,5 +140,7 @@ public class MessageVo implements GsonObject<MessageVo> {
 	public void setMsgId(String msgId) {
 		this.msgId = msgId;
 	}
-
+	public String toString() {
+		return JsonUtils.writeObjectToJson(this, true);
+	}
 }
