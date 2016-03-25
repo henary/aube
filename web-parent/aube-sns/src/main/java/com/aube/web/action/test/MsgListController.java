@@ -20,7 +20,7 @@ public class MsgListController extends AubeSnsBaseController {
 		Expression params = new Expression();
 		params.eq("toUserId", groupid);
 		List<MessageByVideoid> messageList = mongoService.getObjectList(MessageByVideoid.class, params);
-		return JsonUtils.writeGson(messageList, true);
+		return JsonUtils.writeGsonWithPretty(messageList, true);
 	}
 	
 	
@@ -29,6 +29,6 @@ public class MsgListController extends AubeSnsBaseController {
 	public String allmsglist(Integer from, Integer maxnum) {
 		Expression params = new Expression();
 		List<MessageByVideoid> messageList = mongoService.getObjectList(MessageByVideoid.class, params, "timestamp", true, from, maxnum);
-		return JsonUtils.writeGson(messageList, true);
+		return JsonUtils.writeGsonWithPretty(messageList, true);
 	}
 }
