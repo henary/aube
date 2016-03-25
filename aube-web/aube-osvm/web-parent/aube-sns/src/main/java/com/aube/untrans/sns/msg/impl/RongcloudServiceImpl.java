@@ -82,7 +82,7 @@ public class RongcloudServiceImpl extends BaseService implements RongcloudServic
 
 				mongoService.execUpdate(BuilderUtils.prepareUpdate(MessageByVideoid.class)
 						.setCondition(new Expression().eq(MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM, detail.getContent())).setUpdateFirst(true)
-						.setInsert4NotFind(true).addData2Inc("praiseCount", 1));
+						.setInsert4NotFind(false).addData2Inc("praiseCount", 1));
 			}
 
 		}
