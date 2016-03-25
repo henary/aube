@@ -10,7 +10,7 @@ public class JsonUtils {
 	}
 	
 	
-	public static <T> String writeObjectToJson(T gsonObj, boolean serializeNulls) {
+	public static <T> String writeObjectToJsonWithNulls(T gsonObj, boolean serializeNulls) {
 		return writeGson(gsonObj, false, serializeNulls);
 	}
 	
@@ -19,7 +19,7 @@ public class JsonUtils {
 	}
 	
 	
-	public static <T> String writeGson(T gsonObj, boolean pretty) {
+	public static <T> String writeGsonWithPretty(T gsonObj, boolean pretty) {
 		return writeGson(gsonObj, pretty, false);
 	}
 	
