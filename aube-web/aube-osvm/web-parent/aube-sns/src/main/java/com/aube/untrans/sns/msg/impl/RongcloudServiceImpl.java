@@ -76,6 +76,7 @@ public class RongcloudServiceImpl extends BaseService implements RongcloudServic
 				message.setTimestampStr(DateUtil.formatTimestamp(reqVo.getMsgTimestamp()));
 				message.setFromUserId(reqVo.getFromUserId());
 				message.setToUserId(reqVo.getToUserId());
+				message.setNickname(detail.getExtra().getNickname());
 				mongoService.saveOrUpdateObject(message, MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM);
 			} else if (StringUtils.equals(detail.getExtra().getMsgType(), SnsMessageConstants.MESSAGE_TYPE_LIKE)) {
 				// addData2Inc
