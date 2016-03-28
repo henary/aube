@@ -20,8 +20,12 @@ public class VideoInfo extends AdminBaseMgObject<VideoInfo> {
 	private String videoid;
 	// 节目ID
 	private String showid;
-	// 标题
+	// 镜头标题
 	private String title;
+	// 视频标题
+	private String videoTitle;
+	// 视频描述
+	private String videoDesc;
 	// 第几期
 	private Integer sortNum;
 	// 播放时间戳yyyy-MM-dd HH:mm:ss
@@ -115,6 +119,22 @@ public class VideoInfo extends AdminBaseMgObject<VideoInfo> {
 
 	public void setSortNum(Integer sortNum) {
 		this.sortNum = sortNum;
+	}
+
+	public String getVideoTitle() {
+		return videoTitle;
+	}
+
+	public void setVideoTitle(String videoTitle) {
+		this.videoTitle = videoTitle;
+	}
+
+	public String getVideoDesc() {
+		return videoDesc;
+	}
+
+	public void setVideoDesc(String videoDesc) {
+		this.videoDesc = videoDesc;
 	}
 
 }
