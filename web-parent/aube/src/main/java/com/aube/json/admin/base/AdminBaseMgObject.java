@@ -7,6 +7,7 @@ public class AdminBaseMgObject<T> extends MGObject<T> {
 	 * 
 	 */
 	private static final long serialVersionUID = -304669775445588839L;
+	public static final String SORT_KEY_ADDTIME = "addTime";
 	// 节目的appkey
 	private String appKey;
 	// groupId

@@ -1,0 +1,27 @@
+#set($textMap={"tlTitle":"标题","tlDesc":"注释"})
+#foreach($entry in $textMap.entrySet())
+<div class="form-group">
+	<label class="col-sm-4 control-label" for="$entry.value">$entry.value</label>
+	<div class="col-sm-5">
+		<input type="text" class="form-control" id="$entry.key" name="$entry.key" value="$!info.get($entry.key)" placeholder="$!entry.value" />
+	</div>
+</div>
+#end
+<div class="form-group">
+	<label class="col-sm-4 control-label" for="开始时间">开始时间</label>
+	<div class="col-sm-3">
+		<input type="number" max="$duration" maxlength="3" class="form-control" id="startMin" name="startMin" value="$!info.startMin" placeholder="开始分" />
+	</div>
+	<div class="col-sm-3">
+		<input type="number" max="59" maxlength="2" class="form-control" id="startSec" name="startSec" value="$!info.startSec" placeholder="开始秒" />
+	</div>
+</div>
+<div class="form-group">
+	<label class="col-sm-4 control-label" for="结束时间">结束时间</label>
+	<div class="col-sm-3">
+		<input type="number" max="$duration" maxlength="3" class="form-control" id="endMin" name="endMin" value="$!info.endMin" placeholder="结束分" />
+	</div>
+	<div class="col-sm-3">
+		<input type="number" max="59" maxlength="2" class="form-control" id="endSec" name="endSec" value="$!info.endSec" placeholder="结束秒" />
+	</div>
+</div>

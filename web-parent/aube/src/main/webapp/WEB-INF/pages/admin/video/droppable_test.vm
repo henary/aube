@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+#parse("include/include_head.vm")
+<title>Aube后台节目管理</title>
+</head>
+<body>
+#parse("include/include_header.vm")
+<div class="section-preview">
+	<div class="container">
+		<div id="draggable2" class="draggable">
+		<p>I revert when I'm not dropped</p>
+	</div>
+
+	<div id="droppable" class="droppable">
+		<p>Drop me here</p>
+	</div>
+	</div> 
+</div>
+<!-- Modal -->
+<div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="showModalLabel"  aria-hidden="false" >
+	<div class="modal-dialog" role="document">
+		<div class="modal-content"></div>
+	</div>
+</div>
+#parse("include/include_bottom.vm")
+<script type="text/javascript">
+$(document).ready(function () {
+	$('#showModal').on('hide.bs.modal', function () {
+		$('#showModal').removeData('bs.modal');
+	});
+	$( "#draggable2" ).draggable({cursor: "move"});
+	$( "#droppable" ).droppable({
+	activeClass: "ui-state-hover",
+	hoverClass: "ui-state-active",
+	drop: function( event, ui ) {
+	$( this )
+	.addClass( "ui-state-highlight" )
+	.find( "p" )
+	.html( "Dropped!" );
+	}
+	});
+});
+</script>
+</body>
+</html>

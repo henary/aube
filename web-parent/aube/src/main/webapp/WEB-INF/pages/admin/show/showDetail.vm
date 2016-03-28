@@ -4,8 +4,8 @@
 <div class="modal-body" id="modalbody">
 	<form id="showForm" method="post" class="form-horizontal" action="">
 	<input type="hidden" name="showid" id="showid" value="$!showid">
-	#set($map={"showName":"节目名称","showDesc":"节目描述","showColor":"节目颜色","sortNum":"节目排序"})
-	#foreach($entry in $map.entrySet())
+	#set($textMap={"showName":"节目名称","showDesc":"节目描述","showColor":"节目颜色"})
+	#foreach($entry in $textMap.entrySet())
 	<div class="form-group">
 		<label class="col-sm-4 control-label" for="$entry.value">$entry.value</label>
 		<div class="col-sm-5">
@@ -67,16 +67,14 @@ $.validator.setDefaults( {
 $(document).ready(function () {
 	$("#showForm").validate({
 		rules: {
-			showName: "required",
-			showColor: "required",
-			sortNum: "required",
-			picInfo: "required"
+			#foreach($entry in $textMap.entrySet())
+				$entry.key:"required",
+			#end
 		},
 		messages: {
-			showName: "节目名称不能为空",
-			showColor: "节目主题颜色不能为空",
-			sortNum: "节目排序不能为空",
-			picInfo: "节目背景图不能为空"
+			#foreach($entry in $textMap.entrySet())
+				$entry.key:"$!{entry.value}不能为空",
+			#end
 		},
 		errorElement: "em",
 		errorPlacement: function ( error, element ) {
