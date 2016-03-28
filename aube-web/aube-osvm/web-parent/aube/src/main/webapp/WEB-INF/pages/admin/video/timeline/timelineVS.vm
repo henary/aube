@@ -1,25 +1,39 @@
 <div class="modal-header item-model">
 	<h2 class="modal-title icon_VS" id="myModalLabel">添加修改VS消息</h2>
-	<span>基础信息</span>
+	<span class="modal-info-subtitle">基础信息</span>
 </div>
 <div class="modal-body" id="modalbody">
 	<form id="timelineForm" method="post" class="form-horizontal" action="">
-	<input type="hidden" name="tlid" id="tlid" value="$!tlid">
 	#parse("admin/video/timeline/timeline_common.vm")
-	<span>扩展信息</span>
+	<span class="modal-info-subtitle">扩展信息</span>
 	<hr>
-	<div class="form-group">
-		<label class="col-sm-4 control-label" for="$entry.value">选项</label>
-		<div class="col-sm-5">
-			<input type="text" class="form-control" name="vsOption" value="$!info.get($entry.key)" placeholder="$!entry.value" />
+	#set($opiontsText="选项")
+	#if(!$VmUtils.isEmptyList($extraList))
+		#foreach($extarVs in $extraList)
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="$opiontsText">$opiontsText</label>
+			<div class="col-sm-5">
+				<input type="text" class="form-control" name="options" value="$!extarVs.option" placeholder="$opiontsText" />
+			</div>
+			<div class="col-sm-2">
+				<input type="number" class="form-control" id="extraSortNum_$i" name="extraSortNum" value="" placeholder="排序" />
+			</div>
 		</div>
-	</div>
-	<div class="form-group">
-		<label class="col-sm-4 control-label" for="$entry.value">选项</label>
-		<div class="col-sm-5">
-			<input type="text" class="form-control" name="vsOption" value="$!info.get($entry.key)" placeholder="$!entry.value" />
+		#end
+	#else
+		#foreach($i in [1..2])
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="$opiontsText">$opiontsText</label>
+			<div class="col-sm-5">
+				<input type="text" class="form-control" id="options_$i" name="options" value="" placeholder="$opiontsText" />
+			</div>
+			<div class="col-sm-2">
+				<input type="number" class="form-control" id="extraSortNum_$i" name="extraSortNum" value="" placeholder="排序" />
+			</div>
 		</div>
-	</div>
+		#end
+	#end
+	
 	<div class="modal-footer ">
 		<div class="col-sm-9 col-sm-offset-4 alert-dismissible">
 			<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
@@ -31,8 +45,12 @@
 <script type="text/javascript">
 $.validator.setDefaults({
 	submitHandler: function (form) {
+		if ($("#picInfo").val() == '') {
+			alert("请上传图片")
+			return false;
+		}
 		var params = $(form).serialize();
-		$.post('${houtaiPath}admin/video/saveVideo.xhtml',params,function(result){
+		$.post('${houtaiPath}admin/video/saveTimelineVS.xhtml',params,function(result){
 			eval(result);
 			if(data.success) {
 				location.reload();
@@ -44,10 +62,36 @@ $.validator.setDefaults({
 	}
 });
 $(document).ready(function () {
+	$('#fileupload').fileupload({
+		url: '${basePath}common/uploadSignPicture.xhtml',
+        dataType: 'json',
+        formData: {"relatedId":"$!videoid","fileTag":"video"},
+        done: function (e, data) {
+        	if (data.result.success) {
+        		$("#picInfo").val(data.result.retval.fileurl)
+        		 $("#files").html($('<img>').attr("src", "${staticPath}" + data.result.retval.fileurl).attr("width","160").attr("hight","90"));
+        	} else {
+        		alert(data.result.errmsg);
+        	}
+        },
+        progressall: function (e, data) {
+        	$("#progress").show();
+        	var progress = parseInt(data.loaded / data.total * 100, 10);
+        	$('#progress .progress-bar').html(progress + "%");
+	        $('#progress .progress-bar').css(
+	            'width',
+	            progress + '%'
+	        );
+	    }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
 	$("#timelineForm").validate({
 		rules: {
 			tlTitle: "required",
 			tlDesc: "required",
+			options:"required",
+			picInfo: "required",
 			startMin: {
 				required:true,
 				maxlength:3,
@@ -72,6 +116,7 @@ $(document).ready(function () {
 		messages: {
 			tlTitle: "标题不能为空",
 			tlDesc: "注释不能为空",
+			picInfo: "图片不能为空",
 			startMin: {
 				required:"开始分不能为空",
 				max:"开始分不能大于视频时长",
@@ -91,12 +136,13 @@ $(document).ready(function () {
 				required:"结束秒不能为空",
 				max:"结束秒不能大于59",
 				maxlength:"结束秒不能超出2位数"
-			}
+			},
+			options:"选项不能为空"
 		},
 		errorElement: "em",
 		errorPlacement: function ( error, element ) {
 			error.addClass( "help-block" );
-			element.parents( ".col-sm-5" ).addClass( "has-feedback" );
+			element.parents( ".col-sm-6" ).addClass( "has-feedback" );
 			element.parents( ".col-sm-3" ).addClass( "has-feedback" );
 
 			if ( element.prop( "type" ) === "checkbox" ) {
@@ -114,12 +160,12 @@ $(document).ready(function () {
 			}
 		},
 		highlight: function ( element, errorClass, validClass ) {
-			$( element ).parents( ".col-sm-5" ).addClass( "has-error" ).removeClass( "has-success" );
+			$( element ).parents( ".col-sm-6" ).addClass( "has-error" ).removeClass( "has-success" );
 			$( element ).parents( ".col-sm-3" ).addClass( "has-error" ).removeClass( "has-success" );
 			$( element ).next( "span" ).addClass( "glyphicon-remove" ).removeClass( "glyphicon-ok" );
 		},
 		unhighlight: function ( element, errorClass, validClass ) {
-			$( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-error" );
+			$( element ).parents( ".col-sm-6" ).addClass( "has-success" ).removeClass( "has-error" );
 			$( element ).parents( ".col-sm-3" ).addClass( "has-success" ).removeClass( "has-error" );
 			$( element ).next( "span" ).addClass( "glyphicon-ok" ).removeClass( "glyphicon-remove" );
 		}

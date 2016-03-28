@@ -8,8 +8,10 @@
 #parse("include/include_header.vm")
 <div class="section-preview">
 	<div class="container">
-		<div class="row">
-		</div>
+		<ol class="breadcrumb">
+			<li><a href="${basePath}admin/show/list.xhtml">Aube 首页</a></li>
+  			<li class="active">$!show.showName</li>
+		</ol>
 		#set($statusPublish={"draft":"publish","publish":"draft"})
 		#set($statusBtnDesc={"draft":"对外发布","publish":"回到草稿"})
 		#set($statusClass={"publish":"warning","draft":"success"})

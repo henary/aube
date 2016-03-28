@@ -6,13 +6,15 @@
 	<form id="videoForm" method="post" class="form-horizontal" action="">
 	<input type="hidden" name="videoid" id="videoid" value="$!videoid">
 	<input type="hidden" name="showid" id="showid" value="$!showid">
-	#set($titleDesc="标题")
+	#set($textMap={"videoTitle":"视频标题","videoDesc":"视频描述","title":"主镜头标题"})
+	#foreach($entry in $textMap.entrySet())
 	<div class="form-group">
-		<label class="col-sm-4 control-label" for="$!titleDesc">$!titleDesc</label>
+		<label class="col-sm-4 control-label" for="$!entry.value">$!entry.value</label>
 		<div class="col-sm-5">
-			<input type="text" class="form-control" id="title" name="title" value="$!info.title" placeholder="$!titleDesc" />
+			<input type="text" class="form-control" id="$!entry.key" name="$!entry.key" value="$!info.get($entry.key)" placeholder="$!entry.value" />
 		</div>
 	</div>
+	#end
 	#set($sortNumDesc="期数")
 	<div class="form-group">
 		<label class="col-sm-4 control-label" for="$!sortNumDesc">$!sortNumDesc</label>
@@ -88,14 +90,16 @@ $(document).ready(function () {
 		startDate: "$!DateUtil.getCurDateStr()"});
 	$("#videoForm").validate({
 		rules: {
-			##playTimestamp: "required",
-			title: "required",
+			#foreach($entry in $textMap.entrySet())
+				$entry.key:"required",
+			#end
 			sortNum: "required",
 			picInfo: "required"
 		},
 		messages: {
-			##playTimestamp: "$!{playTimeDesc}不能为空",
-			title: "$!{titleDesc}不能为空",
+			#foreach($entry in $textMap.entrySet())
+				$entry.key:"$!{entry.value}不能为空",
+			#end
 			sortNum: "$!{sortNumDesc}不能为空",
 			picInfo: "$!{picInfoDsc}不能为空"
 		},

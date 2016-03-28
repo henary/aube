@@ -1,0 +1,292 @@
+<div class="modal-header item-model">
+	<h2 class="modal-title icon_QA" id="myModalLabel">添加修改QA消息</h2>
+	<span class="modal-info-subtitle">基础信息</span>
+</div>
+<div class="modal-body" id="modalbody">
+	<form id="timelineForm" method="post" class="form-horizontal" action="">
+	#parse("admin/video/timeline/timeline_common.vm")
+	<span class="modal-info-subtitle">扩展信息<span class="float-right" id="add-option">+添加选项</span></span>
+	<hr>
+	
+	<div class="form-group">
+		<label class="col-sm-3 control-label" for="结束时间">结束时间</label>
+		<div class="col-sm-3">
+			<input type="number" max="$duration" maxlength="3" class="form-control" id="showAnswerMin" name="showAnswerMin" value="$!info.showAnswerMin" placeholder="揭晓分" />
+		</div>
+		<div class="col-sm-3">
+			<input type="number" max="59" maxlength="2" class="form-control" id="showAnswerSec" name="showAnswerSec" value="$!info.showAnswerSec" placeholder="揭晓秒" />
+		</div>
+	</div>
+	
+	<div id="optionInfo">
+	#set($opiontsText="选项")
+	#if(!$VmUtils.isEmptyList($extraList))
+		#foreach($extraQA in $extraList)
+		<div class="qa-option-group">
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="$opiontsText">$opiontsText</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control" id="options_$foreach.count" name="optionValue" value="$!extraQA.optionValue" placeholder="答案选项" />
+				</div>
+				<div class="col-sm-3"><input type="radio" name="answer" #if($VmUtils.equals($extraQA.answer, "Y"))checked="checked"#end value="options_$foreach.count"><input type="hidden" name="answerDesc" value="options_$foreach.count"/>正确答案</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-6">
+					<input type="url" class="form-control" name="h5url" value="$!extraQA.h5url" placeholder="跳转URL" />
+				</div>
+				<div class="col-sm-3">
+					<input type="number" class="form-control" id="extraSortNum_$foreach.count" name="extraSortNum" value="$!extraQA.extraSortNum" placeholder="排序" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-6"><span class="btn btn-warning fileinput-button">
+					<i class="glyphicon glyphicon-plus"></i>
+					<span>浏览图片QA选中后的跳转...</span><input type="file" name="fileupload" id="option_$foreach.count"></span>
+					<input type="hidden" class="form-control" id="qaPicInfo_$foreach.count" name="qaPicInfo" value="$!extraQA.picInfo">
+				</div>
+				<div class="col-sm-2"><span class="btn btn-danger del-option">删除</span></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-9">
+					<div id="progress_$foreach.count" class="progress">
+						<div class="progress-bar progress-bar-success progress-bar-striped"></div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-6">
+					<div id="files_$foreach.count" class="files">
+						#if($VmUtils.isNotBlank($info.picInfo))
+						<img alt="" src="${staticPath}$info.picInfo" width="40%" height="40%">
+						#end
+					</div>
+				</div>
+			</div>
+		</div>
+		#end
+	#else
+		#foreach($i in [1..3])
+		<div class="qa-option-group">
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="$opiontsText">$opiontsText</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control" id="options_$i" name="optionValue" value="" placeholder="答案选项" />
+				</div>
+				<div class="col-sm-3"><input type="radio" name="answer"  value="options_$i"><input type="hidden" name="answerDesc" value="options_$i"/>正确答案</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-6">
+					<input type="url" class="form-control" id="h5url_$i" name="h5url" value="" placeholder="跳转URL" />
+				</div>
+				<div class="col-sm-3">
+					<input type="number" class="form-control" id="extraSortNum_$i" name="extraSortNum" value="" placeholder="排序" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-6"><span class="btn btn-warning fileinput-button">
+					<i class="glyphicon glyphicon-plus"></i>
+					<span>浏览QA选中后跳转的图片...</span><input type="file" name="fileupload" id="option_$i"></span>
+					<input type="hidden" class="form-control" id="qaPicInfo_$i" name="qaPicInfo" value="$!extraQA.picInfo">
+				</div>
+				<div class="col-sm-2"><span class="btn btn-danger del-option">删除</span></div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-9">
+					<div id="progress_$i" class="progress ">
+						<div class="progress-bar progress-bar-success progress-bar-striped"></div>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-6">
+					<div id="files_$i" class="files">
+					</div>
+				</div>
+			</div>
+		</div>
+		#end
+	#end
+	</div>
+	<div class="modal-footer ">
+		<div class="col-sm-9 col-sm-offset-4 alert-dismissible">
+			<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			<button type="submit" class="btn btn-success">确定</button>
+		</div>
+	</div>
+</form>
+</div>
+<script type="text/javascript">
+
+$.validator.setDefaults({
+	submitHandler: function (form) {
+		if ($("#picInfo").val() == '') {
+			alert("请上传图片")
+			return false;
+		}
+		if (!$("input:radio[name=answer]:checked").val()) {
+			alert("请勾选正确答案")
+			return false;
+		}
+		
+		var params = $(form).serialize();
+		$.post('${houtaiPath}admin/video/saveTimelineQA.xhtml',params,function(result){
+			eval(result);
+			if(data.success) {
+				location.reload();
+			} else {
+				alert(data.errmsg);
+				return false;
+			}
+		});
+	}
+});
+$(document).ready(function () {
+	## 添加选项
+	$("#add-option").click(function(){
+		var div = $("#optionInfo :first").clone(true);
+		var randomid = getRandom();
+		if ($("#optionInfo :first input[name='answer']:checked").val()) {
+			$("#optionInfo :first input[name='answer']").attr("checked","checked");
+		}
+		$(div).find("input[name='optionValue']").attr("id", "tlid_" + randomid).val("");
+		$(div).find("input[name='h5url']").val("");
+		$(div).find("input[name='extraSortNum']").attr("id", "extraSortNum_" + randomid).val("");
+		$(div).find("input[name='qaPicInfo']").attr("id", "qaPicInfo_" + randomid).val("");
+		$(div).find("input[name='answer']").val("options_" + randomid).attr("checked",false);;
+		$(div).find("input[name='answerDesc']").val("options_" + randomid);
+		$(div).appendTo("#optionInfo");
+	});
+	## 删除选项
+	$(".del-option").click(function(){
+		if ($(".del-option").length <= 2) {
+			alert("QA最少需要2两个选项")
+			return false;
+		}
+		$(this).parents(".qa-option-group").remove();
+	});
+
+	
+	
+	$('#fileupload').fileupload({
+		url: '${basePath}common/uploadSignPicture.xhtml',
+        dataType: 'json',
+        formData: {"relatedId":"$!videoid","fileTag":"video"},
+        done: function (e, data) {
+        	if (data.result.success) {
+        		$("#picInfo").val(data.result.retval.fileurl)
+        		 $("#files").html($('<img>').attr("src", "${staticPath}" + data.result.retval.fileurl).attr("width","160").attr("hight","90"));
+        	} else {
+        		alert(data.result.errmsg);
+        	}
+        },
+        progressall: function (e, data) {
+        	$("#progress").show();
+        	var progress = parseInt(data.loaded / data.total * 100, 10);
+        	$('#progress .progress-bar').html(progress + "%");
+	        $('#progress .progress-bar').css(
+	            'width',
+	            progress + '%'
+	        );
+	    }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
+	$("#timelineForm").validate({
+		rules: {
+			tlTitle: "required",
+			tlDesc: "required",
+			optionValue:"required",
+			picInfo: "required",
+			showAnswerMin:"required",
+			showAnswerSec:"required",
+			startMin: {
+				required:true,
+				maxlength:3,
+				max:$!duration
+			},
+			startSec: {
+				required:true,
+				maxlength:2,
+				max:59
+			},
+			endMin: {
+				required:true,
+				maxlength:3,
+				max:$!duration
+			},
+			endSec: {
+				required:true,
+				maxlength:2,
+				max:59
+			},
+			
+		},
+		messages: {
+			tlTitle: "标题不能为空",
+			tlDesc: "注释不能为空",
+			picInfo: "图片不能为空",
+			startMin: {
+				required:"开始分不能为空",
+				max:"开始分不能大于视频时长",
+				maxlength:"开始分不能超出3位"
+			},
+			startSec: {
+				required:"开始秒不能为空",
+				max:"开始秒不能大于59",
+				maxlength:"开始秒不能超出2位数"
+			},
+			endMin: {
+				required:"结束分不能为空",
+				max:"结束分不能大于视频时长",
+				maxlength:"结束分不能超出3位数"
+			},
+			endSec: {
+				required:"结束秒不能为空",
+				max:"结束秒不能大于59",
+				maxlength:"结束秒不能超出2位数"
+			},
+			optionValue:"选项不能为空",
+			showAnswerMin:"答案揭晓时间不能为空",
+			showAnswerSec:"答案揭晓时间不能为空"
+		},
+		errorElement: "em",
+		errorPlacement: function ( error, element ) {
+			error.addClass( "help-block" );
+			element.parents( ".col-sm-6" ).addClass( "has-feedback" );
+			element.parents( ".col-sm-3" ).addClass( "has-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+			if ( !element.next( "span" )[ 0 ] ) {
+				$( "<span class='glyphicon glyphicon-remove form-control-feedback'></span>" ).insertAfter( element );
+			}
+		},
+		success: function ( label, element ) {
+			if ( !$( element ).next( "span" )[ 0 ] ) {
+				$( "<span class='glyphicon glyphicon-ok form-control-feedback'></span>" ).insertAfter( $( element ) );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).parents( ".col-sm-6" ).addClass( "has-error" ).removeClass( "has-success" );
+			$( element ).parents( ".col-sm-3" ).addClass( "has-error" ).removeClass( "has-success" );
+			$( element ).next( "span" ).addClass( "glyphicon-remove" ).removeClass( "glyphicon-ok" );
+		},
+		unhighlight: function ( element, errorClass, validClass ) {
+			$( element ).parents( ".col-sm-6" ).addClass( "has-success" ).removeClass( "has-error" );
+			$( element ).parents( ".col-sm-3" ).addClass( "has-success" ).removeClass( "has-error" );
+			$( element ).next( "span" ).addClass( "glyphicon-ok" ).removeClass( "glyphicon-remove" );
+		}
+	});
+});
+</script>

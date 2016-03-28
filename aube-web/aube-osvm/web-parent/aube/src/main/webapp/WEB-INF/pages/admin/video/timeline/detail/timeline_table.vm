@@ -1,0 +1,29 @@
+<thead>
+	<tr>
+		<th>序号</th>
+		<th>卡片</th>
+		<th>标题</th>
+		<th>图片</th>
+		<th>时间段</th>
+		<th>操作</th>
+	</tr>
+</thead>
+<tbody>
+#foreach($timeline in $timelineList)
+<tr class="list-group">
+	<td>$foreach.count</td>
+	<td><img src="${staticPath}images/admin/icon/icon_${timeline.tlType}.png"/></td>
+	<td>$!timeline.tlTitle</td>
+	<td>#if($VmUtils.isNotBlank($timeline.picInfo))<img alt="" src="${staticPath}$timeline.picInfo" width="80px" height="auto">#end</td>
+	<td>
+		$timeline.startMin'$timeline.startSec" ~ $timeline.endMin'$timeline.endSec"
+	</td>
+	<td>
+		<div class="form-group">
+		<div class="col-sm-6"><a class="btn btn-success" data-toggle="modal" data-target='#timelineModal'  href="${basePath}admin/video/getTimeline.xhtml?tlid=$timeline.tlid">编辑</a></div>
+		<div class="col-sm-6"><input type='button' value='删除' class='btn btn-danger'/></div>
+		</div>
+	</td>
+</tr>
+#end
+</tbody>
