@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.ui.ModelMap;
 
 import com.aube.constant.ShowErrorCodeConstants;
 import com.aube.json.show.ShowInfo;
@@ -21,7 +22,10 @@ public class BaseAdminController extends BaseController {
 	protected <T> String result2Json(ResultCode<T> result) {
 		return "var data=" + JsonUtils.writeObjectToJson(result);
 	}
-	
+	protected String showErrorPage(String errormsg, ModelMap model) {
+		model.put("errormsg", errormsg);
+		return "admin/error/error.vm";
+	}
 	
 	protected ResultCode<VideoInfo> getVideoInfoById(String videoid, HttpServletRequest request) {
 		VideoInfo video = mongoService.getObjectById(VideoInfo.class, VideoInfo.VIDEO_ID, videoid);

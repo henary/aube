@@ -13,41 +13,33 @@
   			<li><a href="${basePath}admin/video/list.xhtml?showid=$!video.showid">$!video.title</a></li>
   			<li class="active">时间线设置</li>
 		</ol>
-		
-		#set($tabsMap={'all':"全部",'interaction':'互动','mc':'多镜头','goods':'物品'})
-		<ul class="nav nav-tabs">
-			#foreach($tabsEntry in $tabsMap.entrySet())
-			<li role="presentation" class="#if($VmUtils.equals($tabsEntry.key, $tabsType))active#end">
-				<a href="${houtaiPath}admin/video/timelineList.xhtml?videoid=$!video.videoid&tabsType=$tabsEntry.key" >
-      				$tabsEntry.value</span>
-    			</a>
-			</li>
-			#end
-		</ul>
-		#set($tlTypeMap={'MULTICAMERA':'镜头','QA':'问答','VOTE':'投票','VS':'VS','INFO':'信息',"GOODS":'物品'})
-		<div class="panel panel-warning">
-			<div class="panel-heading">
-				<ul class="nav nav-pills">
-				#foreach($tlType in $tabs2TypeListMap.get($tabsType))
-					<li role="presentation" class="active item-timeline-type">
-						<a class="icon_$!tlType" data-toggle="modal" data-target='#timelineModal' href="${basePath}admin/video/getTimeline.xhtml?videoid=$params.videoid&tlType=$!tlType">$!tlTypeMap.get($tlType)</a>
-					</li>
-				#end
-				</ul>
-				#*
-				<div class="btn-group">
-					#foreach($tlType in $tabs2TypeListMap.get($tabsType))
-					<a class="btn btn-danger icon_$!tlType" data-toggle="modal" data-target='#timelineModal' href="${basePath}admin/video/getTimeline.xhtml?videoid=$params.videoid&tlType=$!tlType">
-	    				添加类型<span class="caret"></span>
-	  				</a>
-	  				#end
+		<div class="row">
+			<div class="list-group pull-left visible-inline-block col-lg-3 item-timeline-type">
+				<div class="text-center">
+					<a href="#" class="list-group-item active">选择需要的项目拖到右边</a>
 				</div>
-				*#
+				<div class="draggable" id="draggable">
+					<a class="list-group-item icon_MULTICAMERA" href="#" >多镜头</a>
+					<a class="list-group-item icon_QA" href="#" >QA</a>
+					<a class="list-group-item icon_VOTE" href="#">投票</a>
+					<a class="list-group-item icon_VS" href="#">VS</a>
+					<a class="list-group-item icon_INFO" href="#">信息</a>
+		  			<a class="list-group-item icon-AD" href="#">广告</a>
+				</div>
 			</div>
-			<div class="panel-body">
+			<div class="list-group visible-inline-block col-lg-9 item-timeline-type">
+				<div class="text-center">
+					<a href="#" class="list-group-item active">拖动需要的项目</a>
+				</div>
+	  			<div class="draggable" id="droppable">
+	  				<a href="#" class="list-group-item ">选择需要的项目拖到右边</a>
+	  			</div>
 			</div>
 		</div>
+		
+</ul>
 	</div> 
+	
 </div>
 <!-- Modal -->
 <div class="modal fade" id="timelineModal" tabindex="-1" role="dialog" aria-labelledby="timelineModalLabel"  aria-hidden="false" >

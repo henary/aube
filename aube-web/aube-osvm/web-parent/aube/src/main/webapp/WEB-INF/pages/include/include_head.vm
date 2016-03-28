@@ -5,11 +5,10 @@
 <link rel="icon" href="${staticPath}images/favicon.png?v=$VmUtils.jsVersion" type="image/x-icon">
 <!-- Bootstrap -->
 <link rel="stylesheet" href="${staticPath}style/bootstrap/css/bootstrap.min.css?v=$!VmUilts.jsVersion">
-
+<link rel="stylesheet" href="${staticPath}style/jqueryplugin/jquery-ui.min.css?v=$!VmUilts.jsVersion">
 <link rel="stylesheet" href="${staticPath}style/jqueryplugin/fileupload/jquery.fileupload.css?v=$!VmUilts.jsVersion">
 <link rel="stylesheet" href="${staticPath}style/jqueryplugin/fileupload/jquery.fileupload-ui.css?v=$!VmUilts.jsVersion">
 <link rel="stylesheet" href="${staticPath}style/jqueryplugin/spectrum/spectrum.css?v=$!VmUilts.jsVersion">
-<link rel="stylesheet" href="${staticPath}style/jqueryplugin/spectrum/docs.css?v=$!VmUilts.jsVersion">
 <link rel="stylesheet" href="${staticPath}style/aube/aube.css?v=$!VmUilts.jsVersion">
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

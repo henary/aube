@@ -9,17 +9,6 @@
 <div class="section-preview">
 	<div class="container">
 		<div class="row">
-		<div class="col-sm-6 col-md-4">
-			<div class="thumbnail">
-				<a class="btn " data-toggle='modal' data-target='#videoModal' href="${houtaiPath}admin/video/getVideoDetail.xhtml?showid=$!showid" role="button">
-					<img src="${staticPath}$!show.picInfo?v=$VmUtils.jsVersion" alt="新建">
-				</a>
-				<div class="caption">
-					<h3>$!show.showName</h3>
-					<p><a class="btn btn-success" data-toggle='modal' data-target='#videoModal' href="${houtaiPath}admin/video/getVideoDetail.xhtml?showid=$!showid" role="button">新增</a></p>
-				</div>
-			</div>
-		</div>
 		</div>
 		#set($statusPublish={"draft":"publish","publish":"draft"})
 		#set($statusBtnDesc={"draft":"对外发布","publish":"回到草稿"})
@@ -31,6 +20,19 @@
 			</div>
 			<div class="panel-body">
 		    	<div class="row">
+		    	#if($VmUtils.equals($statusEntry.key, "draft"))
+		    		<div class="col-sm-6 col-md-4">
+						<div class="thumbnail">
+							<a class="btn " data-toggle='modal' data-target='#videoModal' href="${houtaiPath}admin/video/getVideoDetail.xhtml?showid=$!showid" role="button">
+								<img src="${staticPath}$!show.picInfo?v=$VmUtils.jsVersion" alt="新建">
+							</a>
+							<div class="caption">
+								<h3>$!show.showName</h3>
+								<p><a class="btn btn-success" data-toggle='modal' data-target='#videoModal' href="${houtaiPath}admin/video/getVideoDetail.xhtml?showid=$!showid" role="button">新增</a></p>
+							</div>
+						</div>
+					</div>
+				#end
 		    		#foreach($video in $videoList)
 		    		#if($VmUtils.equals($video.videoStatus, $statusEntry.key))
 		    		<div class="col-sm-6 col-md-4">
@@ -79,8 +81,11 @@ $(document).ready(function () {
 		$('#videoModal').removeData('bs.modal');
 	});
 	
+	
+	
 	$("input[name=fileupload]").each(function(i, item){
 		$(item).fileupload({
+			dropZone:$(item),
 			url: '${basePath}admin/upload/video/uploadSignVideo.xhtml',
 	        dataType: 'json',
 	        formData: {"relatedId":$(item).attr("data-videoid"),"fileTag":"video","fileType":"video"},

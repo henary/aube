@@ -1,11 +1,13 @@
 package com.aube.web.action.admin.show;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.support.PropertyComparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +33,7 @@ public class ShowAdminController extends BaseAdminController {
 		Expression params = new Expression();
 		// TODO 根据登录用户拿到节目
 		List<ShowInfo> showList = mongoService.getObjectList(ShowInfo.class, params);
+		Collections.sort(showList, new PropertyComparator<ShowInfo>(ShowInfo.SORT_KEY_ADDTIME, false, false));
 		model.put("showList", showList);
 		return "admin/show/showList.vm";
 	}

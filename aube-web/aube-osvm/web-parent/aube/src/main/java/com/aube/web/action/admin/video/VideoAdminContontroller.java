@@ -76,7 +76,8 @@ public class VideoAdminContontroller extends BaseAdminController {
 	@RequestMapping("/admin/video/saveVideo.xhtml")
 	@ResponseBody
 	public String saveVideo(String videoid, HttpServletRequest request) {
-		Map<String, String> reqMap = WebUtils.getRequestMap(request);
+		return result2Json(ResultCode.<String>getFailureReturn("asdasd"));
+	/*	Map<String, String> reqMap = WebUtils.getRequestMap(request);
 		VideoInfo info = null;
 		if (StringUtils.isNotBlank(videoid)) {
 			info = mongoService.getObjectById(VideoInfo.class, VideoInfo.VIDEO_ID, videoid);
@@ -90,7 +91,7 @@ public class VideoAdminContontroller extends BaseAdminController {
 		BeanUtil.copyProperties(info, reqMap);
 		info.setUpdTime(DateUtil.getCurFullTimestampStr());
 		mongoService.saveOrUpdateObject(info, VideoInfo.VIDEO_ID);
-		return result2Json(ResultCode.SUCCESS);
+		return result2Json(ResultCode.SUCCESS);*/
 	}
 
 	

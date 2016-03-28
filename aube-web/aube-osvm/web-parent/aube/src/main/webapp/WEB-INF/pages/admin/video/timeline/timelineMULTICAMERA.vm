@@ -1,0 +1,45 @@
+<div class="modal-header">
+	<h2 class="modal-title" id="myModalLabel">添加修改多镜头消息</h2>
+</div>
+<div class="modal-body" id="modalbody">
+	<form id="showForm" method="post" class="form-horizontal" action="">
+	<input type="hidden" name="showid" id="showid" value="$!showid">
+	#parse("admin/video/timeline/timeline_common.vm")
+	
+	#set($picInfoDsc="海报图片")
+	<div class="form-group">
+		<label class="col-sm-4 control-label" for="$picInfoDsc">$picInfoDsc</label>
+		<div class="col-sm-5">
+			<span class="btn btn-success fileinput-button">
+				<i class="glyphicon glyphicon-plus"></i>
+				<span>浏览图片...</span><input type="file" name="fileupload" id="fileupload">
+			</span>
+		</div>
+	</div>
+	<div id="progress" class="progress collapse">
+		<div class="col-sm-5">
+			<input type="hidden" class="form-control" id="picInfo" name="picInfo" value="$!info.picInfo">
+		</div>
+		<div class="progress-bar progress-bar-success progress-bar-striped"></div>
+	</div>
+	<div id="files" class="files">
+		#if($VmUtils.isNotBlank($info.picInfo))
+		<img alt="" src="${staticPath}$info.picInfo" width="40%" height="40%">
+		#end
+	</div>
+	<div class="modal-footer ">
+		<div class="col-sm-9 col-sm-offset-4 alert-dismissible">
+			<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+			<button type="submit" class="btn btn-success">确定</button>
+		</div>
+	</div>
+</form>
+</div>
+<script type="text/javascript">
+$.validator.setDefaults( {
+	submitHandler: function () {
+	}
+});
+$(document).ready(function () {
+});
+</script>
