@@ -9,8 +9,8 @@
 <div class="section-preview">
 	<div class="container">
 		<ol class="breadcrumb">
-			<li><a href="${basePath}admin/show/list.xhtml">$!show.showName</a></li>
-  			<li><a href="${basePath}admin/video/list.xhtml?showid=$!video.showid">$!video.title</a></li>
+			<li><a href="${basePath}admin/show/list.xhtml">Aube 首页</a></li>
+  			<li><a href="${basePath}admin/video/list.xhtml?showid=$!video.showid">$!show.showName</a></li>
   			<li class="active">时间线设置</li>
 		</ol>
 		
@@ -34,18 +34,25 @@
 					</li>
 				#end
 				</ul>
-				#*
-				<div class="btn-group">
-					#foreach($tlType in $tabs2TypeListMap.get($tabsType))
-					<a class="btn btn-danger icon_$!tlType" data-toggle="modal" data-target='#timelineModal' href="${basePath}admin/video/getTimeline.xhtml?videoid=$params.videoid&tlType=$!tlType">
-	    				添加类型<span class="caret"></span>
-	  				</a>
-	  				#end
-				</div>
-				*#
 			</div>
 			<div class="panel-body">
+				<div class="alert alert-success" role="alert">
+					#if($VmUtils.isNotBlank($video.filePath))
+					<h5>视频已上传</h5>
+					#else
+					<span class="btn btn-warning fileinput-button">
+						<i class="glyphicon glyphicon-plus"></i>
+						<span>上传视频...</span><input type="file" id="videoupload" name="videoupload">
+					</span>
+					<div id="progress" class="progress collapse">
+						<div class="progress-bar progress-bar-success progress-bar-striped"></div>
+					</div>
+					#end
+				</div>
 			</div>
+			<table class="table" id="timelineTable">
+			#parse("admin/video/timeline/detail/timeline_table.vm")
+			</table>
 		</div>
 	</div> 
 </div>
@@ -61,6 +68,32 @@ $(document).ready(function () {
 	$('#timelineModal').on('hide.bs.modal', function () {
 		$('#timelineModal').removeData('bs.modal');
 	});
+	reloadTimelineTable();
+	$('#videoupload').fileupload({
+		url: '${basePath}admin/upload/video/uploadSignVideo.xhtml',
+        dataType: 'json',
+        formData: {"relatedId":"$!video.videoid","fileTag":"video","fileType":"video"},
+        done: function (e, data) {
+        	if (data.result.success) {
+        		$("#picInfo").val(data.result.retval.fileurl)
+        		 $("#files").html($('<img>').attr("src", "${staticPath}" + data.result.retval.fileurl).attr("width","160").attr("hight","90"));
+        	} else {
+        		alert(data.result.errmsg);
+        	}
+        },
+        progressall: function (e, data) {
+        	$("#progress").show();
+        	var progress = parseInt(data.loaded / data.total * 100, 10);
+        	$('#progress .progress-bar').html(progress + "%");
+	        $('#progress .progress-bar').css(
+	            'width',
+	            progress + '%'
+	        );
+	    }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
+	
     $( "#draggable a" ).draggable({
       appendTo: "body",
       helper: "clone"
@@ -82,6 +115,10 @@ $(document).ready(function () {
         $( this ).removeClass( "ui-state-default" );
       }
     });
+    
+    function reloadTimelineTable() {
+    	$("#timelineTable").load("${houtaiPath}admin/video/ajax/timelineList.xhtml",{tabsType:"$!tabsType"}, function(){});
+    }
 });
 </script>
 </body>

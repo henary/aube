@@ -2,14 +2,14 @@
 	<span class="text-center">Copyright © $DateUtil.currentYear, Aube</span>
 </div>
 *#
-<script src="${staticPath}scripts/jquery/jquery.min.js?v=$!VmUilts.jsVersion"></script>
-<script src="${staticPath}scripts/bootstrap/bootstrap.min.js?v=$!VmUilts.jsVersion"></script>
-<script src="${staticPath}scripts/aube/aube.js?v=$!VmUilts.jsVersion"></script>
-<script src="${staticPath}scripts/jqueryplugin/jquery-ui.min.js?v=$!VmUilts.jsVersion"></script>
-<script src="${staticPath}scripts/jqueryplugin/fileupoad/jquery.fileupload.js?v=$!VmUilts.jsVersion"></script>
-<script src="${staticPath}scripts/jqueryplugin/fileupoad/jquery.fileupload-process.js?v=$!VmUilts.jsVersion"></script>
-<script src="${staticPath}scripts/jqueryplugin/fileupoad/jquery.fileupload-validate.js?v=$!VmUilts.jsVersion"></script>
-<script src="${staticPath}scripts/jqueryplugin/spectrum/spectrum.js?v=$!VmUilts.jsVersion"></script>
-<script src="${staticPath}scripts/jqueryplugin/spectrum/jquery.spectrum-zh-cn.js?v=$!VmUilts.jsVersion"></script>
-<script src="${staticPath}scripts/jqueryplugin/validation/jquery.validate.min.js?v=$!VmUilts.jsVersion"></script>
-##<script src="${staticPath}scripts/jqueryplugin/validation/messages_zh.min.js?v=$!VmUilts.jsVersion"></script>
+<script src="${staticPath}scripts/jquery/jquery.min.js?v=$!VmUtils.jsVersion"></script>
+<script src="${staticPath}scripts/bootstrap/bootstrap.min.js?v=$!VmUtils.jsVersion"></script>
+<script src="${staticPath}scripts/jqueryplugin/jquery-ui.min.js?v=$!VmUtils.jsVersion"></script>
+<script src="${staticPath}scripts/jqueryplugin/fileupoad/jquery.fileupload.js?v=$!VmUtils.jsVersion"></script>
+<script src="${staticPath}scripts/jqueryplugin/fileupoad/jquery.fileupload-process.js?v=$!VmUtils.jsVersion"></script>
+<script src="${staticPath}scripts/jqueryplugin/fileupoad/jquery.fileupload-validate.js?v=$!VmUtils.jsVersion"></script>
+<script src="${staticPath}scripts/jqueryplugin/spectrum/spectrum.js?v=$!VmUtils.jsVersion"></script>
+<script src="${staticPath}scripts/jqueryplugin/spectrum/jquery.spectrum-zh-cn.js?v=$!VmUtils.jsVersion"></script>
+<script src="${staticPath}scripts/jqueryplugin/validation/jquery.validate.min.js?v=$!VmUtils.jsVersion"></script>
+<script src="${staticPath}scripts/aube/aube.js?v=$!VmUtils.jsVersion"></script>
+##<script src="${staticPath}scripts/jqueryplugin/validation/messages_zh.min.js?v=$!VmUtils.jsVersion"></script>
