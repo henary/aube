@@ -34,13 +34,26 @@ public class VideoTimelineInfo extends AdminBaseMgObject<VideoTimelineInfo> {
 	private Integer endMin;
 	// 结束时间秒
 	private Integer endSec;
+	// 图片信息
+	private String picInfo;
+	// 卡片是否收起
+	private String thumbnailCard;
 	// 单位秒
 	@SuppressWarnings("unused")
 	private Integer startTime;
 	// 单位秒
 	@SuppressWarnings("unused")
 	private Integer endTime;
+	// 答案揭晓时间分--QA用
+	private Integer showAnswerMin;
+	// 答案揭晓时间秒--QA用
+	private Integer showAnswerSec;
 
+	// QA用的答案揭晓时间（单位秒）
+	public Integer gainShowAnswerTime() {
+		return (showAnswerMin == null || showAnswerSec == null) ? 0 : showAnswerMin * 60 + showAnswerSec;
+	}
+	
 	public Integer getStartTime() {
 		return (startMin == null || startSec == null) ? 0 : startMin * 60 + startSec;
 	}
@@ -135,6 +148,38 @@ public class VideoTimelineInfo extends AdminBaseMgObject<VideoTimelineInfo> {
 
 	public void setTlTitle(String tlTitle) {
 		this.tlTitle = tlTitle;
+	}
+
+	public String getPicInfo() {
+		return picInfo;
+	}
+
+	public void setPicInfo(String picInfo) {
+		this.picInfo = picInfo;
+	}
+
+	public String getThumbnailCard() {
+		return thumbnailCard;
+	}
+
+	public void setThumbnailCard(String thumbnailCard) {
+		this.thumbnailCard = thumbnailCard;
+	}
+
+	public Integer getShowAnswerMin() {
+		return showAnswerMin;
+	}
+
+	public void setShowAnswerMin(Integer showAnswerMin) {
+		this.showAnswerMin = showAnswerMin;
+	}
+
+	public Integer getShowAnswerSec() {
+		return showAnswerSec;
+	}
+
+	public void setShowAnswerSec(Integer showAnswerSec) {
+		this.showAnswerSec = showAnswerSec;
 	}
 
 }
