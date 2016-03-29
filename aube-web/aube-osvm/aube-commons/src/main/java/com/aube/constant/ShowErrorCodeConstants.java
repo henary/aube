@@ -11,4 +11,6 @@ public interface ShowErrorCodeConstants extends ErrorCodeConstant {
 	String CODE_SHOW_NO_OPERA_AUTH = "3001";
 	// 视频不存在
 	String CODE_VIDEO_NOT_EXITS = "3010";
+	// 不支持的时间线类型
+	String CODE_UNSUPPORT_EXTRA = "3020";
 }

@@ -34,7 +34,7 @@ public class ResultCode<T> implements Serializable {
 	private T retval;
 	private transient Throwable exception;
 	public boolean success;
-	
+
 	protected ResultCode() {
 		this.errcode = ErrorCodeConstant.CODE_SUCCESS;
 		this.setErrmsg();
@@ -45,13 +45,13 @@ public class ResultCode<T> implements Serializable {
 		this.setErrmsg();
 	}
 
-	protected ResultCode(String code, String... errParams) {
+	protected ResultCode(String code, Object... errParams) {
 		this.errcode = code;
 		this.errParams = errParams;
 		this.setErrmsg();
 	}
 
-	protected ResultCode(String code, T retval, String... errParams) {
+	protected ResultCode(String code, T retval, Object... errParams) {
 		this.errcode = code;
 		this.errParams = errParams;
 		this.retval = retval;
@@ -71,7 +71,7 @@ public class ResultCode<T> implements Serializable {
 		return success;
 	}
 
-	public static <T> ResultCode<T> getFailure(String code, String... errParams) {
+	public static <T> ResultCode<T> getFailure(String code, Object... errParams) {
 		return new ResultCode<T>(code, errParams);
 	}
 
@@ -87,7 +87,7 @@ public class ResultCode<T> implements Serializable {
 		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval);
 	}
 
-	public static <T> ResultCode<T> getFailureReturn(String code, T retval, String... errParams) {
+	public static <T> ResultCode<T> getFailureReturn(String code, T retval, Object... errParams) {
 		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval, errParams);
 	}
 
@@ -103,8 +103,8 @@ public class ResultCode<T> implements Serializable {
 		this.errParams = errParams;
 	}
 
-	public void setErrParams(String[] errParams) {
-		this.errParams = errParams;
+	public Object[] getErrParams() {
+		return errParams;
 	}
 
 	private void setErrmsg() {
@@ -121,7 +121,7 @@ public class ResultCode<T> implements Serializable {
 		}
 		this.errmsg = MessageFormat.format(message, errParams);
 	}
-	
+
 	/**
 	 * 错误信息返回
 	 * 
@@ -137,6 +137,7 @@ public class ResultCode<T> implements Serializable {
 
 	/**
 	 * 业务不能使用，近限于dubbo服务拦截器使用
+	 * 
 	 * @param exception
 	 */
 	public void setException(Throwable exception) {
