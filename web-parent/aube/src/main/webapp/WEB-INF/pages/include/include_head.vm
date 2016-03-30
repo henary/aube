@@ -4,17 +4,17 @@
 <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
 <link rel="icon" href="${staticPath}images/favicon.png?v=$VmUtils.jsVersion" type="image/x-icon">
 <!-- Bootstrap -->
-<link rel="stylesheet" href="${staticPath}style/bootstrap/css/bootstrap.min.css?v=$!VmUilts.jsVersion">
-<link rel="stylesheet" href="${staticPath}style/jqueryplugin/jquery-ui.min.css?v=$!VmUilts.jsVersion">
-<link rel="stylesheet" href="${staticPath}style/jqueryplugin/fileupload/jquery.fileupload.css?v=$!VmUilts.jsVersion">
-<link rel="stylesheet" href="${staticPath}style/jqueryplugin/fileupload/jquery.fileupload-ui.css?v=$!VmUilts.jsVersion">
-<link rel="stylesheet" href="${staticPath}style/jqueryplugin/spectrum/spectrum.css?v=$!VmUilts.jsVersion">
-<link rel="stylesheet" href="${staticPath}style/aube/aube.css?v=$!VmUilts.jsVersion">
+<link rel="stylesheet" href="${staticPath}style/bootstrap/css/bootstrap.min.css?v=$!VmUtils.jsVersion">
+<link rel="stylesheet" href="${staticPath}style/jqueryplugin/jquery-ui.min.css?v=$!VmUtils.jsVersion">
+<link rel="stylesheet" href="${staticPath}style/jqueryplugin/fileupload/jquery.fileupload.css?v=$!VmUtils.jsVersion">
+<link rel="stylesheet" href="${staticPath}style/jqueryplugin/fileupload/jquery.fileupload-ui.css?v=$!VmUtils.jsVersion">
+<link rel="stylesheet" href="${staticPath}style/jqueryplugin/spectrum/spectrum.css?v=$!VmUtils.jsVersion">
+<link rel="stylesheet" href="${staticPath}style/aube/aube.css?v=$!VmUtils.jsVersion">
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
-  <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js?v=$!VmUilts.jsVersion"></script>
-  <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js?v=$!VmUilts.jsVersion"></script>
+  <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js?v=$!VmUtils.jsVersion"></script>
+  <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js?v=$!VmUtils.jsVersion"></script>
 <![endif]-->
 <style type="text/css">
 	.navbar-brand dfn {

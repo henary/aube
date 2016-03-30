@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,18 +17,19 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.aube.constans.MongoData;
 import com.aube.constants.AubeConstants;
+import com.aube.constants.AubeErrorConstans;
 import com.aube.constants.VideoTimelineExtraEnum;
 import com.aube.constants.common.StatusConstants;
 import com.aube.json.show.ShowInfo;
 import com.aube.json.video.VideoInfo;
 import com.aube.json.video.VideoTimelineInfo;
 import com.aube.json.video.timeline.TimelineExtraBase;
+import com.aube.json.video.timeline.TimelineExtraMulticamera;
 import com.aube.json.video.timeline.TimelineExtraQA;
 import com.aube.json.video.timeline.TimelineExtraVS;
-import com.aube.json.video.timeline.TimelineExtraVote;
+import com.aube.mdb.operation.Expression;
 import com.aube.service.TimelineService;
 import com.aube.support.MultiPropertyComparator;
 import com.aube.support.ResultCode;
@@ -129,21 +131,11 @@ public class VideoTimelineAdminController extends BaseAdminController {
 	
 	@RequestMapping("/admin/video/saveTimelineVS.xhtml")
 	@ResponseBody
-	public String saveTimelineVS(String tlid, String[] options, HttpServletRequest request) {
+	public String saveTimelineVS(String tlid, HttpServletRequest request) {
 		Map<String, String> reqMap = WebUtils.getRequestMap(request);
 		VideoTimelineInfo timeline = createTimelineInfo(tlid, reqMap);
 		timeline.setTlType(VideoTimelineExtraEnum.VS.getTlType());
-		List<TimelineExtraVS> vsList = new ArrayList<TimelineExtraVS>();
-		for (String option : options) {
-			TimelineExtraVS vsInfo = new TimelineExtraVS();
-			String rid = MongoData.buildId();
-			vsInfo.set_id(rid);
-			vsInfo.setRid(rid);
-			vsInfo.setTlid(timeline.getTlid());
-			vsInfo.setOption(option);
-			vsList.add(vsInfo);
-		}
-		ResultCode<VideoTimelineInfo> timelineCode = timelineService.saveVideoTimeline(timeline, vsList);
+		ResultCode<VideoTimelineInfo> timelineCode = timelineService.saveVideoTimeline(timeline);
 		if (!timelineCode.isSuccess()) {
 			return result2Json(timelineCode);
 		}
@@ -152,21 +144,11 @@ public class VideoTimelineAdminController extends BaseAdminController {
 	
 	@RequestMapping("/admin/video/saveTimelineVote.xhtml")
 	@ResponseBody
-	public String saveTimelineVote(String tlid, String[] options, HttpServletRequest request) {
+	public String saveTimelineVote(String tlid, HttpServletRequest request) {
 		Map<String, String> reqMap = WebUtils.getRequestMap(request);
 		VideoTimelineInfo timeline = createTimelineInfo(tlid, reqMap);
 		timeline.setTlType(VideoTimelineExtraEnum.VOTE.getTlType());
-		List<TimelineExtraVote> voteList = new ArrayList<TimelineExtraVote>();
-		for (String option : options) {
-			TimelineExtraVote voteInfo = new TimelineExtraVote();
-			String rid = MongoData.buildId();
-			voteInfo.set_id(rid);
-			voteInfo.setRid(rid);
-			voteInfo.setTlid(timeline.getTlid());
-			voteInfo.setOption(option);
-			voteList.add(voteInfo);
-		}
-		ResultCode<VideoTimelineInfo> timelineCode = timelineService.saveVideoTimeline(timeline, voteList);
+		ResultCode<VideoTimelineInfo> timelineCode = timelineService.saveVideoTimeline(timeline);
 		if (!timelineCode.isSuccess()) {
 			return result2Json(timelineCode);
 		}
@@ -199,6 +181,46 @@ public class VideoTimelineAdminController extends BaseAdminController {
 			qaList.add(extraQA);
 		}
 		ResultCode<VideoTimelineInfo> timelineCode = timelineService.saveVideoTimeline(timeline, qaList);
+		if (!timelineCode.isSuccess()) {
+			return result2Json(timelineCode);
+		}
+		return result2Json(ResultCode.SUCCESS);
+	}
+	
+	@RequestMapping("/admin/video/saveTimelineMc.xhtml")
+	@ResponseBody
+	public String saveTimelineMc(String tlid, HttpServletRequest request, ModelMap model) {
+		Expression params = new Expression();
+		params.eq(TimelineExtraMulticamera.EXTRA_TLID, tlid);
+		List<TimelineExtraMulticamera> extraMulticameraList = mongoService.getObjectList(TimelineExtraMulticamera.class, params);
+		if (CollectionUtils.isEmpty(extraMulticameraList)) {
+			return result2Json(ResultCode.<String>getFailure(AubeErrorConstans.CODE_MC_LIST_NULL));
+		}
+		Map<String, String> reqMap = WebUtils.getRequestMap(request);
+		VideoTimelineInfo timeline = createTimelineInfo(tlid, reqMap);
+		timeline.setTlType(VideoTimelineExtraEnum.MULTICAMERA.getTlType());
+		ResultCode<VideoTimelineInfo> timelineCode = timelineService.saveVideoTimeline(timeline);
+		if (!timelineCode.isSuccess()) {
+			return result2Json(timelineCode);
+		}
+		return result2Json(ResultCode.SUCCESS);
+	}
+	
+	
+	@RequestMapping("/admin/video/saveTimelineGoods.xhtml")
+	@ResponseBody
+	public String saveTimelineGoods(String tlid, HttpServletRequest request, ModelMap model) {
+		return "";
+	}
+	
+	
+	@RequestMapping("/admin/video/saveTimelineInfo.xhtml")
+	@ResponseBody
+	public String saveTimelineInfo(String tlid, HttpServletRequest request, ModelMap model) {
+		Map<String, String> reqMap = WebUtils.getRequestMap(request);
+		VideoTimelineInfo timeline = createTimelineInfo(tlid, reqMap);
+		timeline.setTlType(VideoTimelineExtraEnum.INFO.getTlType());
+		ResultCode<VideoTimelineInfo> timelineCode = timelineService.saveVideoTimeline(timeline);
 		if (!timelineCode.isSuccess()) {
 			return result2Json(timelineCode);
 		}

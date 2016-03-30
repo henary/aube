@@ -24,4 +24,6 @@ public interface TimelineService {
 	 */
 	<T extends TimelineExtraBase> ResultCode<List<T>> getTimelineExtraList(VideoTimelineInfo timeline);
 
+	ResultCode<VideoTimelineInfo> saveVideoTimeline(VideoTimelineInfo timeline);
+
 }

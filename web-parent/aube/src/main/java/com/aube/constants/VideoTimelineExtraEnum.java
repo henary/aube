@@ -80,7 +80,7 @@ public enum VideoTimelineExtraEnum {
 		}
 
 	},
-	GOODS("GOODS") {
+	AD("AD") {
 		@Override
 		public String getExtraDesc() {
 			return "物品";
@@ -90,6 +90,8 @@ public enum VideoTimelineExtraEnum {
 			return TimelineExtraGoods.class;
 		}
 	};
+	
+	@Override
 	public String toString() {
 		return tlType;
 	}

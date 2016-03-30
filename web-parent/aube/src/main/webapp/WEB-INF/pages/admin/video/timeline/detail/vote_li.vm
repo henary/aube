@@ -1,0 +1,36 @@
+#foreach($vote in $voteList)
+<li class="list-group-item list-group-item-warning" data-rid="$!vote.rid" data-option="$!vote.option">
+	$!vote.option
+	<span class="float-right">
+		<button class="btn btn-success" onclick="javascript:editVote('$!vote.rid')">编辑</button>
+		<button class="btn btn-danger" onclick="javascript:removeVote('$!vote.rid')">删除</button>
+	</span>
+</li>
+#end
+<script type="text/javascript">
+$(document).ready(function () {
+	$( "#vote-ul" ).sortable({
+		placeholder: "ui-state-highlight" , //拖动时，用css
+		cursor: "move",
+		items :"li",                        //只是li可以拖动
+		opacity: 0.6,                       //拖动时，透明度为0.6
+		update : function(event, ui) {       //更新排序之后
+			var text = "";
+			$("#vote-ul li").each(function(){
+				text = text + $(this).attr("data-rid") + "," ;
+			});
+			var params = {};
+			params["rids"] = text;
+			$.post('${houtaiPath}admin/video/timeline/sortVote.xhtml',params,function(result){
+				eval(result);
+				if(data.success) {
+				} else {
+					alert(data.errmsg);
+					return false;
+				}
+			});
+		}
+	});
+	$( "#vote-ul" ).disableSelection();
+});
+</script>

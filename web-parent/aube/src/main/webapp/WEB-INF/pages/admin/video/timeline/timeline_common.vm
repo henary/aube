@@ -1,7 +1,6 @@
 <input type="hidden" name="tlid" id="tlid" value="$!tlid">
 <input type="hidden" name="videoid" id="videoid" value="$!video.videoid">
 <input type="hidden" name="showid" id="showid" value="$!show.showid">
-#set($textMap={"tlTitle":"标题","tlDesc":"注释"})
 #foreach($entry in $textMap.entrySet())
 <div class="form-group">
 	<label class="col-sm-3 control-label" for="$entry.value">$entry.value</label>
@@ -35,22 +34,24 @@
 		<input type="number" max="59" maxlength="2" class="form-control" id="endSec" name="endSec" value="$!info.endSec" placeholder="结束秒" />
 	</div>
 </div>
-#set($picInfoDsc="背景图片")
-<div class="form-group">
-	<label class="col-sm-3 control-label" for="$picInfoDsc">$picInfoDsc</label>
-	<div class="col-sm-6">
-		<input type="hidden" class="form-control" id="picInfo" name="picInfo" value="$!info.picInfo">
-		<p class="btn btn-success fileinput-button">
-			<i class="glyphicon glyphicon-plus"></i>
-			<span>浏览图片...</span><input type="file" name="fileupload" id="fileupload">
-		</p>
+
+#if($uploadPic)
+	<div class="form-group">
+		<label class="col-sm-3 control-label" for="$picInfoDsc">$picInfoDsc</label>
+		<div class="col-sm-6">
+			<input type="hidden" class="form-control" id="picInfo" name="picInfo" value="$!info.picInfo">
+			<p class="btn btn-success fileinput-button">
+				<i class="glyphicon glyphicon-plus"></i>
+				<span>浏览图片...</span><input type="file" name="fileupload" id="fileupload">
+			</p>
+		</div>
 	</div>
-</div>
-<div id="progress" class="progress collapse">
-	<div class="progress-bar progress-bar-success progress-bar-striped"></div>
-</div>
-<div id="files" class="files">
-	#if($VmUtils.isNotBlank($info.picInfo))
-	<img alt="" src="${staticPath}$info.picInfo" width="40%" height="40%">
-	#end
-</div>
+	<div id="progress" class="progress collapse">
+		<div class="progress-bar progress-bar-success progress-bar-striped"></div>
+	</div>
+	<div id="files" class="files">
+		#if($VmUtils.isNotBlank($info.picInfo))
+		<img alt="" src="${staticPath}$info.picInfo" width="40%" height="40%">
+		#end
+	</div>
+#end

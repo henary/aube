@@ -146,6 +146,10 @@
 
 $.validator.setDefaults({
 	submitHandler: function (form) {
+		if ($("#picInfo").val() == '') {
+			alert("请上传图片")
+			return false;
+		}
 		if (!$("input:radio[name=answer]:checked").val()) {
 			alert("请勾选正确答案")
 			return false;

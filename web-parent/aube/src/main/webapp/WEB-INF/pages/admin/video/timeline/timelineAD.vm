@@ -1,16 +1,15 @@
-<script src="${staticPath}scripts/bokecc/swfobject.js?v=$!VmUtils.jsVersion"></script>
 <div class="modal-header item-model">
-	<h2 class="modal-title icon_INFO" id="myModalLabel">添加修改消息</h2>
+	<h2 class="modal-title icon_AD" id="myModalLabel">添加修改消息</h2>
 </div>
 <div class="modal-body" id="modalbody">
 	<div class="panel panel-success">
 		<div class="panel-heading">
-			<h5><strong>基础信息</strong></h5>
+			<h5><strong>物品信息</strong></h5>
 		</div>
 		<div class="panel-body">
 		<form id="timelineForm" method="post" class="form-horizontal" action="">
 			#set($uploadPic=true)
-			#set($textMap={"tlTitle":"信息标题","tlDesc":"信息说明文字"})
+			#set($textMap={"tlTitle":"物品标题","tlDesc":"物品描述"})
 			#set($picInfoDsc="图片")
 			#parse("admin/video/timeline/timeline_common.vm")
 			<div class="col-sm-9 col-sm-offset-8 alert-dismissible">
@@ -24,6 +23,12 @@
 <script type="text/javascript">
 $.validator.setDefaults({
 	submitHandler: function (form) {
+		alert("暂不支持");
+		return false;
+		if ($("#picInfo").val() == '') {
+			alert("请上传图片")
+			return false;
+		}
 		var params = $(form).serialize();
 		$.post('${houtaiPath}admin/video/saveTimelineInfo.xhtml',params,function(result){
 			eval(result);
@@ -37,11 +42,10 @@ $.validator.setDefaults({
 	}
 });
 $(document).ready(function () {
-	
 	$('#fileupload').fileupload({
 		url: '${basePath}common/uploadSignPicture.xhtml',
         dataType: 'json',
-        formData: {"relatedId":"$!tlid","fileTag":"timelineINFO"},
+        formData: {"relatedId":"$!tlid","fileTag":"timelineAD"},
         done: function (e, data) {
         	if (data.result.success) {
         		$("#picInfo").val(data.result.retval.fileurl)
