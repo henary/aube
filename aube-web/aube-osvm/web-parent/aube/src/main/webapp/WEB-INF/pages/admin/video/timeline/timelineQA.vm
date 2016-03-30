@@ -268,12 +268,10 @@ $(document).ready(function () {
 	
 	$("#timelineForm").validate({
 		rules: {
-			tlTitle: "required",
-			tlDesc: "required"
+			tlTitle: "required"
 		},
 		messages: {
-			tlTitle: "标题不能为空",
-			tlDesc: "注释不能为空",
+			tlTitle: "标题不能为空"
 		},
 		errorElement: "em",
 		errorPlacement: function ( error, element ) {
