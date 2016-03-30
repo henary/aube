@@ -33,7 +33,8 @@ public class AubePicServiceImpl implements AubePicService, InitializingBean {
 	private ConcurrentMap<String, String> PIC_TEMP_PATH = new ConcurrentHashMap<String, String>();
 	private String videoPath;
 
-	private static final List<String> PIC_TAG_LIST = Arrays.asList(new String[] { "show", "video" });
+	private static final List<String> PIC_TAG_LIST = Arrays
+			.asList(new String[] { "show", "video", "timeline", "timelineVS", "timelineQA", "timelineINFO", "timelineGOODS", "timelineVOTE" });
 
 	@Override
 	public ResultCode<PicInfoRespVo> saveToTempPic(MultipartFile file, String picTag, String relatedId) {
@@ -59,8 +60,7 @@ public class AubePicServiceImpl implements AubePicService, InitializingBean {
 			return ResultCode.<PicInfoRespVo> getFailure(ErrorCodeConstant.CODE_UNKNOWN_ERROR, e.getMessage());
 		}
 	}
-	
-	
+
 	@Override
 	public ResultCode<PicInfoRespVo> saveToTempVideo(MultipartFile file, String videoTag, String relatedId) {
 		try {
