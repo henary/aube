@@ -217,7 +217,7 @@ $(document).ready(function () {
 	$('#fileupload').fileupload({
 		url: '${basePath}common/uploadSignPicture.xhtml',
         dataType: 'json',
-        formData: {"relatedId":"$!tlid","fileTag":"timeline"},
+        formData: {"relatedId":"$!tlid","fileTag":"timelineQA"},
         done: function (e, data) {
         	if (data.result.success) {
         		$("#picInfo").val(data.result.retval.fileurl)
