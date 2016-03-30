@@ -5,7 +5,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
 import com.aube.constans.MongoData;
-import com.aube.constants.AubeErrorConstans;
+import com.aube.constant.AubeErrorCodeConstants;
 import com.aube.json.AubeConfig;
 import com.aube.service.BaseService;
 import com.aube.support.ResultCode;
@@ -19,7 +19,7 @@ public class AubeConfigServiceImpl extends BaseService implements AubeConfigServ
 	public ResultCode<String> getAubeConfig(String id) {
 		AubeConfig aubeConfig = mongoService.getObjectById(AubeConfig.class, MongoData.ID_NAME_SYSTEMID_NAME_SYSTEM, id);
 		if (aubeConfig == null || StringUtils.isBlank(aubeConfig.getContent())) {
-			return ResultCode.<String> getFailure(AubeErrorConstans.CODE_NOT_FIND_CFG, "AubeConfig id:" + id);
+			return ResultCode.<String> getFailure(AubeErrorCodeConstants.CODE_NOT_FIND_CFG, "AubeConfig id:" + id);
 		}
 		return ResultCode.<String> getSuccessReturn(aubeConfig.getContent());
 	}

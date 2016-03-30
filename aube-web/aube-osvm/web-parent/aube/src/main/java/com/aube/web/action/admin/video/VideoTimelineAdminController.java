@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aube.constans.MongoData;
+import com.aube.constant.AubeErrorCodeConstants;
 import com.aube.constants.AubeConstants;
-import com.aube.constants.AubeErrorConstans;
 import com.aube.constants.VideoTimelineExtraEnum;
 import com.aube.constants.common.StatusConstants;
 import com.aube.json.show.ShowInfo;
@@ -28,7 +28,6 @@ import com.aube.json.video.VideoTimelineInfo;
 import com.aube.json.video.timeline.TimelineExtraBase;
 import com.aube.json.video.timeline.TimelineExtraMulticamera;
 import com.aube.json.video.timeline.TimelineExtraQA;
-import com.aube.json.video.timeline.TimelineExtraVS;
 import com.aube.mdb.operation.Expression;
 import com.aube.service.TimelineService;
 import com.aube.support.MultiPropertyComparator;
@@ -194,7 +193,7 @@ public class VideoTimelineAdminController extends BaseAdminController {
 		params.eq(TimelineExtraMulticamera.EXTRA_TLID, tlid);
 		List<TimelineExtraMulticamera> extraMulticameraList = mongoService.getObjectList(TimelineExtraMulticamera.class, params);
 		if (CollectionUtils.isEmpty(extraMulticameraList)) {
-			return result2Json(ResultCode.<String>getFailure(AubeErrorConstans.CODE_MC_LIST_NULL));
+			return result2Json(ResultCode.<String>getFailure(AubeErrorCodeConstants.CODE_MC_LIST_NULL));
 		}
 		Map<String, String> reqMap = WebUtils.getRequestMap(request);
 		VideoTimelineInfo timeline = createTimelineInfo(tlid, reqMap);

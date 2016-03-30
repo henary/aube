@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.aube.constans.MongoData;
-import com.aube.constants.AubeErrorConstans;
+import com.aube.constant.AubeErrorCodeConstants;
 import com.aube.json.video.timeline.TimelineExtraBase;
 import com.aube.json.video.timeline.TimelineExtraVS;
 import com.aube.mdb.helper.BuilderUtils;
@@ -51,7 +51,7 @@ public class TimelineVSController extends BaseAdminController {
 		Integer sortNum = 1;
 		if (CollectionUtils.isNotEmpty(vsList)) {
 			if (StringUtils.isBlank(rid) && vsList.size() >= 2) {
-				return result2Json(ResultCode.<String>getFailure(AubeErrorConstans.CODE_VS_MOST2));
+				return result2Json(ResultCode.<String>getFailure(AubeErrorCodeConstants.CODE_VS_MOST2));
 			}
 			Collections.sort(vsList, new PropertyComparator<TimelineExtraVS>(TimelineExtraBase.EXTRA_SORTNUM, true, false));
 			if (vsList.get(0).getExtraSortNum() != null) {

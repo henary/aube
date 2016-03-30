@@ -7,7 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import com.aube.constans.MongoData;
-import com.aube.constants.AubeErrorConstans;
+import com.aube.constant.AubeErrorCodeConstants;
 import com.aube.constants.VideoTimelineExtraEnum;
 import com.aube.json.video.VideoTimelineInfo;
 import com.aube.json.video.timeline.TimelineExtraBase;
@@ -30,7 +30,7 @@ public class TimelineServiceImpl extends BaseService implements TimelineService 
 		// 多镜头的上传一次保存一次，不统一处理
 		if (!StringUtils.equals(timeline.getTlType(), VideoTimelineExtraEnum.MULTICAMERA.getTlType())) {
 			if (CollectionUtils.isEmpty(extraList)) {
-				return ResultCode.<VideoTimelineInfo>getFailure(AubeErrorConstans.CODE_DATA_ERROR, "extra");
+				return ResultCode.<VideoTimelineInfo>getFailure(AubeErrorCodeConstants.CODE_DATA_ERROR, "extra");
 			}
 			VideoTimelineExtraEnum extraEnum = extraEnumCode.getRetval();
 			mongoService.removeObjectList(extraEnum.getExtraClazz(), params);

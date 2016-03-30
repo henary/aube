@@ -4,7 +4,7 @@ import java.util.EnumSet;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.aube.constant.ShowErrorCodeConstants;
+import com.aube.constant.AubeErrorCodeConstants;
 import com.aube.json.video.timeline.TimelineExtraBase;
 import com.aube.json.video.timeline.TimelineExtraGoods;
 import com.aube.json.video.timeline.TimelineExtraInfo;
@@ -107,7 +107,7 @@ public enum VideoTimelineExtraEnum {
 				return ResultCode.<VideoTimelineExtraEnum> getSuccessReturn(extraEnum);
 			}
 		}
-		return ResultCode.<VideoTimelineExtraEnum> getFailure(ShowErrorCodeConstants.CODE_UNSUPPORT_EXTRA);
+		return ResultCode.<VideoTimelineExtraEnum> getFailure(AubeErrorCodeConstants.CODE_UNSUPPORT_EXTRA);
 	}
 
 	private String tlType;
