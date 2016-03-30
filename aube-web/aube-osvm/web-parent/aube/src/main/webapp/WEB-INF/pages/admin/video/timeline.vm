@@ -57,13 +57,16 @@
 	</div> 
 </div>
 <!-- Modal -->
-<div class="modal fade" id="timelineModal" tabindex="-1" role="dialog" aria-labelledby="timelineModalLabel"  aria-hidden="false" >
+<div class="modal fade" id="timelineModal" tabindex="-1" role="dialog" aria-labelledby="timelineModalLabel" data-backdrop="static">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content"></div>
 	</div>
 </div>
 #parse("include/include_bottom.vm")
 <script type="text/javascript">
+function reloadTimelineTable() {
+	$("#timelineTable").load("${houtaiPath}admin/video/ajax/timelineList.xhtml",{tabsType:"$!tabsType"}, function(){});
+}
 $(document).ready(function () {
 	$('#timelineModal').on('hide.bs.modal', function () {
 		$('#timelineModal').removeData('bs.modal');
@@ -115,10 +118,6 @@ $(document).ready(function () {
         $( this ).removeClass( "ui-state-default" );
       }
     });
-    
-    function reloadTimelineTable() {
-    	$("#timelineTable").load("${houtaiPath}admin/video/ajax/timelineList.xhtml",{tabsType:"$!tabsType"}, function(){});
-    }
 });
 </script>
 </body>

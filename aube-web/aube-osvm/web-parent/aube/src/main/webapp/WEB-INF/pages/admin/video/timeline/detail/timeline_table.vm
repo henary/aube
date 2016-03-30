@@ -16,6 +16,10 @@
 	<td>$!timeline.tlTitle</td>
 	<td>#if($VmUtils.isNotBlank($timeline.picInfo))<img alt="" src="${staticPath}$timeline.picInfo" width="80px" height="auto">#end</td>
 	<td>
+		<div class="form-group">
+			<input type="number" class="input-group-sm" name="startMin">
+			<input type="number" class="input-group-sm" name="startMin">
+		</div>
 		$timeline.startMin'$timeline.startSec" ~ $timeline.endMin'$timeline.endSec"
 	</td>
 	<td>

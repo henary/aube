@@ -71,7 +71,7 @@
 	</div> 
 </div>
 <!-- Modal -->
-<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel"  aria-hidden="false" >
+<div class="modal fade" id="videoModal" tabindex="-1" role="dialog" aria-labelledby="videoModalLabel" data-backdrop="static">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content"></div>
 	</div>
