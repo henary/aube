@@ -44,10 +44,14 @@ public class VideoTimelineInfo extends AdminBaseMgObject<VideoTimelineInfo> {
 	// 单位秒
 	@SuppressWarnings("unused")
 	private Integer endTime;
+	
 	// 答案揭晓时间分--QA用
 	private Integer showAnswerMin;
 	// 答案揭晓时间秒--QA用
 	private Integer showAnswerSec;
+	// 多镜头倒计时默认5秒
+	private Integer timedown;
+	
 
 	// QA用的答案揭晓时间（单位秒）
 	public Integer gainShowAnswerTime() {
@@ -180,6 +184,14 @@ public class VideoTimelineInfo extends AdminBaseMgObject<VideoTimelineInfo> {
 
 	public void setShowAnswerSec(Integer showAnswerSec) {
 		this.showAnswerSec = showAnswerSec;
+	}
+
+	public Integer getTimedown() {
+		return timedown;
+	}
+
+	public void setTimedown(Integer timedown) {
+		this.timedown = timedown;
 	}
 
 }

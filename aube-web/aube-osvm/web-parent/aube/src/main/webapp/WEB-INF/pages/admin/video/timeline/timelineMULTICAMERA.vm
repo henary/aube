@@ -1,45 +1,284 @@
-<div class="modal-header">
-	<h2 class="modal-title" id="myModalLabel">添加修改多镜头消息</h2>
+<script src="${staticPath}scripts/bokecc/swfobject.js?v=$!VmUtils.jsVersion"></script>
+<div class="modal-header item-model">
+	<h2 class="modal-title icon_MULTICAMERA" id="myModalLabel">添加修改多镜头消息</h2>
 </div>
 <div class="modal-body" id="modalbody">
-	<form id="showForm" method="post" class="form-horizontal" action="">
-	<input type="hidden" name="showid" id="showid" value="$!showid">
-	#parse("admin/video/timeline/timeline_common.vm")
-	
-	#set($picInfoDsc="海报图片")
-	<div class="form-group">
-		<label class="col-sm-4 control-label" for="$picInfoDsc">$picInfoDsc</label>
-		<div class="col-sm-5">
-			<span class="btn btn-success fileinput-button">
-				<i class="glyphicon glyphicon-plus"></i>
-				<span>浏览图片...</span><input type="file" name="fileupload" id="fileupload">
-			</span>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h5><strong>多镜头视频信息</strong></h5>
+		</div>
+		<div class="panel-body">
+		<form id="timelineForm" method="post" class="form-horizontal" action="">
+			#set($uploadPic=false)
+			#parse("admin/video/timeline/timeline_common.vm")
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="多镜头倒计时">多镜头倒计时</label>
+				<div class="col-sm-6">
+					<input type="number" class="form-control" id="timedown" name="timedown" value="5" placeholder="多镜头倒计时" />
+				</div>
+			</div>
+			<div class="col-sm-9 col-sm-offset-8 alert-dismissible">
+				<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				<button type="submit" class="btn btn-success">确定</button>
+			</div>
+		</form>
 		</div>
 	</div>
-	<div id="progress" class="progress collapse">
-		<div class="col-sm-5">
-			<input type="hidden" class="form-control" id="picInfo" name="picInfo" value="$!info.picInfo">
+	<div class="panel panel-warning">
+		<div class="panel-heading">
+			<h5><strong>多镜头视频信息</strong></h5>
 		</div>
-		<div class="progress-bar progress-bar-success progress-bar-striped"></div>
-	</div>
-	<div id="files" class="files">
-		#if($VmUtils.isNotBlank($info.picInfo))
-		<img alt="" src="${staticPath}$info.picInfo" width="40%" height="40%">
-		#end
-	</div>
-	<div class="modal-footer ">
-		<div class="col-sm-9 col-sm-offset-4 alert-dismissible">
-			<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-			<button type="submit" class="btn btn-success">确定</button>
+		<div class="panel-body" id="multi-camera-div">
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="多镜头标题">多镜头标题</label>
+				<div class="col-sm-9">
+					<input type="text"  class="form-control" id="videoTitle" name="videoTitle" value="" placeholder="多镜头标题" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="多镜头标题">多镜头描述</label>
+				<div class="col-sm-9">
+					<input type="text"  class="form-control" id="videoDesc" name="videoDesc" value="" placeholder="多镜头描述" />
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="视频ID">视频ID</label>
+				<div class="col-sm-3">
+					<input type="text"  class="form-control" id="videono" name="videono" value="" placeholder="非上传必填" />
+					<input type="hidden" id="rid" name="rid" value=""/>
+				</div>
+				<div class="col-sm-3">
+					<span id="swfBrowse"></span>
+					<span id="upload-swfBrowse" class="btn btn-warning fileinput-button">
+						<i class="glyphicon glyphicon-plus"></i>
+						<span>上传视频...</span>
+					</span>
+				</div>
+				<div class="col-sm-3 collapse" id="saveMultiCameraDiv">
+					<button class="btn btn-success" onclick="javascrit:saveMultiCamera();">保存</button>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label"></label>
+				<div class="col-sm-9">
+					<div class="progress collapse" id="progress_mcUpload">
+						<div class="progress-bar progress-bar-success progress-bar-striped"></div>
+					</div>
+				</div>
+			</div>
 		</div>
+		<ul id="multicameraTable" class="list-group"></ul>
 	</div>
-</form>
 </div>
 <script type="text/javascript">
-$.validator.setDefaults( {
-	submitHandler: function () {
+var swfobj = new SWFObject("http://union.bokecc.com/flash/api/uploader.swf", 'uploadswf', '112', '34', '8', 'red');
+swfobj.addVariable('progress_interval', '1');
+swfobj.addVariable('notify_url', '${absPath}bokecc/notify.xhtml?tlid=$!tlid');
+swfobj.addParam('allowFullscreen', 'true');
+swfobj.addParam('allowScriptAccess', 'always');
+swfobj.addParam('wmode', 'transparent');
+swfobj.write('swfBrowse');
+
+var filename = '';
+var ccvideoid;
+//获取名字
+function on_spark_selected_file(file_name, file_size) {
+	filename = file_name;
+	if ($("#videoTitle").val() == '') {
+		alert("请填写多镜头详情的大标题");
+		return false;
+	}
+	if (filename != '') {
+		var videoTitle = encodeURIComponent($("#videoTitle").val(), "utf-8");
+		var videoDesc = encodeURIComponent($("#videoDesc").val(), "utf-8");
+		$.get("${houtaiPath}admin/video/upload/uploadMc.xhtml", {
+			videoTitle : videoTitle,
+			videoDesc : videoDesc
+		}, function(data) {
+			$("#uploadswf")[0].start_upload(data);
+		});
+	} else {
+		ccvideoid = $('#videono').val();
+	}
+	$("#uploadFilename").html(file_name);
+}
+// 上传处理过程
+function on_spark_upload_validated(status, ccid) {
+	ccvideoid = ccid;
+	switch(status){
+	case "OK":
+		$("#videono").val(ccid);
+		$("#videono").attr("disabled",true)
+		filename = "";
+		break;
+	case "INVALID_REQUEST":alert("参数有误，请重新输入");break;
+	case "SPACE_NOT_ENOUGH":alert("账户剩余空间不足");break;
+	case "SERVICE_EXPIRED":alert("账户服务已过期");break;
+	case "PROCESS_FAIL":alert(" 服务器处理失败，请稍候再试");break;
+	case "TOO_MANY_REQUEST":alert("访问过于频繁");break;
+	case "PERMISSION_DENY":alert("无API使用权限，请检查用户ID和授权KEY是否正确");break;
+	default: alert(status);
+	}
+}
+//上传进度显示
+function on_spark_upload_progress(progress){
+	$("#progress_mcUpload").show();
+	if(progress==100){
+		$("#progress_mcUpload .progress-bar").css({width:"100%"});
+		$('#progress_mcUpload .progress-bar').html("已上传100%");
+		saveMultiCamera();
+	}else if(progress<0){
+		alert("上传发生错误，请稍后再试");
+	}else if(progress<100) {
+		$('#progress_mcUpload .progress-bar').html("已上传" + progress+ "%");
+		$("#progress_mcUpload .progress-bar").css({
+			width:progress+"%"
+		});
+	}
+}
+
+function removeMulticamera(rid) {
+	$.post("${houtaiPath}admin/video/timeline/removeMultiCamera.xhtml", {"rid":rid}, function(){loadMulticameraTable();});
+}
+
+function loadMulticameraTable() {
+	$("#multicameraTable").load("${houtaiPath}admin/video/timeline/getMultiCameraByTlid.xhtml", {tlid:"$!tlid"}, function(){});
+}
+
+function saveMultiCamera() {
+	var params = {};
+	params["videono"] = ccvideoid;
+	params["videoTitle"] = $("#videoTitle").val();
+	params["videoDesc"] = $("#videoDesc").val();
+	params["rid"] = $("#rid").val();
+	params["tlid"] = "$!tlid";
+	$.post('${houtaiPath}admin/video/timeline/saveMultiCamera.xhtml',params,function(result){
+		eval(result);
+		if(data.success) {
+			$("#videoTitle").val("");
+			$("#videoDesc").val("");
+			$("#videono").val("");
+			$("#rid").val("");
+			$("#progress_mcUpload .progress-bar").css({width:"0%"});
+			$('#progress_mcUpload .progress-bar').html("");
+			$("#progress_mcUpload").hide();
+			$("#videono").removeAttr("disabled");
+			ccvideoid = '';
+			loadMulticameraTable();
+			$("#saveMultiCameraDiv").hide();
+		} else {
+			alert(data.errmsg);
+			return false;
+		}
+	});
+}
+
+function editMulticamera(rid) {
+	$("#saveMultiCameraDiv").show();
+	$("#multicameraTable li").each(function(i, item) {
+		if ($(item).attr("data-rid") == rid) {
+			$("#videoTitle").val($(item).attr("data-videoTitle"));
+			$("#videoDesc").val($(item).attr("data-videoDesc"));
+			$("#videono").val($(item).attr("data-videono"));
+			$("#rid").val($(item).attr("data-rid"));
+		}
+	});
+}
+
+$.validator.setDefaults({
+	submitHandler: function (form) {
+		var params = $(form).serialize();
+		$.post('${houtaiPath}admin/video/saveTimelineMc.xhtml',params,function(result){
+			eval(result);
+			if(data.success) {
+				location.reload();
+			} else {
+				alert(data.errmsg);
+				return false;
+			}
+		});
 	}
 });
 $(document).ready(function () {
+	loadMulticameraTable();
+	$("#timelineForm").validate({
+		rules: {
+			tlTitle: "required",
+			options:"required",
+			startMin: {
+				required:true,
+				maxlength:3,
+				max:$!duration
+			},
+			startSec: {
+				required:true,
+				maxlength:2,
+				max:59
+			},
+			endMin: {
+				required:true,
+				maxlength:3,
+				max:$!duration
+			},
+			endSec: {
+				required:true,
+				maxlength:2,
+				max:59
+			}
+		},
+		messages: {
+			tlTitle: "标题不能为空",
+			startMin: {
+				required:"开始分不能为空",
+				max:"开始分不能大于视频时长",
+				maxlength:"开始分不能超出3位"
+			},
+			startSec: {
+				required:"开始秒不能为空",
+				max:"开始秒不能大于59",
+				maxlength:"开始秒不能超出2位数"
+			},
+			endMin: {
+				required:"结束分不能为空",
+				max:"结束分不能大于视频时长",
+				maxlength:"结束分不能超出3位数"
+			},
+			endSec: {
+				required:"结束秒不能为空",
+				max:"结束秒不能大于59",
+				maxlength:"结束秒不能超出2位数"
+			}
+		},
+		errorElement: "em",
+		errorPlacement: function ( error, element ) {
+			error.addClass( "help-block" );
+			element.parents( ".col-sm-6" ).addClass( "has-feedback" );
+			element.parents( ".col-sm-3" ).addClass( "has-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+			if ( !element.next( "span" )[ 0 ] ) {
+				$( "<span class='glyphicon glyphicon-remove form-control-feedback'></span>" ).insertAfter( element );
+			}
+		},
+		success: function ( label, element ) {
+			if ( !$( element ).next( "span" )[ 0 ] ) {
+				$( "<span class='glyphicon glyphicon-ok form-control-feedback'></span>" ).insertAfter( $( element ) );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).parents( ".col-sm-6" ).addClass( "has-error" ).removeClass( "has-success" );
+			$( element ).parents( ".col-sm-3" ).addClass( "has-error" ).removeClass( "has-success" );
+			$( element ).next( "span" ).addClass( "glyphicon-remove" ).removeClass( "glyphicon-ok" );
+		},
+		unhighlight: function ( element, errorClass, validClass ) {
+			$( element ).parents( ".col-sm-6" ).addClass( "has-success" ).removeClass( "has-error" );
+			$( element ).parents( ".col-sm-3" ).addClass( "has-success" ).removeClass( "has-error" );
+			$( element ).next( "span" ).addClass( "glyphicon-ok" ).removeClass( "glyphicon-remove" );
+		}
+	});
 });
 </script>

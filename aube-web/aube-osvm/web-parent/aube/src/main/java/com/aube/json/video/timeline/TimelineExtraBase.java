@@ -8,8 +8,9 @@ public class TimelineExtraBase<T> extends MGObject<T> {
 	 * 
 	 */
 	private static final long serialVersionUID = -499224143469835786L;
-
+	public static final String EXTRA_RID = "rid";
 	public static final String EXTRA_TLID = "tlid";
+	public static final String EXTRA_SORTNUM = "extraSortNum";
 	// 记录ID
 	private String rid;
 	// 对应的时间线

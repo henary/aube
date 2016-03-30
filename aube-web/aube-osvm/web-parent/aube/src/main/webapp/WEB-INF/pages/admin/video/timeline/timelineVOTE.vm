@@ -1,195 +1,207 @@
 <div class="modal-header item-model">
 	<h2 class="modal-title icon_VOTE" id="myModalLabel">添加修改投票消息</h2>
-	<span class="modal-info-subtitle">基础信息</span>
 </div>
 
 <div class="modal-body" id="modalbody">
-	<form id="timelineForm" method="post" class="form-horizontal" action="">
-		#parse("admin/video/timeline/timeline_common.vm")
-		
-	<span class="modal-info-subtitle">扩展信息<span class="float-right" id="add-option">+添加选项</span></span>
-	<hr>
-	<div  id="optionInfo">
-	#set($opiontsText="选项")
-	#if(!$VmUtils.isEmptyList($extraList))
-		#foreach($extarVs in $extraList)
-		<div class="form-group">
-			<label class="col-sm-3 control-label" for="$opiontsText">$opiontsText sss</label>
-			<div class="col-sm-6">
-				<input type="text" class="form-control" name="options" value="$!extarVs.option" placeholder="$opiontsText" />
-			</div>
+	<div class="panel panel-success">
+		<div class="panel-heading">
+			<h5><strong>投票基础信息</strong></h5>
 		</div>
-		#end
-	#else
-		#foreach($i in [1..3])
-		<div class="form-group">
-			<label class="col-sm-3 control-label" for="$opiontsText">$opiontsText</label>
-			<div class="col-sm-5">
-				<input type="text" class="form-control" id="options_$i" name="options" value="" placeholder="$opiontsText" />
+		<div class="panel-body">
+		<form id="timelineForm" method="post" class="form-horizontal" action="">
+			#set($uploadPic=true)
+			#set($textMap={"tlTitle":"投票标题","tlDesc":"投票说明文字"})
+			#set($picInfoDsc="图片")
+			#parse("admin/video/timeline/timeline_common.vm")
+			<div class="modal-footer ">
+				<div class="col-sm-9 col-sm-offset-4 alert-dismissible">
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					<button type="submit" class="btn btn-success">确定</button>
+				</div>
 			</div>
-			<div class="col-sm-2">
-				<input type="number" class="form-control" id="extraSortNum_$i" name="extraSortNum" value="" placeholder="排序" />
-			</div>
-			<div class="col-sm-1 "><span class="btn btn-danger del-option">删除</span></div>
-		</div>
-		#end
-	#end
-	</div>
-	<div class="modal-footer ">
-		<div class="col-sm-9 col-sm-offset-4 alert-dismissible">
-			<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-			<button type="submit" class="btn btn-success">确定</button>
+		</form>
 		</div>
 	</div>
-	</form>
+	<div class="panel panel-warning">
+		<div class="panel-heading">
+			<h5><strong>投票扩展信息</strong></h5>
+		</div>
+		<div class="panel-body">
+			#set($opiontsText="选项")
+			<div class="form-group">
+				<label class="col-sm-3 control-label" for="$opiontsText">$opiontsText</label>
+				<div class="col-sm-6">
+					<input type="text" class="form-control" id="option" name="option" value="" placeholder="$opiontsText" />
+					<input type="hidden" name="rid" id="rid" value="">
+				</div>
+				<div class="col-sm-2"><span class="btn btn-warning" onclick="javascript:saveVote();">保存</span></div>
+			</div>
+		</div>
+		<ul id="vote-ul" class="list-group"></ul>
+	</div>
 </div>
 <script type="text/javascript">
+function loadVoteList() {
+	$("#vote-ul").load("${houtaiPath}admin/video/timeline/getVoteListByTlid.xhtml", {tlid:"$!tlid"}, function(){});
+}
+function editVote(rid) {
+	$("#vote-ul li").each(function(i, item) {
+		if ($(item).attr("data-rid") == rid) {
+			$("#option").val($(item).attr("data-option"));
+			$("#rid").val($(item).attr("data-rid"));
+		}
+	});
+}
+
+function saveVote() {
+	var params = {};
+	params["option"] = $("#option").val();
+	params["rid"] = $("#rid").val();
+	params["tlid"] = "$!tlid";
+	$.post('${houtaiPath}admin/video/timeline/saveVote.xhtml',params,function(result){
+		eval(result);
+		if(data.success) {
+			$("#option").val("");
+			$("#rid").val("");
+			loadVoteList();
+		} else {
+			alert(data.errmsg);
+			return false;
+		}
+	});
+}
+
+
+function removeVote(rid) {
+	$.post("${houtaiPath}admin/video/timeline/removeVote.xhtml", {"rid":rid}, function(){loadVoteList();});
+}
+
 $(function(){
-		## 添加选项		
-		$("#add-option").click(function(){
-			var div = $("#optionInfo :first").clone(true);
-			$(div).find("input[name='options']").attr("id", "option_" + getRandom()).val("");
-			$(div).appendTo("#optionInfo");
-		});
-		## 删除选项
-		$(".del-option").click(function(){
-			if ($(".del-option").length <= 2) {
-				alert("投票最少需要2两个选项")
-				return false;
-			}
-			$(this).parents(".form-group").remove();
-		});
-		
-		
-		$.validator.setDefaults({
-			submitHandler: function (form) {
-				if ($("#picInfo").val() == '') {
-					alert("请上传图片")
+	$.validator.setDefaults({
+		submitHandler: function (form) {
+			var params = $(form).serialize();
+			$.post('${houtaiPath}admin/video/saveTimelineVote.xhtml',params,function(result){
+				eval(result);
+				if(data.success) {
+					location.reload();
+				} else {
+					alert(data.errmsg);
 					return false;
 				}
-				var params = $(form).serialize();
-				$.post('${houtaiPath}admin/video/saveTimelineVote.xhtml',params,function(result){
-					eval(result);
-					if(data.success) {
-						location.reload();
-					} else {
-						alert(data.errmsg);
-						return false;
-					}
-				});
-			}
-		});
-		
-		$(document).ready(function () {
-			$('#fileupload').fileupload({
-				url: '${basePath}common/uploadSignPicture.xhtml',
-		        dataType: 'json',
-		        formData: {"relatedId":"$!videoid","fileTag":"video"},
-		        done: function (e, data) {
-		        	if (data.result.success) {
-		        		$("#picInfo").val(data.result.retval.fileurl)
-		        		 $("#files").html($('<img>').attr("src", "${staticPath}" + data.result.retval.fileurl).attr("width","160").attr("hight","90"));
-		        	} else {
-		        		alert(data.result.errmsg);
-		        	}
-		        },
-		        progressall: function (e, data) {
-		        	$("#progress").show();
-		        	var progress = parseInt(data.loaded / data.total * 100, 10);
-		        	$('#progress .progress-bar').html(progress + "%");
-			        $('#progress .progress-bar').css(
-			            'width',
-			            progress + '%'
-			        );
-			    }
-		    }).prop('disabled', !$.support.fileInput)
-		        .parent().addClass($.support.fileInput ? undefined : 'disabled');
-			
-			$("#timelineForm").validate({
-				rules: {
-					tlTitle: "required",
-					options:"required",
-					picInfo: "required",
-					startMin: {
-						required:true,
-						maxlength:3,
-						max:$!duration
-					},
-					startSec: {
-						required:true,
-						maxlength:2,
-						max:59
-					},
-					endMin: {
-						required:true,
-						maxlength:3,
-						max:$!duration
-					},
-					endSec: {
-						required:true,
-						maxlength:2,
-						max:59
-					}
-				},
-				messages: {
-					tlTitle: "标题不能为空",
-					picInfo: "图片不能为空",
-					startMin: {
-						required:"开始分不能为空",
-						max:"开始分不能大于视频时长",
-						maxlength:"开始分不能超出3位"
-					},
-					startSec: {
-						required:"开始秒不能为空",
-						max:"开始秒不能大于59",
-						maxlength:"开始秒不能超出2位数"
-					},
-					endMin: {
-						required:"结束分不能为空",
-						max:"结束分不能大于视频时长",
-						maxlength:"结束分不能超出3位数"
-					},
-					endSec: {
-						required:"结束秒不能为空",
-						max:"结束秒不能大于59",
-						maxlength:"结束秒不能超出2位数"
-					},
-					options:"选项不能为空"
-				},
-				errorElement: "em",
-				errorPlacement: function ( error, element ) {
-					error.addClass( "help-block" );
-					element.parents( ".col-sm-6" ).addClass( "has-feedback" );
-					element.parents( ".col-sm-5" ).addClass( "has-feedback" );
-					element.parents( ".col-sm-3" ).addClass( "has-feedback" );
-
-					if ( element.prop( "type" ) === "checkbox" ) {
-						error.insertAfter( element.parent( "label" ) );
-					} else {
-						error.insertAfter( element );
-					}
-					if ( !element.next( "span" )[ 0 ] ) {
-						$( "<span class='glyphicon glyphicon-remove form-control-feedback'></span>" ).insertAfter( element );
-					}
-				},
-				success: function ( label, element ) {
-					if ( !$( element ).next( "span" )[ 0 ] ) {
-						$( "<span class='glyphicon glyphicon-ok form-control-feedback'></span>" ).insertAfter( $( element ) );
-					}
-				},
-				highlight: function ( element, errorClass, validClass ) {
-					$( element ).parents( ".col-sm-6" ).addClass( "has-error" ).removeClass( "has-success" );
-					$( element ).parents( ".col-sm-5" ).addClass( "has-error" ).removeClass( "has-success" );
-					$( element ).parents( ".col-sm-3" ).addClass( "has-error" ).removeClass( "has-success" );
-					$( element ).next( "span" ).addClass( "glyphicon-remove" ).removeClass( "glyphicon-ok" );
-				},
-				unhighlight: function ( element, errorClass, validClass ) {
-					$( element ).parents( ".col-sm-6" ).addClass( "has-success" ).removeClass( "has-error" );
-					$( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-error" );
-					$( element ).parents( ".col-sm-3" ).addClass( "has-success" ).removeClass( "has-error" );
-					$( element ).next( "span" ).addClass( "glyphicon-ok" ).removeClass( "glyphicon-remove" );
-				}
 			});
-		});
-});		
+		}
+	});
+});
+$(document).ready(function () {
+	loadVoteList();
+	$('#fileupload').fileupload({
+		url: '${basePath}common/uploadSignPicture.xhtml',
+        dataType: 'json',
+        formData: {"relatedId":"$!videoid","fileTag":"video"},
+        done: function (e, data) {
+        	if (data.result.success) {
+        		$("#picInfo").val(data.result.retval.fileurl)
+        		 $("#files").html($('<img>').attr("src", "${staticPath}" + data.result.retval.fileurl).attr("width","160").attr("hight","90"));
+        	} else {
+        		alert(data.result.errmsg);
+        	}
+        },
+        progressall: function (e, data) {
+        	$("#progress").show();
+        	var progress = parseInt(data.loaded / data.total * 100, 10);
+        	$('#progress .progress-bar').html(progress + "%");
+	        $('#progress .progress-bar').css(
+	            'width',
+	            progress + '%'
+	        );
+	    }
+    }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+	
+	$("#timelineForm").validate({
+		rules: {
+			tlTitle: "required",
+			options:"required",
+			picInfo: "required",
+			startMin: {
+				required:true,
+				maxlength:3,
+				max:$!duration
+			},
+			startSec: {
+				required:true,
+				maxlength:2,
+				max:59
+			},
+			endMin: {
+				required:true,
+				maxlength:3,
+				max:$!duration
+			},
+			endSec: {
+				required:true,
+				maxlength:2,
+				max:59
+			}
+		},
+		messages: {
+			tlTitle: "标题不能为空",
+			picInfo: "图片不能为空",
+			startMin: {
+				required:"开始分不能为空",
+				max:"开始分不能大于视频时长",
+				maxlength:"开始分不能超出3位"
+			},
+			startSec: {
+				required:"开始秒不能为空",
+				max:"开始秒不能大于59",
+				maxlength:"开始秒不能超出2位数"
+			},
+			endMin: {
+				required:"结束分不能为空",
+				max:"结束分不能大于视频时长",
+				maxlength:"结束分不能超出3位数"
+			},
+			endSec: {
+				required:"结束秒不能为空",
+				max:"结束秒不能大于59",
+				maxlength:"结束秒不能超出2位数"
+			},
+			options:"选项不能为空"
+		},
+		errorElement: "em",
+		errorPlacement: function ( error, element ) {
+			error.addClass( "help-block" );
+			element.parents( ".col-sm-6" ).addClass( "has-feedback" );
+			element.parents( ".col-sm-5" ).addClass( "has-feedback" );
+			element.parents( ".col-sm-3" ).addClass( "has-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+			if ( !element.next( "span" )[ 0 ] ) {
+				$( "<span class='glyphicon glyphicon-remove form-control-feedback'></span>" ).insertAfter( element );
+			}
+		},
+		success: function ( label, element ) {
+			if ( !$( element ).next( "span" )[ 0 ] ) {
+				$( "<span class='glyphicon glyphicon-ok form-control-feedback'></span>" ).insertAfter( $( element ) );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).parents( ".col-sm-6" ).addClass( "has-error" ).removeClass( "has-success" );
+			$( element ).parents( ".col-sm-5" ).addClass( "has-error" ).removeClass( "has-success" );
+			$( element ).parents( ".col-sm-3" ).addClass( "has-error" ).removeClass( "has-success" );
+			$( element ).next( "span" ).addClass( "glyphicon-remove" ).removeClass( "glyphicon-ok" );
+		},
+		unhighlight: function ( element, errorClass, validClass ) {
+			$( element ).parents( ".col-sm-6" ).addClass( "has-success" ).removeClass( "has-error" );
+			$( element ).parents( ".col-sm-5" ).addClass( "has-success" ).removeClass( "has-error" );
+			$( element ).parents( ".col-sm-3" ).addClass( "has-success" ).removeClass( "has-error" );
+			$( element ).next( "span" ).addClass( "glyphicon-ok" ).removeClass( "glyphicon-remove" );
+		}
+	});
+});
 </script>

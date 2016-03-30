@@ -14,7 +14,7 @@
   			<li class="active">时间线设置</li>
 		</ol>
 		
-		#set($tabsMap={'all':"全部",'interaction':'互动','mc':'多镜头','goods':'物品'})
+		#set($tabsMap={'all':"全部",'interaction':'互动','mc':'多镜头','ad':'物品'})
 		<ul class="nav nav-tabs">
 			#foreach($tabsEntry in $tabsMap.entrySet())
 			<li role="presentation" class="#if($VmUtils.equals($tabsEntry.key, $tabsType))active#end">
@@ -24,7 +24,7 @@
 			</li>
 			#end
 		</ul>
-		#set($tlTypeMap={'MULTICAMERA':'镜头','QA':'问答','VOTE':'投票','VS':'VS','INFO':'信息',"GOODS":'物品'})
+		#set($tlTypeMap={'MULTICAMERA':'多镜头','QA':'问答','VOTE':'投票','VS':'VS','INFO':'信息',"AD":'物品'})
 		<div class="panel panel-warning">
 			<div class="panel-heading">
 				<ul class="nav nav-pills">
