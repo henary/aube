@@ -16,4 +16,11 @@ public interface MemberInfoVoService {
 	 */
 	ResultCode<MemberInfoVo> getMemberInfoByOpensource(OpensourceEnum opensources, String token);
 
+	/**
+	 * 根据微信code获取用户信息
+	 * @param code
+	 * @return
+	 */
+	ResultCode<MemberInfoVo> getMemeberByWeixinCode(String code);
+
 }
