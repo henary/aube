@@ -20,17 +20,20 @@ public interface ErrorCodeConstant {
 	/**
 	 * 1000~1100 数据不支持的类型
 	 */
+	// 配置项没有配置
 	String CODE_NOT_FIND_CFG="1000";
-	// 数据为空
+	// 数据错误
 	String CODE_DATA_ERROR = "1010";
 	// 参数类型不一致
 	String CODE_DATA_TYPE_ERROR = "1011";
 	// 文件上传不支持的标签类型
 	String CODE_UPLOAD_NOT_SUPPORTS_TAG = "1012";
-	// 文件上传的列表为空
+	// 文件上传错误
 	String CODE_UPLOAD_EMPTY = "1013";
 	// 上传参数错误
 	String CODE_UPLOAD_PARAM_ERROR = "1014";
+	// 参数必须
+	String CODE_PARAMS_MUST = "1020";
 
 	/**
 	 * 1100～1200用户相关
@@ -51,7 +54,7 @@ public interface ErrorCodeConstant {
 	String CODE_OPENMEMBER_NOT_EXITS = "1106";
 
 	/**
-	 * 2000～2100 聊天相关
+	 * 2000～2100 SNS相关
 	 */
 	// 聊天应用没有配置
 	String CODE_CHAT_CFG_DEFAULT_NOT_EXITS = "2000";
