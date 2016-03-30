@@ -14,17 +14,19 @@ public class VideoTimelineInfo extends AdminBaseMgObject<VideoTimelineInfo> {
 	private static final long serialVersionUID = -2381690166830047246L;
 
 	public static final String TIMELINE_ID = "tlid";
+	public static final String TIMELINE_VIDEOID = "videoid";
+	public static final String TIMELINE_STARTTIME = "startTime";
 	// 时间线－－id
 	private String tlid;
 	// 视频id
 	private String videoid;
 	// 节目id
 	private String showid;
-	// 时间线－－类型
+	// 时间线--类型
 	private String tlType;
-	// 时间线－－标题
+	// 时间线--标题
 	private String tlTitle;
-	// 时间线－－描述
+	// 时间线--描述
 	private String tlDesc;
 	// 开始时间分
 	private Integer startMin;
@@ -38,40 +40,38 @@ public class VideoTimelineInfo extends AdminBaseMgObject<VideoTimelineInfo> {
 	private String picInfo;
 	// 卡片是否收起
 	private String thumbnailCard;
-	// 单位秒
-	@SuppressWarnings("unused")
-	private Integer startTime;
-	// 单位秒
-	@SuppressWarnings("unused")
-	private Integer endTime;
-	
 	// 答案揭晓时间分--QA用
 	private Integer showAnswerMin;
 	// 答案揭晓时间秒--QA用
 	private Integer showAnswerSec;
 	// 多镜头倒计时默认5秒
 	private Integer timedown;
-	
+	// 单位秒
+	@SuppressWarnings("unused")
+	private Integer startTime;
+	// 单位秒
+	@SuppressWarnings("unused")
+	private Integer endTime;
 
 	// QA用的答案揭晓时间（单位秒）
 	public Integer gainShowAnswerTime() {
 		return (showAnswerMin == null || showAnswerSec == null) ? 0 : showAnswerMin * 60 + showAnswerSec;
+	}
+
+	public Integer gainStartTime() {
+		return (startMin == null || startSec == null) ? 0 : startMin * 60 + startSec;
+	}
+
+	public Integer gainEndTime() {
+		return (endMin == null || endSec == null) ? 0 : endMin * 60 + endSec;
 	}
 	
 	public Integer getStartTime() {
 		return (startMin == null || startSec == null) ? 0 : startMin * 60 + startSec;
 	}
 
-	public void setStartTime(Integer startTime) {
-		this.startTime = (startMin == null || startSec == null) ? 0 : startMin * 60 + startSec;
-	}
-
 	public Integer getEndTime() {
 		return (endMin == null || endSec == null) ? 0 : endMin * 60 + endSec;
-	}
-
-	public void setEndTime(Integer endTime) {
-		this.endTime = (endMin == null || endSec == null) ? 0 : endMin * 60 + endSec;
 	}
 
 	public String getTlid() {

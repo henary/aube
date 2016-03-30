@@ -43,10 +43,11 @@ import com.aube.web.action.admin.BaseAdminController;
  */
 @Controller
 public class VideoTimelineAdminController extends BaseAdminController {
-	
-	@Autowired@Qualifier("timelineService")
+
+	@Autowired
+	@Qualifier("timelineService")
 	private TimelineService timelineService;
-	
+
 	@RequestMapping("/admin/video/timelineList.xhtml")
 	public String timeList(String videoid, String tabsType, HttpServletRequest request, ModelMap model) {
 		ResultCode<VideoInfo> videoInfoCode = getVideoInfoById(videoid, request);
@@ -61,24 +62,32 @@ public class VideoTimelineAdminController extends BaseAdminController {
 		if (StringUtils.isBlank(tabsType)) {
 			tabsType = AubeConstants.TABS_TL_ALL;
 		}
-		model.put("tabs2TypeListMap", AubeConstants.TABS_2TYPE_LIST_MAP);
+		model.put("tabs2TypeListMap", AubeConstants.TABS_2TYPE_LIST_CACHE.asMap());
 		model.put("tabsType", tabsType);
 		model.put("video", video);
+		model.put("duration", video.getDuration() == null || video.getDuration() == 0 ? AubeConstants.VIDEO_DEFAULT_DURATION : video.getDuration());
 		model.put("show", showCode.getRetval());
 		return "admin/video/timeline.vm";
 	}
 
-	
 	@RequestMapping("/admin/video/ajax/timelineList.xhtml")
 	public String ajaxTimeline(String tabsType, HttpServletRequest request, ModelMap model) {
 		List<VideoTimelineInfo> timelineList = mongoService.getObjectList(VideoTimelineInfo.class);
-		Collections.sort(timelineList, new MultiPropertyComparator<VideoTimelineInfo>(new String[]{"startTime", "endTime"}, new boolean[]{Boolean.TRUE, Boolean.TRUE}));
-		model.put("timelineList", timelineList);
+		List<VideoTimelineInfo> resultList = new ArrayList<VideoTimelineInfo>();
+		List<String> tlTypeList = AubeConstants.TABS_2TYPE_LIST_CACHE.getIfPresent(tabsType);
+		for (VideoTimelineInfo timeline : timelineList) {
+			if (tlTypeList.contains(timeline.getTlType())) {
+				resultList.add(timeline);
+			}
+		}
+		Collections.sort(resultList,
+				new MultiPropertyComparator<VideoTimelineInfo>(new String[] { "startTime", "endTime" }, new boolean[] { Boolean.TRUE, Boolean.TRUE }));
+		model.put("timelineList", resultList);
 		return "admin/video/timeline/detail/timeline_table.vm";
 	}
+
 	@RequestMapping("/admin/video/getTimeline.xhtml")
-	public String timelineDetail(String tlid, String videoid, String tlType, ModelMap model,
-			HttpServletRequest request) {
+	public String timelineDetail(String tlid, String videoid, String tlType, ModelMap model, HttpServletRequest request) {
 		if (StringUtils.isNotBlank(tlid)) {
 			VideoTimelineInfo timeline = mongoService.getObjectById(VideoTimelineInfo.class, VideoTimelineInfo.TIMELINE_ID, tlid);
 			if (StringUtils.isBlank(tlType)) {
@@ -109,23 +118,17 @@ public class VideoTimelineAdminController extends BaseAdminController {
 		model.put("tlid", tlid);
 		model.put("video", videoCode.getRetval());
 		model.put("show", showCode.getRetval());
-		model.put("duration", video.getDuration() == null || video.getDuration() ==0 ? AubeConstants.VIDEO_DEFAULT_DURATION : video.getDuration());
+		model.put("duration", video.getDuration() == null || video.getDuration() == 0 ? AubeConstants.VIDEO_DEFAULT_DURATION : video.getDuration());
 		model.put("videoid", videoid);
 		return "admin/video/timeline/timeline" + tlType + ".vm";
 	}
+
 	
-	private VideoTimelineInfo createTimelineInfo(String tlid, Map<String, String> reqMap) {
-		VideoTimelineInfo timeline = mongoService.getObjectById(VideoTimelineInfo.class, VideoTimelineInfo.TIMELINE_ID, tlid);
-		if (timeline == null) {
-			timeline = new VideoTimelineInfo();
-			timeline.set_id(tlid);
-			timeline.setTlid(tlid);
-			// TODO 人员
-			timeline.setAddTime(DateUtil.getCurFullTimestampStr());
-		}
-		BeanUtil.copyProperties(timeline, reqMap);
-		timeline.setUpdTime(DateUtil.getCurFullTimestampStr());
-		return timeline;
+	@RequestMapping("/admin/video/timeline/removeTimeline.xhtml")
+	@ResponseBody
+	public String removeTimeline(String tlid) {
+		mongoService.removeObjectById(VideoTimelineInfo.class, VideoTimelineInfo.TIMELINE_ID, tlid);
+		return result2Json(ResultCode.SUCCESS);
 	}
 	
 	@RequestMapping("/admin/video/saveTimelineVS.xhtml")
@@ -140,7 +143,7 @@ public class VideoTimelineAdminController extends BaseAdminController {
 		}
 		return result2Json(ResultCode.SUCCESS);
 	}
-	
+
 	@RequestMapping("/admin/video/saveTimelineVote.xhtml")
 	@ResponseBody
 	public String saveTimelineVote(String tlid, HttpServletRequest request) {
@@ -153,11 +156,11 @@ public class VideoTimelineAdminController extends BaseAdminController {
 		}
 		return result2Json(ResultCode.SUCCESS);
 	}
-	
-	
+
 	@RequestMapping("/admin/video/saveTimelineQA.xhtml")
 	@ResponseBody
-	public String saveTimelineQA(String tlid, String[] optionValue, String[] h5url, String[] qaPicInfo,String[] answerDesc, String answer, Integer[] extraSortNum, HttpServletRequest request) {
+	public String saveTimelineQA(String tlid, String[] optionValue, String[] h5url, String[] qaPicInfo, String[] answerDesc, String answer,
+			Integer[] extraSortNum, HttpServletRequest request) {
 		Map<String, String> reqMap = WebUtils.getRequestMap(request);
 		VideoTimelineInfo timeline = createTimelineInfo(tlid, reqMap);
 		timeline.setTlType(VideoTimelineExtraEnum.QA.getTlType());
@@ -185,7 +188,7 @@ public class VideoTimelineAdminController extends BaseAdminController {
 		}
 		return result2Json(ResultCode.SUCCESS);
 	}
-	
+
 	@RequestMapping("/admin/video/saveTimelineMc.xhtml")
 	@ResponseBody
 	public String saveTimelineMc(String tlid, HttpServletRequest request, ModelMap model) {
@@ -193,7 +196,7 @@ public class VideoTimelineAdminController extends BaseAdminController {
 		params.eq(TimelineExtraMulticamera.EXTRA_TLID, tlid);
 		List<TimelineExtraMulticamera> extraMulticameraList = mongoService.getObjectList(TimelineExtraMulticamera.class, params);
 		if (CollectionUtils.isEmpty(extraMulticameraList)) {
-			return result2Json(ResultCode.<String>getFailure(AubeErrorCodeConstants.CODE_MC_LIST_NULL));
+			return result2Json(ResultCode.<String> getFailure(AubeErrorCodeConstants.CODE_TL_MC_LIST_NULL));
 		}
 		Map<String, String> reqMap = WebUtils.getRequestMap(request);
 		VideoTimelineInfo timeline = createTimelineInfo(tlid, reqMap);
@@ -204,15 +207,7 @@ public class VideoTimelineAdminController extends BaseAdminController {
 		}
 		return result2Json(ResultCode.SUCCESS);
 	}
-	
-	
-	@RequestMapping("/admin/video/saveTimelineGoods.xhtml")
-	@ResponseBody
-	public String saveTimelineGoods(String tlid, HttpServletRequest request, ModelMap model) {
-		return "";
-	}
-	
-	
+
 	@RequestMapping("/admin/video/saveTimelineInfo.xhtml")
 	@ResponseBody
 	public String saveTimelineInfo(String tlid, HttpServletRequest request, ModelMap model) {
@@ -224,5 +219,36 @@ public class VideoTimelineAdminController extends BaseAdminController {
 			return result2Json(timelineCode);
 		}
 		return result2Json(ResultCode.SUCCESS);
+	}
+
+	@RequestMapping("/admin/video/saveTimelineGoods.xhtml")
+	@ResponseBody
+	public String saveTimelineGoods(String tlid, HttpServletRequest request, ModelMap model) {
+		return "";
+	}
+	
+	
+	@RequestMapping("/admin/video/timeline/modifyTime.xhtml")
+	@ResponseBody
+	public String modityTimelineTime(String mtlid, Integer mStartMin, Integer mStartSec, Integer mEndMin, Integer mEndSec) {
+		ResultCode<VideoTimelineInfo> timelineCode = timelineService.modityTimelineTime(mtlid, mStartMin, mStartSec, mEndMin, mEndSec);
+		if (!timelineCode.isSuccess()) {
+			return result2Json(timelineCode);
+		}
+		return result2Json(ResultCode.SUCCESS);
+	}
+
+	private VideoTimelineInfo createTimelineInfo(String tlid, Map<String, String> reqMap) {
+		VideoTimelineInfo timeline = mongoService.getObjectById(VideoTimelineInfo.class, VideoTimelineInfo.TIMELINE_ID, tlid);
+		if (timeline == null) {
+			timeline = new VideoTimelineInfo();
+			timeline.set_id(tlid);
+			timeline.setTlid(tlid);
+			// TODO 人员
+			timeline.setAddTime(DateUtil.getCurFullTimestampStr());
+		}
+		BeanUtil.copyProperties(timeline, reqMap);
+		timeline.setUpdTime(DateUtil.getCurFullTimestampStr());
+		return timeline;
 	}
 }

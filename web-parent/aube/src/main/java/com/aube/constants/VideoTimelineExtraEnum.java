@@ -107,7 +107,7 @@ public enum VideoTimelineExtraEnum {
 				return ResultCode.<VideoTimelineExtraEnum> getSuccessReturn(extraEnum);
 			}
 		}
-		return ResultCode.<VideoTimelineExtraEnum> getFailure(AubeErrorCodeConstants.CODE_UNSUPPORT_EXTRA);
+		return ResultCode.<VideoTimelineExtraEnum> getFailure(AubeErrorCodeConstants.CODE_TL_UNSUPPORT_EXTRA);
 	}
 
 	private String tlType;

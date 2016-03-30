@@ -10,11 +10,12 @@
 		<div class="panel-body">
 		<form id="timelineForm" method="post" class="form-horizontal" action="">
 			#set($uploadPic=false)
+			#set($textMap={"tlTitle":"多镜头标题","tlDesc":"多镜头说明文字"})
 			#parse("admin/video/timeline/timeline_common.vm")
 			<div class="form-group">
 				<label class="col-sm-3 control-label" for="多镜头倒计时">多镜头倒计时</label>
 				<div class="col-sm-6">
-					<input type="number" class="form-control" id="timedown" name="timedown" value="5" placeholder="多镜头倒计时" />
+					<input type="number" class="form-control" id="timedown" name="timedown" value="$!info.timedown" placeholder="多镜头倒计时" />
 				</div>
 			</div>
 			<div class="col-sm-9 col-sm-offset-8 alert-dismissible">

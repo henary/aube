@@ -51,7 +51,7 @@ public class TimelineVSController extends BaseAdminController {
 		Integer sortNum = 1;
 		if (CollectionUtils.isNotEmpty(vsList)) {
 			if (StringUtils.isBlank(rid) && vsList.size() >= 2) {
-				return result2Json(ResultCode.<String>getFailure(AubeErrorCodeConstants.CODE_VS_MOST2));
+				return result2Json(ResultCode.<String>getFailure(AubeErrorCodeConstants.CODE_TL_VS_MOST2));
 			}
 			Collections.sort(vsList, new PropertyComparator<TimelineExtraVS>(TimelineExtraBase.EXTRA_SORTNUM, true, false));
 			if (vsList.get(0).getExtraSortNum() != null) {

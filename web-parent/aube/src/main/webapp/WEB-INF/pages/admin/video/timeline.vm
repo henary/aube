@@ -51,7 +51,6 @@
 				</div>
 			</div>
 			<table class="table" id="timelineTable">
-			#parse("admin/video/timeline/detail/timeline_table.vm")
 			</table>
 		</div>
 	</div> 
@@ -62,11 +61,76 @@
 		<div class="modal-content"></div>
 	</div>
 </div>
+<div class="modal fade" id="modify-timeModal" tabindex="-1" role="dialog" aria-labelledby="modify-timeModalLabel" data-backdrop="static">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="panel panel-info" id="modify-time-div">
+				<div class="panel-heading">
+					<h5><strong id="modify-panel-title">修改时间</strong></h5>
+				</div>
+				<div class="panel-body">
+				<form id="modifyTimeForm" method="post" class="form-horizontal" action="">
+					<input type="hidden" id="mtlid" name="mtlid" value="$!video.tlid"/>
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="开始时间">开始时间</label>
+						<div class="col-sm-3">
+							<input type="number" max="$duration" maxlength="3" class="form-control" id="mStartMin" name="mStartMin" value="" placeholder="开始分" />
+						</div>
+						<div class="col-sm-3">
+							<input type="number" max="59" maxlength="2" class="form-control" id="mStartSec" name="mStartSec" value="" placeholder="开始秒" />
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-sm-3 control-label" for="结束时间">结束时间</label>
+						<div class="col-sm-3">
+							<input type="number" max="$duration" maxlength="3" class="form-control" id="mEndMin" name="mEndMin" value="" placeholder="结束分" />
+						</div>
+						<div class="col-sm-3">
+							<input type="number" max="59" maxlength="2" class="form-control" id="mEndSec" name="mEndSec" value="" placeholder="结束秒" />
+						</div>
+					</div>
+					<div class="modal-footer ">
+						<div class="col-sm-9 col-sm-offset-4 alert-dismissible">
+							<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+							<button type="submit" class="btn btn-success">确定</button>
+						</div>
+					</div>
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 #parse("include/include_bottom.vm")
 <script type="text/javascript">
 function reloadTimelineTable() {
 	$("#timelineTable").load("${houtaiPath}admin/video/ajax/timelineList.xhtml",{tabsType:"$!tabsType"}, function(){});
 }
+function removeTimeline(tlid) {
+	$.post("${houtaiPath}admin/video/timeline/removeTimeline.xhtml",{"tlid":tlid}, function(){reloadTimelineTable();});
+}
+
+
+$(function(){
+	$.validator.setDefaults({
+		submitHandler: function (form) {
+			var params = $(form).serialize();
+			$.post('${houtaiPath}admin/video/timeline/modifyTime.xhtml',params,function(result){
+				eval(result);
+				if(data.success) {
+					$('#modify-timeModal').modal('hide');
+					reloadTimelineTable();
+				} else {
+					alert(data.errmsg);
+					return false;
+				}
+			});
+		}
+	});
+});
+
+
 $(document).ready(function () {
 	$('#timelineModal').on('hide.bs.modal', function () {
 		$('#timelineModal').removeData('bs.modal');
@@ -118,6 +182,82 @@ $(document).ready(function () {
         $( this ).removeClass( "ui-state-default" );
       }
     });
+    
+    
+    
+    $("#modifyTimeForm").validate({
+		rules: {
+			mStartMin: {
+				required:true,
+				maxlength:3,
+				max:$!duration
+			},
+			mStartSec: {
+				required:true,
+				maxlength:2,
+				max:59
+			},
+			mEndMin: {
+				required:true,
+				maxlength:3,
+				max:$!duration
+			},
+			mEndSec: {
+				required:true,
+				maxlength:2,
+				max:59
+			}
+		},
+		messages: {
+			mStartMin: {
+				required:"开始分不能为空",
+				max:"开始分不能大于视频时长",
+				maxlength:"开始分不能超出3位"
+			},
+			mStartSec: {
+				required:"开始秒不能为空",
+				max:"开始秒不能大于59",
+				maxlength:"开始秒不能超出2位数"
+			},
+			mEndMin: {
+				required:"结束分不能为空",
+				max:"结束分不能大于视频时长",
+				maxlength:"结束分不能超出3位数"
+			},
+			mEndSec: {
+				required:"结束秒不能为空",
+				max:"结束秒不能大于59",
+				maxlength:"结束秒不能超出2位数"
+			}
+		},
+		errorElement: "em",
+		errorPlacement: function ( error, element ) {
+			error.addClass( "help-block" );
+			element.parents( ".col-sm-3" ).addClass( "has-feedback" );
+
+			if ( element.prop( "type" ) === "checkbox" ) {
+				error.insertAfter( element.parent( "label" ) );
+			} else {
+				error.insertAfter( element );
+			}
+			if ( !element.next( "span" )[ 0 ] ) {
+				$( "<span class='glyphicon glyphicon-remove form-control-feedback'></span>" ).insertAfter( element );
+			}
+		},
+		success: function ( label, element ) {
+			if ( !$( element ).next( "span" )[ 0 ] ) {
+				$( "<span class='glyphicon glyphicon-ok form-control-feedback'></span>" ).insertAfter( $( element ) );
+			}
+		},
+		highlight: function ( element, errorClass, validClass ) {
+			$( element ).parents( ".col-sm-3" ).addClass( "has-error" ).removeClass( "has-success" );
+			$( element ).next( "span" ).addClass( "glyphicon-remove" ).removeClass( "glyphicon-ok" );
+		},
+		unhighlight: function ( element, errorClass, validClass ) {
+			$( element ).parents( ".col-sm-3" ).addClass( "has-success" ).removeClass( "has-error" );
+			$( element ).next( "span" ).addClass( "glyphicon-ok" ).removeClass( "glyphicon-remove" );
+		}
+	});
 });
 </script>
 </body>
