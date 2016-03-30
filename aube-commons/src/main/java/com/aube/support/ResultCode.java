@@ -79,10 +79,6 @@ public class ResultCode<T> implements Serializable {
 		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval);
 	}
 
-	public static <T> ResultCode<T> getFailureReturn(T retval) {
-		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval);
-	}
-
 	public static <T> ResultCode<T> getFailureReturn(String code, T retval) {
 		return new ResultCode<T>(ErrorCodeConstant.CODE_SUCCESS, retval);
 	}
