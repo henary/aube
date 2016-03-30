@@ -4,29 +4,33 @@ package com.aube.constant;
  * 错误代码<br>
  * 0000~0100 系统错误<br>
  * 0101~0200 API项目错误<br>
+ * 0800~0900 aube后台错误
  * 3000~3100 节目相关
  */
 public interface ErrorCodeConstant {
 	// 成功
 	String CODE_SUCCESS = "0000";
+	
 	// 系统异常
 	String CODE_SYSTEM_ERROR = "9999";
 	// 系统级别错误java exception的message
 	String CODE_UNKNOWN_ERROR = "10000";
 
+	
 	/**
 	 * 1000~1100 数据不支持的类型
 	 */
+	String CODE_NOT_FIND_CFG="1000";
 	// 数据为空
-	String CODE_DATA_ERROR = "1000";
+	String CODE_DATA_ERROR = "1010";
 	// 参数类型不一致
-	String CODE_DATA_TYPE_ERROR = "1001";
+	String CODE_DATA_TYPE_ERROR = "1011";
 	// 文件上传不支持的标签类型
-	String CODE_UPLOAD_NOT_SUPPORTS_TAG = "1002";
+	String CODE_UPLOAD_NOT_SUPPORTS_TAG = "1012";
 	// 文件上传的列表为空
-	String CODE_UPLOAD_EMPTY = "1003";
+	String CODE_UPLOAD_EMPTY = "1013";
 	// 上传参数错误
-	String CODE_UPLOAD_PARAM_ERROR = "1004";
+	String CODE_UPLOAD_PARAM_ERROR = "1014";
 
 	/**
 	 * 1100～1200用户相关
