@@ -275,58 +275,13 @@ $(document).ready(function () {
 			tlTitle: "required",
 			tlDesc: "required",
 			optionValue:"required",
-			picInfo: "required",
 			showAnswerMin:"required",
-			showAnswerSec:"required",
-			startMin: {
-				required:true,
-				maxlength:3,
-				max:$!duration
-			},
-			startSec: {
-				required:true,
-				maxlength:2,
-				max:59
-			},
-			endMin: {
-				required:true,
-				maxlength:3,
-				max:$!duration
-			},
-			endSec: {
-				required:true,
-				maxlength:2,
-				max:59
-			},
-			
+			showAnswerSec:"required"
 		},
 		messages: {
 			tlTitle: "标题不能为空",
 			tlDesc: "注释不能为空",
-			picInfo: "图片不能为空",
-			startMin: {
-				required:"开始分不能为空",
-				max:"开始分不能大于视频时长",
-				maxlength:"开始分不能超出3位"
-			},
-			startSec: {
-				required:"开始秒不能为空",
-				max:"开始秒不能大于59",
-				maxlength:"开始秒不能超出2位数"
-			},
-			endMin: {
-				required:"结束分不能为空",
-				max:"结束分不能大于视频时长",
-				maxlength:"结束分不能超出3位数"
-			},
-			endSec: {
-				required:"结束秒不能为空",
-				max:"结束秒不能大于59",
-				maxlength:"结束秒不能超出2位数"
-			},
 			optionValue:"选项不能为空",
-			showAnswerMin:"答案揭晓时间不能为空",
-			showAnswerSec:"答案揭晓时间不能为空"
 		},
 		errorElement: "em",
 		errorPlacement: function ( error, element ) {
