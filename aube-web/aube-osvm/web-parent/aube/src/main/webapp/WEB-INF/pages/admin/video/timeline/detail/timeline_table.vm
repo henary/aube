@@ -16,18 +16,27 @@
 	<td>$!timeline.tlTitle</td>
 	<td>#if($VmUtils.isNotBlank($timeline.picInfo))<img alt="" src="${staticPath}$timeline.picInfo" width="80px" height="auto">#end</td>
 	<td>
-		<div class="form-group">
-			<input type="number" class="input-group-sm" name="startMin">
-			<input type="number" class="input-group-sm" name="startMin">
-		</div>
-		$timeline.startMin'$timeline.startSec" ~ $timeline.endMin'$timeline.endSec"
+		<p class="time-p" data-tlTitle="$!timeline.tlTitle" data-tlid="$!timeline.tlid" data-startMin="$!timeline.startMin" data-startSec="$!timeline.startSec" data-endMin="$!timeline.endMin" data-endSec="$!timeline.endSec">
+			$!timeline.startMin’$!timeline.startSec”　～　$!timeline.endMin’$!timeline.endSec”（双击修改）
+		</p>
 	</td>
 	<td>
-		<div class="form-group">
-		<div class="col-sm-6"><a class="btn btn-success" data-toggle="modal" data-target='#timelineModal'  href="${basePath}admin/video/getTimeline.xhtml?tlid=$timeline.tlid">编辑</a></div>
-		<div class="col-sm-6"><input type='button' value='删除' class='btn btn-danger'/></div>
-		</div>
+		<a class="btn btn-warning" data-toggle="modal" data-target='#timelineModal'  href="${basePath}admin/video/getTimeline.xhtml?tlid=$timeline.tlid">编辑</a>
+		<input type='button' value='删除' class='btn btn-danger' onclick="javascript:removeTimeline('$!timeline.tlid')"/>
 	</td>
 </tr>
 #end
 </tbody>
+<script type="text/javascript">
+$(document).ready(function () {
+	$('.time-p').dblclick (function(){
+		$("#modify-panel-title").html("【" + $(this).attr("data-tlTitle") + "】 修改时间信息");
+		$("#mStartMin").val($(this).attr("data-startMin"))
+		$("#mStartSec").val($(this).attr("data-startSec"))
+		$("#mEndMin").val($(this).attr("data-endMin"))
+		$("#mEndSec").val($(this).attr("data-endSec"))
+		$("#mtlid").val($(this).attr("data-tlid"))
+		$('#modify-timeModal').modal('show');
+	});
+});
+</script>

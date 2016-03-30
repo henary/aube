@@ -26,4 +26,6 @@ public interface TimelineService {
 
 	ResultCode<VideoTimelineInfo> saveVideoTimeline(VideoTimelineInfo timeline);
 
+	ResultCode<VideoTimelineInfo> modityTimelineTime(String tlid, Integer startMin, Integer startSec, Integer endMin, Integer endSec);
+
 }

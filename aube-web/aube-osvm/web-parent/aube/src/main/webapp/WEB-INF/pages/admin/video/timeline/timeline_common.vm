@@ -13,7 +13,7 @@
 <div class="form-group">
 	<label class="col-sm-3 control-label" for="$!thumbnailCardDesc">$!thumbnailCardDesc</label>
 	<div class="col-sm-2">
-		<input type="checkbox" class="form-control" id="thumbnailCard" value="Y" name="thumbnailCard" value="$!info.thumbnail" #if($VmUtils.equals($info.thumbnailCard, 'Y'))checked="checked"#end placeholder="$!thumbnailCardDesc" />
+		<input type="checkbox" class="form-control" id="thumbnailCard" value="Y" name="thumbnailCard" value="Y" #if($VmUtils.equals($info.thumbnailCard, 'Y'))checked="checked"#end placeholder="$!thumbnailCardDesc" />
 	</div>
 </div>
 <div class="form-group">
