@@ -13,4 +13,8 @@ public interface AubeErrorCodeConstants extends ErrorCodeConstant {
 	String CODE_VIDEO_NOT_EXITS = "3010";
 	// 不支持的时间线类型
 	String CODE_UNSUPPORT_EXTRA = "3020";
+	// VS最多只能是2
+	String CODE_VS_MOST2 = "3030";
+	// VS 多镜头信息为空
+	String CODE_MC_LIST_NULL = "3031";
 }
